@@ -25,8 +25,11 @@ import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
 import DAO.DAO_LoaiQuanAo;
+import DAO.EntityManagerFactoryUtil;
 import connect.ConnectDB;
 import entity.LoaiQuanAo;
+import jakarta.persistence.EntityManager;
+
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.KeyAdapter;
@@ -43,7 +46,8 @@ public class GUI_LoaiQuanAo extends JPanel {
 	private GUI_CapNhatQuanAo quanAo;
 	private GUI_DatHang banHang;
 	private int deletedRowCount=1; 
-	
+	EntityManagerFactoryUtil util = new EntityManagerFactoryUtil();
+    EntityManager entityManager = util.getEnManager();
 	public GUI_LoaiQuanAo(GUI_CapNhatQuanAo quanAo, GUI_DatHang banHang) {
 		setLayout(null);
 		setBackground(new Color(0, 64, 64));
@@ -208,7 +212,7 @@ public class GUI_LoaiQuanAo extends JPanel {
 	
 	//Hàm thêm
 	public void themLoaiQuanAo() {
-		DAO_LoaiQuanAo loaiQuanAo_dao = new DAO_LoaiQuanAo();
+		DAO_LoaiQuanAo loaiQuanAo_dao = new DAO_LoaiQuanAo(entityManager);
 		String maLoai = txtMaLoaiQuanAo.getText().trim();
 		String tenLoai = txtTenLoaiQuanAo.getText().trim();
 		LoaiQuanAo loaiQuanAo = new LoaiQuanAo(maLoai, tenLoai);
@@ -220,7 +224,7 @@ public class GUI_LoaiQuanAo extends JPanel {
 	
 	//Hàm cập nhật
 	public void updateData() {
-		DAO_LoaiQuanAo dao= new DAO_LoaiQuanAo();
+		DAO_LoaiQuanAo dao= new DAO_LoaiQuanAo(entityManager);
 		List<LoaiQuanAo> list = dao.getAllLoaiQuanAo();
 		for(LoaiQuanAo lqa : list) {
 			Object [] data = {lqa.getMaLoai(),lqa.getTenLoai()};
@@ -237,7 +241,7 @@ public class GUI_LoaiQuanAo extends JPanel {
 	
 	//Hàm xóa
 	public void xoaLoaiQuanAo() {
-		DAO_LoaiQuanAo dao = new DAO_LoaiQuanAo();
+		DAO_LoaiQuanAo dao = new DAO_LoaiQuanAo(entityManager);
 		int row = tblLoaiQuanAo.getSelectedRow();
 		if(row >=1) {
 			int n = JOptionPane.showConfirmDialog(null, "Chắc chắn xóa ?", "Cảnh báo",JOptionPane.YES_NO_OPTION);
@@ -263,7 +267,7 @@ public class GUI_LoaiQuanAo extends JPanel {
 	
 	//Hàm sửa
 	public void suaLoaiQuanAo() {
-		DAO_LoaiQuanAo dao = new DAO_LoaiQuanAo();
+		DAO_LoaiQuanAo dao = new DAO_LoaiQuanAo(entityManager);
 		String maLoai= txtMaLoaiQuanAo.getText();
 		String tenLoai= txtTenLoaiQuanAo.getText();
 		LoaiQuanAo loai = new LoaiQuanAo(maLoai,tenLoai);
@@ -279,7 +283,7 @@ public class GUI_LoaiQuanAo extends JPanel {
 	
 	//Hàm tìm kiếm 
 	public void timKiemLoaiQuanAo() {
-		DAO_LoaiQuanAo dao = new DAO_LoaiQuanAo();
+		DAO_LoaiQuanAo dao = new DAO_LoaiQuanAo(entityManager);
 		List<LoaiQuanAo> list = dao.timTheoTen(txtTiemkiem.getText());
 		modelLoaiQuanAo.getDataVector().removeAllElements();
 		for (LoaiQuanAo l : list) {
@@ -322,7 +326,7 @@ public class GUI_LoaiQuanAo extends JPanel {
 	
 	public String taoMa() {
 
-		DAO_LoaiQuanAo dao = new DAO_LoaiQuanAo();
+		DAO_LoaiQuanAo dao = new DAO_LoaiQuanAo(entityManager);
 		
 		int n = dao.getAllLoaiQuanAo().size();
 		if(n<9) {

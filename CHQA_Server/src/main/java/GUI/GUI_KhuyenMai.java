@@ -21,12 +21,14 @@ import DAO.DAO_KhuyenMai;
 import DAO.DAO_NhaCungCap;
 import DAO.DAO_NhanVien;
 import DAO.DAO_QuanAo;
+import DAO.EntityManagerFactoryUtil;
 import connect.ConnectDB;
 import entity.ChiTietKhuyenMai;
 import entity.KhuyenMai;
 import entity.NhaCungCap;
 import entity.NhanVien;
 import entity.QuanAo;
+import jakarta.persistence.EntityManager;
 
 import com.toedter.calendar.JCalendar;
 import javax.swing.JButton;
@@ -59,6 +61,8 @@ public class GUI_KhuyenMai extends JPanel {
 	private GUI_CapNhatQuanAo quanAo;
 	private List<KhuyenMai> list;
 	private int deletedRowCount=1; 
+	EntityManagerFactoryUtil util = new EntityManagerFactoryUtil();
+    EntityManager entityManager = util.getEnManager();
 	public GUI_KhuyenMai(GUI_CapNhatQuanAo quanAo) {
 		this.quanAo = quanAo;
  		try {
@@ -408,7 +412,7 @@ public class GUI_KhuyenMai extends JPanel {
 	  
 	  //Update danh sách 
 	  public void updateComboMaQuanAo() {
-			DAO_QuanAo dao= new DAO_QuanAo();
+			DAO_QuanAo dao= new DAO_QuanAo(entityManager);
 			for (QuanAo qa : dao.getAllQuanAo()) {
 				cboMaQuanAo.addItem(qa.getMaQuanAo());
 				cboMaQuanAoNhieu1.addItem(qa.getMaQuanAo());
@@ -418,7 +422,7 @@ public class GUI_KhuyenMai extends JPanel {
 	//Tạo mã tăng tự động
 		public String taoMa() {
 
-			DAO_KhuyenMai dao = new DAO_KhuyenMai();
+			DAO_KhuyenMai dao = new DAO_KhuyenMai(entityManager);
 			
 			int n = dao.getAllKhuyenMai().size();
 			if(n<9) {
@@ -450,7 +454,7 @@ public class GUI_KhuyenMai extends JPanel {
 		
 		//LoadDS
 		 public void updateData() {
-				DAO_KhuyenMai dao = new DAO_KhuyenMai();
+				DAO_KhuyenMai dao = new DAO_KhuyenMai(entityManager);
 				List<KhuyenMai> list = dao.getAllKhuyenMai();
 				SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 				for(KhuyenMai km : list) {
@@ -461,7 +465,7 @@ public class GUI_KhuyenMai extends JPanel {
 			}
 		 
 		 public void updateDataKM() {
-				DAO_KhuyenMai dao = new DAO_KhuyenMai();
+				DAO_KhuyenMai dao = new DAO_KhuyenMai(entityManager);
 				List<KhuyenMai> list = dao.getAllKhuyenMai();
 				if(list.isEmpty()) {
 					cboMaKM.addItem("Không");
@@ -490,7 +494,7 @@ public class GUI_KhuyenMai extends JPanel {
 		
 		// Lấy ngày kết thúc của khuyến mãi đã chọn
 		 private Date getEndDateOfSelectedPromotion(String maKM) {
-		     DAO_KhuyenMai daoKM = new DAO_KhuyenMai();
+		     DAO_KhuyenMai daoKM = new DAO_KhuyenMai(entityManager);
 		     KhuyenMai km = daoKM.getKhuyenMaiByMa(maKM);
 
 		     
@@ -503,7 +507,7 @@ public class GUI_KhuyenMai extends JPanel {
 		 
 		//Thêm
 		public void themKM() {
-		    DAO_KhuyenMai dao = new DAO_KhuyenMai();
+		    DAO_KhuyenMai dao = new DAO_KhuyenMai(entityManager);
 		    String ma = taoMa();
 		    String tenCT = txtTenCT.getText().trim();
 		    Date ngayBD = ngayBatDau.getDate();
@@ -528,7 +532,7 @@ public class GUI_KhuyenMai extends JPanel {
 		    		&& txtTiLeKmNhieu.getText().equals("") && (!cboMaQuanAo.getSelectedItem().equals("Không") || !txtTiLeKM.getText().equals(""))) {
 		    	if(validDataChiTiet1SP()) {
 				    String maQuanAo = cboMaQuanAo.getSelectedItem().toString();
-				    DAO_QuanAo daoQuanAo = new DAO_QuanAo();
+				    DAO_QuanAo daoQuanAo = new DAO_QuanAo(entityManager);
 				    QuanAo quanAo = daoQuanAo.getQuanAoByMa(maQuanAo);
 				    String tenQuanAo = quanAo.getTenQuanAo();
 				    String maKM = cboMaKM.getSelectedItem().toString();
@@ -579,7 +583,7 @@ public class GUI_KhuyenMai extends JPanel {
 	
 			        // Thêm chi tiết khuyến mãi cho từng sản phẩm
 			        for (String maQuanAo : listMaQuanAo) {
-			            DAO_QuanAo daoQuanAo = new DAO_QuanAo();
+			            DAO_QuanAo daoQuanAo = new DAO_QuanAo(entityManager);
 			            QuanAo quanAo = daoQuanAo.getQuanAoByMa(maQuanAo);
 			            String tenQuanAo = quanAo.getTenQuanAo();
 	
@@ -622,7 +626,7 @@ public class GUI_KhuyenMai extends JPanel {
 		
 		//Xóa 
 		public void xoaKM() {
-            DAO_KhuyenMai dao = new DAO_KhuyenMai();
+            DAO_KhuyenMai dao = new DAO_KhuyenMai(entityManager);
             int row = tblDsKM.getSelectedRow();
             String maKM = (String) tblDsKM.getValueAt(row, 0);
             if (dao.delete(maKM)) {
@@ -642,7 +646,7 @@ public class GUI_KhuyenMai extends JPanel {
                 
                 if (daoCT.deleteAllByMaKM(maKM)) {
 
-                    DAO_QuanAo dao_QuanAo = new DAO_QuanAo();
+                    DAO_QuanAo dao_QuanAo = new DAO_QuanAo(entityManager);
                     List<QuanAo> list = dao_QuanAo.getAllQuanAoByMaKM(maKM);
                     for (QuanAo quanAo : list) {
                         dao_QuanAo.updateMaKM(quanAo.getMaQuanAo(), "Không");
@@ -657,7 +661,7 @@ public class GUI_KhuyenMai extends JPanel {
 		  
 		  public void xoaQAKM(String maQuanAo, String maKM) {
 			  DAO_ChiTietKhuyenMai dao = new DAO_ChiTietKhuyenMai();
-			  DAO_QuanAo daoQuanAo = new DAO_QuanAo();
+			  DAO_QuanAo daoQuanAo = new DAO_QuanAo(entityManager);
 			  int row = tblQaKM.getSelectedRow();
 			 
 			  if (daoQuanAo.updateMaKM(maQuanAo, "Không")) {
@@ -671,7 +675,7 @@ public class GUI_KhuyenMai extends JPanel {
 		 //Sửa 
 		  public void suaKM() {
 		    	
-		    	DAO_KhuyenMai dao = new DAO_KhuyenMai();
+		    	DAO_KhuyenMai dao = new DAO_KhuyenMai(entityManager);
 		    	
 			    String ma = txtMaKhuyenMai.getText().trim();
 			    String tenCT = txtTenCT.getText().trim();

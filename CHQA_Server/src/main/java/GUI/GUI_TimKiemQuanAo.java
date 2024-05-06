@@ -19,10 +19,12 @@ import DAO.DAO_ChuyenDoi;
 import DAO.DAO_LoaiQuanAo;
 import DAO.DAO_NhaCungCap;
 import DAO.DAO_QuanAo;
+import DAO.EntityManagerFactoryUtil;
 import connect.ConnectDB;
 import entity.LoaiQuanAo;
 import entity.NhaCungCap;
 import entity.QuanAo;
+import jakarta.persistence.EntityManager;
 
 import java.awt.Color;
 import java.awt.event.ActionListener;
@@ -37,7 +39,8 @@ public class GUI_TimKiemQuanAo extends JPanel {
 	private JComboBox cboHang,cboMaQuanAo,cboLoaiQuanAo;
 	private DefaultTableModel modelThongTinQuanAo;
 	private JTable tblThongTinQuanAo;
-	
+	EntityManagerFactoryUtil util = new EntityManagerFactoryUtil();
+    EntityManager entityManager = util.getEnManager();
 	public GUI_TimKiemQuanAo() {
 		setBounds(new Rectangle(0, 0, 1308, 678));
 		setBackground(new Color(0, 64, 64));
@@ -206,7 +209,7 @@ public class GUI_TimKiemQuanAo extends JPanel {
 	
 	//các hàm update
 	public void updateComboMaQuanAo() {
-		DAO_QuanAo dao= new DAO_QuanAo();
+		DAO_QuanAo dao= new DAO_QuanAo(entityManager);
 		for (QuanAo qa : dao.getAllQuanAo()) {
 			cboMaQuanAo.addItem(qa.getMaQuanAo());
 		}
@@ -214,13 +217,13 @@ public class GUI_TimKiemQuanAo extends JPanel {
 	
 	public void updateLaiComboMaQuanAo() {
 		cboMaQuanAo.removeAllItems();
-		DAO_QuanAo dao= new DAO_QuanAo();
+		DAO_QuanAo dao= new DAO_QuanAo(entityManager);
 		for (QuanAo qa : dao.getAllQuanAo()) {
 			cboMaQuanAo.addItem(qa.getMaQuanAo());
 		}
 	}
 	public void updateComboLoaiQuanAo() {
-		DAO_LoaiQuanAo dao = new DAO_LoaiQuanAo();
+		DAO_LoaiQuanAo dao = new DAO_LoaiQuanAo(entityManager);
 		for(LoaiQuanAo loai : dao.getAllLoaiQuanAo()) {
 			cboLoaiQuanAo.addItem(loai.getTenLoai());
 		}
@@ -239,14 +242,14 @@ public class GUI_TimKiemQuanAo extends JPanel {
 		}
 	}
 	public void updateData() {
-		DAO_QuanAo dao= new DAO_QuanAo();
+		DAO_QuanAo dao= new DAO_QuanAo(entityManager);
 		DAO_ChuyenDoi chuyenDoi = new DAO_ChuyenDoi();
 		SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 		List<QuanAo> list = dao.getAllQuanAo();
 		for(QuanAo quanAo : list) {
 			DAO_NhaCungCap daoNCC= new DAO_NhaCungCap();
 			NhaCungCap ncc= daoNCC.getNCCByMa(quanAo.getNCC().getMaNCC());
-			DAO_LoaiQuanAo daoLoai= new DAO_LoaiQuanAo();
+			DAO_LoaiQuanAo daoLoai= new DAO_LoaiQuanAo(entityManager);
 			LoaiQuanAo loai= daoLoai.getLoaiQuanAoByMa(quanAo.getLoaiQuanAo().getMaLoai());
 			
 			Object [] data = {quanAo.getMaQuanAo(),quanAo.getTenQuanAo(),ncc.getTenNCC(),loai.getTenLoai(),quanAo.getKinhThuoc(),quanAo.getSoLuongCu(),quanAo.getSoLuongHienTai(),dateFormat.format(quanAo.getNgayNhap()),quanAo.getKm().getMaKM(),chuyenDoi.DinhDangTien(quanAo.getGia())};
@@ -255,13 +258,13 @@ public class GUI_TimKiemQuanAo extends JPanel {
 		
 	}
 	public void timTheoTen() {
-		DAO_QuanAo dao = new DAO_QuanAo();
+		DAO_QuanAo dao = new DAO_QuanAo(entityManager);
 		List<QuanAo> list = dao.timTheoTen(txtTenQuanAo.getText());
 		modelThongTinQuanAo.getDataVector().removeAllElements();
 		for (QuanAo quanAo : list) {
 			DAO_NhaCungCap daoNCC= new DAO_NhaCungCap();
 			NhaCungCap ncc= daoNCC.getNCCByMa(quanAo.getNCC().getMaNCC());
-			DAO_LoaiQuanAo daoLoai= new DAO_LoaiQuanAo();
+			DAO_LoaiQuanAo daoLoai= new DAO_LoaiQuanAo(entityManager);
 			LoaiQuanAo loai= daoLoai.getLoaiQuanAoByMa(quanAo.getLoaiQuanAo().getMaLoai());
 			
 			Object [] data = {quanAo.getMaQuanAo(),quanAo.getTenQuanAo(),ncc.getTenNCC(),loai.getTenLoai(),quanAo.getKinhThuoc(),quanAo.getSoLuongHienTai(),quanAo.getKm().getMaKM(), DAO_ChuyenDoi.DinhDangTien(quanAo.getGia())};
@@ -272,8 +275,8 @@ public class GUI_TimKiemQuanAo extends JPanel {
 	}
 	
 	public void timTheoHang() {
-		DAO_QuanAo dao = new DAO_QuanAo();
-		DAO_LoaiQuanAo daoLoai= new DAO_LoaiQuanAo();
+		DAO_QuanAo dao = new DAO_QuanAo(entityManager);
+		DAO_LoaiQuanAo daoLoai= new DAO_LoaiQuanAo(entityManager);
 		DAO_NhaCungCap daoNCC= new DAO_NhaCungCap();
 		String hang = cboHang.getSelectedItem().toString();
 		NhaCungCap nhaCC = daoNCC.getNCCByTen(hang);
@@ -292,8 +295,8 @@ public class GUI_TimKiemQuanAo extends JPanel {
 
 	}
 	public void timTheoLoai() {
-		DAO_QuanAo dao = new DAO_QuanAo();
-		DAO_LoaiQuanAo daoLoai= new DAO_LoaiQuanAo();
+		DAO_QuanAo dao = new DAO_QuanAo(entityManager);
+		DAO_LoaiQuanAo daoLoai= new DAO_LoaiQuanAo(entityManager);
 		String loai = cboLoaiQuanAo.getSelectedItem().toString();
 		LoaiQuanAo loaiQA = daoLoai.getLoaiQuanAoByTen(loai);
 		List<QuanAo> list = dao.timTheoLoai(loaiQA.getMaLoai());
@@ -311,14 +314,14 @@ public class GUI_TimKiemQuanAo extends JPanel {
 
 	}
 	public void timTheoMa() {
-		DAO_QuanAo dao = new DAO_QuanAo();
+		DAO_QuanAo dao = new DAO_QuanAo(entityManager);
 		String ma = cboMaQuanAo.getSelectedItem().toString();
 		List<QuanAo> list = dao.timTheoMa(ma);
 		modelThongTinQuanAo.getDataVector().removeAllElements();
 		for (QuanAo quanAo : list) {
 			DAO_NhaCungCap daoNCC= new DAO_NhaCungCap();
 			NhaCungCap ncc= daoNCC.getNCCByMa(quanAo.getNCC().getMaNCC());
-			DAO_LoaiQuanAo daoLoai= new DAO_LoaiQuanAo();
+			DAO_LoaiQuanAo daoLoai= new DAO_LoaiQuanAo(entityManager);
 			LoaiQuanAo loai= daoLoai.getLoaiQuanAoByMa(quanAo.getLoaiQuanAo().getMaLoai());
 			
 			Object [] data = {quanAo.getMaQuanAo(),quanAo.getTenQuanAo(),ncc.getTenNCC(),loai.getTenLoai(),quanAo.getKinhThuoc(),quanAo.getSoLuongHienTai(),quanAo.getKm().getMaKM(), DAO_ChuyenDoi.DinhDangTien(quanAo.getGia())};
@@ -328,7 +331,7 @@ public class GUI_TimKiemQuanAo extends JPanel {
 
 	}
 	public void timTheoTenvaHang() {
-		DAO_QuanAo dao = new DAO_QuanAo();
+		DAO_QuanAo dao = new DAO_QuanAo(entityManager);
 		DAO_NhaCungCap daoNCC= new DAO_NhaCungCap();
 		String ten = txtTenQuanAo.getText();
 		String hang = cboHang.getSelectedItem().toString();
@@ -338,7 +341,7 @@ public class GUI_TimKiemQuanAo extends JPanel {
 		for (QuanAo quanAo : list) {
 			
 			NhaCungCap ncc= daoNCC.getNCCByMa(quanAo.getNCC().getMaNCC());
-			DAO_LoaiQuanAo daoLoai= new DAO_LoaiQuanAo();
+			DAO_LoaiQuanAo daoLoai= new DAO_LoaiQuanAo(entityManager);
 			LoaiQuanAo loai= daoLoai.getLoaiQuanAoByMa(quanAo.getLoaiQuanAo().getMaLoai());
 			
 			Object [] data = {quanAo.getMaQuanAo(),quanAo.getTenQuanAo(),ncc.getTenNCC(),loai.getTenLoai(),quanAo.getKinhThuoc(),quanAo.getSoLuongHienTai(),quanAo.getKm().getMaKM(), DAO_ChuyenDoi.DinhDangTien(quanAo.getGia())};
@@ -348,8 +351,8 @@ public class GUI_TimKiemQuanAo extends JPanel {
 	}
 	
 	public void timTheoTenvaLoai() {
-		DAO_QuanAo dao = new DAO_QuanAo();
-		DAO_LoaiQuanAo daoLoai= new DAO_LoaiQuanAo();
+		DAO_QuanAo dao = new DAO_QuanAo(entityManager);
+		DAO_LoaiQuanAo daoLoai= new DAO_LoaiQuanAo(entityManager);
 		String ten = txtTenQuanAo.getText();
 		String loai = cboLoaiQuanAo.getSelectedItem().toString();
 		LoaiQuanAo loaiQA = daoLoai.getLoaiQuanAoByTen(loai);
@@ -369,7 +372,7 @@ public class GUI_TimKiemQuanAo extends JPanel {
 	}
 	
 	public void timTheoTenvaMa() {
-		DAO_QuanAo dao = new DAO_QuanAo();
+		DAO_QuanAo dao = new DAO_QuanAo(entityManager);
 		String ten = txtTenQuanAo.getText();
 		String ma = cboMaQuanAo.getSelectedItem().toString();
 		List<QuanAo> list = dao.timTheoTenvaMa(ten,ma);
@@ -377,7 +380,7 @@ public class GUI_TimKiemQuanAo extends JPanel {
 		for (QuanAo quanAo : list) {
 			DAO_NhaCungCap daoNCC= new DAO_NhaCungCap();
 			NhaCungCap ncc= daoNCC.getNCCByMa(quanAo.getNCC().getMaNCC());
-			DAO_LoaiQuanAo daoLoai= new DAO_LoaiQuanAo();
+			DAO_LoaiQuanAo daoLoai= new DAO_LoaiQuanAo(entityManager);
 			LoaiQuanAo loai= daoLoai.getLoaiQuanAoByMa(quanAo.getLoaiQuanAo().getMaLoai());
 			
 			Object [] data = {quanAo.getMaQuanAo(),quanAo.getTenQuanAo(),ncc.getTenNCC(),loai.getTenLoai(),quanAo.getKinhThuoc(),quanAo.getSoLuongHienTai(),quanAo.getKm().getMaKM(), DAO_ChuyenDoi.DinhDangTien(quanAo.getGia())};
@@ -387,8 +390,8 @@ public class GUI_TimKiemQuanAo extends JPanel {
 
 	}
 	public void timTheoHangvaLoai() {
-		DAO_QuanAo dao = new DAO_QuanAo();
-		DAO_LoaiQuanAo daoLoai= new DAO_LoaiQuanAo();
+		DAO_QuanAo dao = new DAO_QuanAo(entityManager);
+		DAO_LoaiQuanAo daoLoai= new DAO_LoaiQuanAo(entityManager);
 		DAO_NhaCungCap daoNCC= new DAO_NhaCungCap();
 		String loai = cboLoaiQuanAo.getSelectedItem().toString();
 		String hang = cboHang.getSelectedItem().toString();
@@ -408,7 +411,7 @@ public class GUI_TimKiemQuanAo extends JPanel {
 
 	}
 	public void timTheoHangvaMa() {
-		DAO_QuanAo dao = new DAO_QuanAo();
+		DAO_QuanAo dao = new DAO_QuanAo(entityManager);
 		DAO_NhaCungCap daoNCC= new DAO_NhaCungCap();
 		String ma = cboMaQuanAo.getSelectedItem().toString();
 		String hang = cboHang.getSelectedItem().toString();
@@ -418,7 +421,7 @@ public class GUI_TimKiemQuanAo extends JPanel {
 		for (QuanAo quanAo : list) {
 			
 			NhaCungCap ncc= daoNCC.getNCCByMa(quanAo.getNCC().getMaNCC());
-			DAO_LoaiQuanAo daoLoai= new DAO_LoaiQuanAo();
+			DAO_LoaiQuanAo daoLoai= new DAO_LoaiQuanAo(entityManager);
 			LoaiQuanAo loai= daoLoai.getLoaiQuanAoByMa(quanAo.getLoaiQuanAo().getMaLoai());
 			
 			Object [] data = {quanAo.getMaQuanAo(),quanAo.getTenQuanAo(),ncc.getTenNCC(),loai.getTenLoai(),quanAo.getKinhThuoc(),quanAo.getSoLuongHienTai(),quanAo.getKm().getMaKM(), DAO_ChuyenDoi.DinhDangTien(quanAo.getGia())};
@@ -428,8 +431,8 @@ public class GUI_TimKiemQuanAo extends JPanel {
 
 	}
 	public void timTheoLoaivaMa() {
-		DAO_QuanAo dao = new DAO_QuanAo();
-		DAO_LoaiQuanAo daoLoai= new DAO_LoaiQuanAo();
+		DAO_QuanAo dao = new DAO_QuanAo(entityManager);
+		DAO_LoaiQuanAo daoLoai= new DAO_LoaiQuanAo(entityManager);
 		String ma = cboMaQuanAo.getSelectedItem().toString();
 		String loai = cboLoaiQuanAo.getSelectedItem().toString();
 		LoaiQuanAo loaiQA =daoLoai.getLoaiQuanAoByTen(loai);
@@ -447,8 +450,8 @@ public class GUI_TimKiemQuanAo extends JPanel {
 	}
 	}
 	public void timTheoTenvaHangvaLoai() {
-		DAO_QuanAo dao = new DAO_QuanAo();
-		DAO_LoaiQuanAo daoLoai= new DAO_LoaiQuanAo();
+		DAO_QuanAo dao = new DAO_QuanAo(entityManager);
+		DAO_LoaiQuanAo daoLoai= new DAO_LoaiQuanAo(entityManager);
 		DAO_NhaCungCap daoNCC= new DAO_NhaCungCap();
 		
 		String ten = txtTenQuanAo.getText().toString();
@@ -472,7 +475,7 @@ public class GUI_TimKiemQuanAo extends JPanel {
 	}
 	
 	public void timTheoTenvaHangvaMa() {
-		DAO_QuanAo dao = new DAO_QuanAo();
+		DAO_QuanAo dao = new DAO_QuanAo(entityManager);
 		DAO_NhaCungCap daoNCC= new DAO_NhaCungCap();
 		String ten = txtTenQuanAo.getText().toString();
 		String hang = cboHang.getSelectedItem().toString();
@@ -483,7 +486,7 @@ public class GUI_TimKiemQuanAo extends JPanel {
 		for (QuanAo quanAo : list) {
 			
 			NhaCungCap ncc= daoNCC.getNCCByMa(quanAo.getNCC().getMaNCC());
-			DAO_LoaiQuanAo daoLoai= new DAO_LoaiQuanAo();
+			DAO_LoaiQuanAo daoLoai= new DAO_LoaiQuanAo(entityManager);
 			LoaiQuanAo loai= daoLoai.getLoaiQuanAoByMa(quanAo.getLoaiQuanAo().getMaLoai());
 			
 			Object [] data = {quanAo.getMaQuanAo(),quanAo.getTenQuanAo(),ncc.getTenNCC(),loai.getTenLoai(),quanAo.getKinhThuoc(),quanAo.getSoLuongHienTai(),quanAo.getKm().getMaKM(), DAO_ChuyenDoi.DinhDangTien(quanAo.getGia())};
@@ -493,8 +496,8 @@ public class GUI_TimKiemQuanAo extends JPanel {
 
 	}
 	public void timTheoLoaivaHangvaMa() {
-		DAO_QuanAo dao = new DAO_QuanAo();
-		DAO_LoaiQuanAo daoLoai= new DAO_LoaiQuanAo();
+		DAO_QuanAo dao = new DAO_QuanAo(entityManager);
+		DAO_LoaiQuanAo daoLoai= new DAO_LoaiQuanAo(entityManager);
 		DAO_NhaCungCap daoNCC= new DAO_NhaCungCap();
 		String ma = cboMaQuanAo.getSelectedItem().toString();
 		String hang = cboHang.getSelectedItem().toString();
@@ -517,8 +520,8 @@ public class GUI_TimKiemQuanAo extends JPanel {
 
 	}
 	public void timTheoTenvaLoaivaHangvaMa() {
-		DAO_QuanAo dao = new DAO_QuanAo();
-		DAO_LoaiQuanAo daoLoai= new DAO_LoaiQuanAo();
+		DAO_QuanAo dao = new DAO_QuanAo(entityManager);
+		DAO_LoaiQuanAo daoLoai= new DAO_LoaiQuanAo(entityManager);
 		DAO_NhaCungCap daoNCC= new DAO_NhaCungCap();
 		String ten = txtTenQuanAo.getText();
 		String ma = cboMaQuanAo.getSelectedItem().toString();

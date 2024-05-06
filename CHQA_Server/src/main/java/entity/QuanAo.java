@@ -45,7 +45,7 @@ public class QuanAo implements Serializable{
 	
 	
 	@ManyToOne
-    @JoinColumn(name = "MaKM") 
+    @JoinColumn(name = "MaKM", nullable = true) 
     private KhuyenMai khuyenMai;
 	
 	@Column(name = "Gia")
@@ -58,20 +58,20 @@ public class QuanAo implements Serializable{
 	private String maVaTenQuanAo;
 	
 	public QuanAo(String maQuanAo, String tenQuanAo, NhaCungCap NCC, LoaiQuanAo loaiQuanAo, String kinhThuoc,
-			int soLuongCu, int soLuongHienTai, Date ngayNhap, KhuyenMai km, float gia, String hinhAnh) {
-		super();
-		this.maQuanAo = maQuanAo;
-		this.tenQuanAo = tenQuanAo;
-		this.nhaCungCap = NCC;
-		this.loaiQuanAo = loaiQuanAo;
-		this.kinhThuoc = kinhThuoc;
-		this.soLuongCu = soLuongCu;
-		this.soLuongHienTai = soLuongHienTai;
-		this.ngayNhap = ngayNhap;
-		this.khuyenMai = km;
-		this.gia = gia;
-		this.hinhAnh = hinhAnh;
-	}
+            int soLuongCu, int soLuongHienTai, Date ngayNhap, KhuyenMai km, float gia, String hinhAnh) {
+  super();
+  this.maQuanAo = maQuanAo;
+  this.tenQuanAo = tenQuanAo;
+  this.nhaCungCap = NCC;
+  this.loaiQuanAo = loaiQuanAo;
+  this.kinhThuoc = kinhThuoc;
+  this.soLuongCu = soLuongCu;
+  this.soLuongHienTai = soLuongHienTai;
+  this.ngayNhap = ngayNhap;
+  this.khuyenMai = km;
+  this.gia = gia;
+  this.hinhAnh = hinhAnh;
+}
 
 
 

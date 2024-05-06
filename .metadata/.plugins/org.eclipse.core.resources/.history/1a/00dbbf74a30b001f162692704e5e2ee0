@@ -1,0 +1,274 @@
+package entity;
+
+import java.io.Serializable;
+import java.util.Date;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Transient;
+@Entity
+public class QuanAo implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	@Id
+	@Column(name = "MaQuanAo")
+	private String maQuanAo;
+	
+	@Column(name = "TenQuanAo")
+	private String tenQuanAo;
+	
+	@ManyToOne
+	@JoinColumn(name = "NCC")
+	private NhaCungCap nhaCungCap;
+	
+	@ManyToOne
+	@JoinColumn(name = "LoaiQuanAo")
+	private LoaiQuanAo loaiQuanAo;
+	
+	@Column(name = "KichThuoc")
+	private String kinhThuoc;
+	
+	@Column(name = "SoLuongCu")
+	private int soLuongCu;
+	
+	@Column(name = "SoLuongHienTai")
+	private int soLuongHienTai;
+	
+	@Column(name = "NgayNhap")
+	private Date ngayNhap;
+	
+	
+	@ManyToOne
+    @JoinColumn(name = "MaKM", nullable = true) 
+    private KhuyenMai khuyenMai;
+	
+	@Column(name = "Gia")
+	private float gia;
+	
+	@Column(name = "HinhAnh")
+	private String hinhAnh;
+	
+	@Transient // Không cần ánh xạ vào cơ sở dữ liệu
+	private String maVaTenQuanAo;
+	
+	public QuanAo(String maQuanAo, String tenQuanAo, NhaCungCap NCC, LoaiQuanAo loaiQuanAo, String kinhThuoc,
+			int soLuongCu, int soLuongHienTai, Date ngayNhap, KhuyenMai km, float gia, String hinhAnh) {
+		super();
+		this.maQuanAo = maQuanAo;
+		this.tenQuanAo = tenQuanAo;
+		this.nhaCungCap = NCC;
+		this.loaiQuanAo = loaiQuanAo;
+		this.kinhThuoc = kinhThuoc;
+		this.soLuongCu = soLuongCu;
+		this.soLuongHienTai = soLuongHienTai;
+		this.ngayNhap = ngayNhap;
+		this.khuyenMai = km;
+		this.gia = gia;
+		this.hinhAnh = hinhAnh;
+	}
+
+
+
+
+	public QuanAo() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+	public QuanAo(String maQuanAo) {
+		
+		this.maQuanAo = maQuanAo;
+		
+	}
+		
+	public QuanAo(String maQuanAo, String tenQuanAo) {
+		// TODO Auto-generated constructor stub
+		this.maQuanAo = maQuanAo;
+		this.tenQuanAo = tenQuanAo;
+	}
+
+
+
+
+	public String getMaQuanAo() {
+		return maQuanAo;
+	}
+
+
+
+
+	public void setMaQuanAo(String maQuanAo) {
+		this.maQuanAo = maQuanAo;
+	}
+
+
+
+
+	public String getTenQuanAo() {
+		return tenQuanAo;
+	}
+
+
+
+
+	public void setTenQuanAo(String tenQuanAo) {
+		this.tenQuanAo = tenQuanAo;
+	}
+
+
+
+
+	public NhaCungCap getNCC() {
+		return nhaCungCap;
+	}
+
+
+
+
+	public void setNCC(NhaCungCap NCC) {
+		this.nhaCungCap = NCC;
+	}
+
+
+
+
+	public LoaiQuanAo getLoaiQuanAo() {
+		return loaiQuanAo;
+	}
+
+
+
+
+	public void setLoaiQuanAo(LoaiQuanAo loaiQuanAo) {
+		this.loaiQuanAo = loaiQuanAo;
+	}
+
+
+
+
+	public String getKinhThuoc() {
+		return kinhThuoc;
+	}
+
+
+
+
+	public void setKinhThuoc(String kinhThuoc) {
+		this.kinhThuoc = kinhThuoc;
+	}
+
+
+
+
+	public int getSoLuongCu() {
+		return soLuongCu;
+	}
+
+
+
+
+	public void setSoLuongCu(int soLuongCu) {
+		this.soLuongCu = soLuongCu;
+	}
+
+
+
+
+	public int getSoLuongHienTai() {
+		return soLuongHienTai;
+	}
+
+
+
+
+	public void setSoLuongHienTai(int soLuongHienTai) {
+		this.soLuongHienTai = soLuongHienTai;
+	}
+
+
+
+
+	public Date getNgayNhap() {
+		return ngayNhap;
+	}
+
+
+
+
+	public void setNgayNhap(Date ngayNhap) {
+		this.ngayNhap = ngayNhap;
+	}
+
+
+
+
+	public KhuyenMai getKm() {
+		return khuyenMai;
+	}
+
+
+
+
+	public void setKm(KhuyenMai km) {
+		this.khuyenMai = km;
+	}
+
+
+
+
+	public float getGia() {
+		return gia;
+	}
+
+
+
+
+	public void setGia(float gia) {
+		this.gia = gia;
+	}
+
+
+
+
+	public String getHinhAnh() {
+		return hinhAnh;
+	}
+
+
+
+
+	public void setHinhAnh(String hinhAnh) {
+		this.hinhAnh = hinhAnh;
+	}
+
+
+
+
+	@Override
+	public String toString() {
+		return "QuanAo [maQuanAo=" + maQuanAo + ", tenQuanAo=" + tenQuanAo + ", tenNCC=" + nhaCungCap + ", loaiQuanAo="
+				+ loaiQuanAo + ", kinhThuoc=" + kinhThuoc + ", soLuongCu=" + soLuongCu + ", soLuongHienTai="
+				+ soLuongHienTai + ", ngayNhap=" + ngayNhap + ", km=" + khuyenMai + ", gia=" + gia + ", hinhAnh=" + hinhAnh
+				+ "]";
+	}
+	
+
+	public String getMaVaTenQuanAo() {
+	    return this.maQuanAo + " - " + this.tenQuanAo;
+	}
+
+	public void setMaVaTenQuanAo(String maVaTenQuanAo) {
+	    // Split maVaTenQuanAo để lấy ra mã và tên quần áo và set giá trị cho maQuanAo và tenQuanAo
+	    String[] parts = maVaTenQuanAo.split(" - ");
+	    this.maQuanAo = parts[0];
+	    this.tenQuanAo = parts[1];
+	}
+	
+
+}

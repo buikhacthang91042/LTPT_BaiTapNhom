@@ -17,14 +17,14 @@ public class ChiTietKhuyenMai implements Serializable{
 
 	@Id 
 	@ManyToOne
-	@JoinColumn(name = "MaKM", referencedColumnName = "MaKM", nullable = false)
+	@JoinColumn(name = "MaKM", referencedColumnName = "MaKM", nullable = true)
 	private KhuyenMai maKM;
 	
 	@ManyToOne
-    @JoinColumn(name = "MaQuanAo")
+    @JoinColumn(name = "MaQuanAo",nullable = true)
 	private QuanAo quanAo;
 	
-	@Column(name = "TiLeKM")
+	@Column(name = "TiLeKM",nullable = true)
 	private float tiLeKM;
 
 	public ChiTietKhuyenMai(KhuyenMai maKM, QuanAo quanAo, float tiLeKM) {

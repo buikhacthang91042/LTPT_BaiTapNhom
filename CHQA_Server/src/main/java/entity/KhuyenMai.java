@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.List;
 
 import DAO.DAO_ChiTietKhuyenMai;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 
@@ -16,15 +17,26 @@ public class KhuyenMai implements Serializable{
 	 */
 	private static final long serialVersionUID = 1L;
 	@Id
+	@Column(nullable = true)
 	private String maKM;
+	
+	@Column(nullable = true)
 	private String tenChuongTrinh;
-	private Date ngayBatDau, ngayKetThuc;
+	
+	@Column(nullable = true)
+	private Date ngayBatDau;
+	
+	@Column(nullable = true)
+	private Date ngayKetThuc;
+	
+	@Column(nullable = true)
 	private List<ChiTietKhuyenMai> ctkm;
 	public KhuyenMai(String maKM) {
 		
 		this.maKM = maKM;
 		
 	}
+	 
 	public String getMaKM() {
 		return maKM;
 	}

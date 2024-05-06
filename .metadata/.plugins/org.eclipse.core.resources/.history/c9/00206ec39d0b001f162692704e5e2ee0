@@ -1,0 +1,227 @@
+package DAO;
+
+import java.sql.Connection;
+import java.sql.Date;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
+import jakarta.persistence.Query;
+import connect.ConnectDB;
+import entity.KhuyenMai;
+import entity.NhaCungCap;
+import entity.NhanVien;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityTransaction;
+
+
+public class DAO_KhuyenMai {
+	private EntityManager entityManager;
+	public DAO_KhuyenMai(EntityManager entityManager) {
+		this.entityManager = entityManager;
+	}
+	List<KhuyenMai> khuyenMai = new ArrayList<>();
+	 public List<KhuyenMai> getAllKhuyenMai() {
+	        Query query = entityManager.createQuery("SELECT km FROM KhuyenMai km");
+	        return query.getResultList();
+	    }
+	 public boolean create(KhuyenMai KM) {
+	        EntityTransaction transaction = null;
+	        try {
+	            transaction = entityManager.getTransaction();
+	            transaction.begin();
+	            entityManager.persist(KM);
+	            transaction.commit();
+	            return true;
+	        } catch (Exception e) {
+	            if (transaction != null) {
+	                transaction.rollback();
+	            }
+	            e.printStackTrace();
+	            return false;
+	        }
+	    }
+
+	 public boolean delete(String maKM) {
+	        EntityTransaction transaction = null;
+	        try {
+	            transaction = entityManager.getTransaction();
+	            transaction.begin();
+	            KhuyenMai km = entityManager.find(KhuyenMai.class, maKM);
+	            if (km != null) {
+	                entityManager.remove(km);
+	                transaction.commit();
+	                return true;
+	            }
+	            return false;
+	        } catch (Exception e) {
+	            if (transaction != null) {
+	                transaction.rollback();
+	            }
+	            e.printStackTrace();
+	            return false;
+	        }
+	    }
+	 public boolean update(KhuyenMai km) {
+	        EntityTransaction transaction = null;
+	        try {
+	            transaction = entityManager.getTransaction();
+	            transaction.begin();
+	            entityManager.merge(km);
+	            transaction.commit();
+	            return true;
+	        } catch (Exception e) {
+	            if (transaction != null) {
+	                transaction.rollback();
+	            }
+	            e.printStackTrace();
+	            return false;
+	        }
+	    }
+	
+	public KhuyenMai getKhuyenMaiByMa(String maKM) {
+	    Connection connection = null;
+	    PreparedStatement statement = null;
+	    ResultSet resultSet = null;
+	    KhuyenMai khuyenMai = null;
+
+	    try {
+	        // Kiểm tra và mở lại kết nối nếu đã đóng
+	        if (ConnectDB.getInstance().getConnection().isClosed()) {
+	            ConnectDB.getInstance().connect();
+	        }
+
+	        connection = ConnectDB.getInstance().getConnection();
+	        String query = "SELECT * FROM KhuyenMai WHERE MaKM = ?";
+	        statement = connection.prepareStatement(query);
+	        statement.setString(1, maKM);
+	        resultSet = statement.executeQuery();
+
+	        if (resultSet.next()) {
+	            // Đọc dữ liệu từ ResultSet và tạo đối tượng KhuyenMai
+	            String ma = resultSet.getString("MaKM");
+	            String tenChuongTrinh = resultSet.getString("TenChuongTrinh");
+	            Date ngayBatDau = resultSet.getDate("NgayBatDau");
+	            Date ngayKetThuc = resultSet.getDate("NgayKetThuc");
+
+	            khuyenMai = new KhuyenMai(ma, tenChuongTrinh, ngayBatDau, ngayKetThuc);
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    } finally {
+	        // Đóng kết nối và các tài nguyên
+	        try {
+	            if (resultSet != null) resultSet.close();
+	            if (statement != null) statement.close();
+	            // Không đóng connection ở đây để tránh đóng khi còn sử dụng ở các phương thức khác
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	        }
+	    }
+
+	    return khuyenMai;
+	}
+
+	public Date getNgayKetThucByMaKhuyenMai(String maKhuyenMai) {
+		Connection con = ConnectDB.getInstance().getConnection();
+        PreparedStatement stmt = null;
+       
+        Date ngayKetThuc = null;
+
+        try {
+        	 if (ConnectDB.getInstance().getConnection().isClosed()) {
+ 	            ConnectDB.getInstance().connect();
+ 	        }
+            String sql = "SELECT ngayKetThuc FROM KhuyenMai WHERE maKM = ?";
+            stmt= con.prepareStatement(sql);
+            stmt.setString(1,maKhuyenMai);
+            
+			ResultSet rs= stmt.executeQuery();
+            // Xử lý kết quả trả về
+            if (rs.next()) {
+                // Lấy giá trị ngày kết thúc từ cột "NgayKetThuc" trong kết quả truy vấn
+                ngayKetThuc = rs.getDate("ngayKetThuc");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } 
+        
+
+        return ngayKetThuc;
+    }
+	
+	
+	public List<String> getAllMaKhuyenMai() {
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        List<String> danhSachMaKM = new ArrayList<>();
+
+        try {
+            
+            connection = ConnectDB.getInstance().getConnection();
+
+            if (ConnectDB.getInstance().getConnection().isClosed()) {
+	            ConnectDB.getInstance().connect();
+	        }
+            
+            String sql = "SELECT maKM FROM KhuyenMai";
+
+           
+            preparedStatement = connection.prepareStatement(sql);
+
+            
+            resultSet = preparedStatement.executeQuery();
+
+            
+            while (resultSet.next()) {
+                
+                String maKhuyenMai = resultSet.getString("maKM");
+                danhSachMaKM.add(maKhuyenMai);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } 
+
+        return danhSachMaKM;
+    }
+	public boolean updateAllMaKM(int deletedRowCount, String maKMDaXoa) {
+		Connection con = ConnectDB.getInstance().getConnection();
+		String query = "SELECT maKM FROM KhuyenMai WHERE maKM > ?";
+		List<String> maKMList = new ArrayList<>();
+
+		try {
+			PreparedStatement stmt = null;
+			stmt= con.prepareStatement(query);
+		    stmt.setString(1, maKMDaXoa);
+		    ResultSet rs = stmt.executeQuery();
+
+		    while (rs.next()) {
+		    	maKMList.add(rs.getString("maKM"));
+		    }
+		} catch (SQLException e) {
+		    e.printStackTrace();
+		    return false;
+		}
+
+	    for (String MaKMCu : maKMList) {
+	        int maCu = Integer.parseInt(MaKMCu.substring(3));
+	        int maMoi = maCu - deletedRowCount;
+	        String newMaKM = "KM" + String.format("%03d", maMoi);
+
+	        String updateQuery = "UPDATE KhuyenMai SET maKM = ? WHERE maKM = ?";
+	        try (PreparedStatement updateStatement = ConnectDB.getInstance().getConnection().prepareStatement(updateQuery)) {
+	            updateStatement.setString(1, newMaKM);
+	            updateStatement.setString(2, MaKMCu);
+	            updateStatement.executeUpdate();
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	            return false;
+	        }
+	    }
+
+	    return true;
+	}
+}

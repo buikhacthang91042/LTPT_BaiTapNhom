@@ -12,191 +12,118 @@ import java.util.List;
 import connect.ConnectDB;
 import entity.LoaiQuanAo;
 import entity.NhaCungCap;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityTransaction;
+import jakarta.persistence.Query;
+import jakarta.persistence.TypedQuery;
 
 public class DAO_LoaiQuanAo {
+	private EntityManager entityManager;
+	public DAO_LoaiQuanAo(EntityManager entityManager) {
+		this.entityManager = entityManager;
+	}
 	List<LoaiQuanAo> loaiQuanAo = new ArrayList<>();
-	public List<LoaiQuanAo> getAllLoaiQuanAo() {
-		List<LoaiQuanAo> loaiQuanAo = new ArrayList<>();
-		ConnectDB.getInstance();
-		Connection con = ConnectDB.getConnection();
-		Statement stmt1= null;
-		try {
-			String sql= "Select * from LoaiQuanAo";
-			stmt1= con.createStatement();
-			ResultSet rs= stmt1.executeQuery(sql);
-			while(rs.next()) {
-				loaiQuanAo.add(new LoaiQuanAo(rs.getString(1), rs.getString(2)));
-			}
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return loaiQuanAo;
-	}
+	 public List<LoaiQuanAo> getAllLoaiQuanAo() {
+	        Query query = entityManager.createQuery("SELECT l FROM LoaiQuanAo l");
+	        return query.getResultList();
+	    }
+
 	
-	public boolean create(LoaiQuanAo loaiQuanAo) {
-		Connection con = ConnectDB.getInstance().getConnection();
-		PreparedStatement stmt = null;
-		int n=0;
-		try {
-			stmt = con.prepareStatement("insert into LoaiQuanAo values(?,?)");
-			stmt.setString(1, loaiQuanAo.getMaLoai());
-			stmt.setString(2, loaiQuanAo.getTenLoai());
-			n= stmt.executeUpdate();
-		} catch (SQLException e) {
-			// TODO: handle exception
-		}
-		return n>0;
-	}
+	 public boolean create(LoaiQuanAo loaiQuanAo) {
+	        try {
+	            entityManager.getTransaction().begin();
+	            entityManager.persist(loaiQuanAo);
+	            entityManager.getTransaction().commit();
+	            return true;
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	            return false;
+	        }
+	    }
 	
-	public boolean delete (String MaLoaiQuanAo) {
-		Connection con = ConnectDB.getInstance().getConnection();
-		PreparedStatement stmt = null;
-		int n = 0;
-		try {
-			stmt = con.prepareStatement("delete from LoaiQuanAo where MaLoai = ?");
-			stmt.setString(1, MaLoaiQuanAo);
-			n = stmt.executeUpdate();
-		} catch (SQLException e) {
-			// TODO: handle exception
-		}
-		return n >0;
-	}
+	 public boolean delete(String maLoaiQuanAo) {
+	        LoaiQuanAo loaiQuanAo = entityManager.find(LoaiQuanAo.class, maLoaiQuanAo);
+	        if (loaiQuanAo != null) {
+	            try {
+	                entityManager.getTransaction().begin();
+	                entityManager.remove(loaiQuanAo);
+	                entityManager.getTransaction().commit();
+	                return true;
+	            } catch (Exception e) {
+	                e.printStackTrace();
+	                return false;
+	            }
+	        }
+	        return false;
+	    }
 	
-	public boolean suaLoaiQuanAo( LoaiQuanAo LoaiMoi) {
-		Connection con = ConnectDB.getInstance().getConnection();
-		PreparedStatement stmt2= null;
-		int n = 0;
-		
-			try {
-				stmt2 = con.prepareStatement("update LoaiQuanAo set MaLoai=?, TenLoai=? where MaLoai=?");
-				stmt2.setString(1, LoaiMoi.getMaLoai());
-				stmt2.setString(2, LoaiMoi.getTenLoai());
-				stmt2.setString(3, LoaiMoi.getMaLoai());
-				n = stmt2.executeUpdate();
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			
-			
-	return n>0;
-	}
-
-	public ArrayList<LoaiQuanAo> timTheoTen(String tenLoai) {
-		Connection con = ConnectDB.getInstance().getConnection();
-		PreparedStatement stmt = null;
-		
-		try {
-			String sql = "select * from LoaiQuanAo where TenLoai like ?";
-			stmt= con.prepareStatement(sql);
-			stmt.setString(1,"%"+tenLoai+"%");
-			ResultSet rs = stmt.executeQuery();
-			while(rs.next()) {
-				String ma= rs.getString(1);
-				String ten = rs.getString(2);
-				loaiQuanAo.add(new LoaiQuanAo(ma, ten));
-			}
-		} catch (SQLException e) {
-			// TODO: handle exception
-		}
-	return (ArrayList<LoaiQuanAo>) loaiQuanAo;
-	}
-	
-	public ArrayList<LoaiQuanAo> timTheoTenVa(String tenLoai) {
-		Connection con = ConnectDB.getInstance().getConnection();
-		PreparedStatement stmt = null;
-		
-		try {
-			String sql = "select * from LoaiQuanAo where TenLoai like ?";
-			stmt= con.prepareStatement(sql);
-			stmt.setString(1,"%"+tenLoai+"%");
-			ResultSet rs = stmt.executeQuery();
-			while(rs.next()) {
-				String ma= rs.getString(1);
-				String ten = rs.getString(2);
-				loaiQuanAo.add(new LoaiQuanAo(ma, ten));
-			}
-		} catch (SQLException e) {
-			// TODO: handle exception
-		}
-	return (ArrayList<LoaiQuanAo>) loaiQuanAo;
-	}
-	public LoaiQuanAo getLoaiQuanAoByTen(String ten) {
-		Connection con = ConnectDB.getInstance().getConnection();
-		LoaiQuanAo loai = null;
-		PreparedStatement stmt = null;
-		
-		try {
-			String sql = "select * from LoaiQuanAo where TenLoai like ?";
-			stmt= con.prepareStatement(sql);
-			stmt.setString(1,ten);
-			ResultSet rs = stmt.executeQuery();
-			while(rs.next()) {
-				String ma= rs.getString(1);
-				String tenLoai = rs.getString(2);
-				loai= new LoaiQuanAo(ma, tenLoai);
-			}
-		} catch (SQLException e) {
-			// TODO: handle exception
-		}
-	return loai;
-	}
-	public LoaiQuanAo getLoaiQuanAoByMa(String ma) {
-		Connection con = ConnectDB.getInstance().getConnection();
-		LoaiQuanAo loai = null;
-		PreparedStatement stmt = null;
-		
-		try {
-			String sql = "select * from LoaiQuanAo where MaLoai like ?";
-			stmt= con.prepareStatement(sql);
-			stmt.setString(1,ma);
-			ResultSet rs = stmt.executeQuery();
-			while(rs.next()) {
-				String maLoai= rs.getString(1);
-				String tenLoai = rs.getString(2);
-				loai= new LoaiQuanAo(maLoai, tenLoai);
-			}
-		} catch (SQLException e) {
-			// TODO: handle exception
-		}
-	return loai;
-	}
-	public boolean updateAllMaLoaiQuanAo(int deletedRowCount, String maLoaiQADaXoa) {
-		Connection con = ConnectDB.getInstance().getConnection();
-		String query = "SELECT MaLoai FROM LoaiQuanAo WHERE MaLoai > ?";
-		List<String> maQAList = new ArrayList<>();
-
-		try {
-			PreparedStatement stmt = null;
-			stmt= con.prepareStatement(query);
-		    stmt.setString(1, maLoaiQADaXoa);
-		    ResultSet rs = stmt.executeQuery();
-
-		    while (rs.next()) {
-		    	maQAList.add(rs.getString("MaLoai"));
-		    }
-		} catch (SQLException e) {
-		    e.printStackTrace();
-		    return false;
-		}
-
-	    for (String MaLoaiCu : maQAList) {
-	        int maCu = Integer.parseInt(MaLoaiCu.substring(3));
-	        int maMoi = maCu - deletedRowCount;
-	        String newMaNCC = "ML" + String.format("%03d", maMoi);
-
-	        String updateQuery = "UPDATE LoaiQuanAo SET MaLoai = ? WHERE MaLoai = ?";
-	        try (PreparedStatement updateStatement = ConnectDB.getInstance().getConnection().prepareStatement(updateQuery)) {
-	            updateStatement.setString(1, newMaNCC);
-	            updateStatement.setString(2, MaLoaiCu);
-	            updateStatement.executeUpdate();
-	        } catch (SQLException e) {
+	 public boolean suaLoaiQuanAo(LoaiQuanAo loaiMoi) {
+	        try {
+	            entityManager.getTransaction().begin();
+	            entityManager.merge(loaiMoi);
+	            entityManager.getTransaction().commit();
+	            return true;
+	        } catch (Exception e) {
 	            e.printStackTrace();
 	            return false;
 	        }
 	    }
 
-	    return true;
-	}
+	 public List<LoaiQuanAo> timTheoTen(String tenLoai) {
+	        String jpql = "SELECT l FROM LoaiQuanAo l WHERE l.tenLoai LIKE :tenLoai";
+	        TypedQuery<LoaiQuanAo> query = entityManager.createQuery(jpql, LoaiQuanAo.class);
+	        query.setParameter("tenLoai", "%" + tenLoai + "%");
+	        return query.getResultList();
+	    }
+
+	    public List<LoaiQuanAo> timTheoTenVa(String tenLoai) {
+	        String jpql = "SELECT l FROM LoaiQuanAo l WHERE l.tenLoai LIKE :tenLoai";
+	        TypedQuery<LoaiQuanAo> query = entityManager.createQuery(jpql, LoaiQuanAo.class);
+	        query.setParameter("tenLoai", "%" + tenLoai + "%");
+	        return query.getResultList();
+	    }
+	    
+	public LoaiQuanAo getLoaiQuanAoByTen(String ten) {
+        Query query = entityManager.createQuery("SELECT l FROM LoaiQuanAo l WHERE l.tenLoai = :ten");
+        query.setParameter("ten", ten);
+        List<LoaiQuanAo> resultList = query.getResultList();
+        if (!resultList.isEmpty()) {
+            return resultList.get(0);
+        }
+        return null;
+    }
+	public LoaiQuanAo getLoaiQuanAoByMa(String ma) {
+        return entityManager.find(LoaiQuanAo.class, ma);
+    }
+
+
+    public boolean updateAllMaLoaiQuanAo(int deletedRowCount, String maLoaiQADaXoa) {
+        EntityTransaction transaction = entityManager.getTransaction();
+        transaction.begin();
+
+        try {
+            List<LoaiQuanAo> loaiQuanAoList = entityManager.createQuery("SELECT l FROM LoaiQuanAo l WHERE l.maLoai > :maLoai", LoaiQuanAo.class)
+                    .setParameter("maLoai", maLoaiQADaXoa)
+                    .getResultList();
+
+            for (LoaiQuanAo loaiQuanAo : loaiQuanAoList) {
+                int maCu = Integer.parseInt(loaiQuanAo.getMaLoai().substring(2)); // Lấy phần số trong MaLoai (loại bỏ ký tự "ML")
+                int maMoi = maCu - deletedRowCount;
+                String newMaLoai = "ML" + String.format("%03d", maMoi);
+
+                loaiQuanAo.setMaLoai(newMaLoai);
+                entityManager.merge(loaiQuanAo);
+            }
+
+            transaction.commit();
+            return true;
+        } catch (Exception e) {
+            if (transaction != null && transaction.isActive()) {
+                transaction.rollback();
+            }
+            e.printStackTrace();
+            return false;
+        }
+    }
+
 }

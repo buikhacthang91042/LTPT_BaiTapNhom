@@ -21,11 +21,13 @@ import DAO.DAO_KhuyenMai;
 import DAO.DAO_LoaiQuanAo;
 import DAO.DAO_NhaCungCap;
 import DAO.DAO_QuanAo;
+import DAO.EntityManagerFactoryUtil;
 import connect.ConnectDB;
 import entity.KhuyenMai;
 import entity.LoaiQuanAo;
 import entity.NhaCungCap;
 import entity.QuanAo;
+import jakarta.persistence.EntityManager;
 
 import javax.swing.JScrollPane;
 import javax.swing.ImageIcon;
@@ -63,7 +65,8 @@ public class GUI_CapNhatQuanAo extends JPanel {
 	private int deletedRowCount=1; 
 	private DAO_ChuyenDoi chuyenDoi;
 	private Date ngay;
-	
+	EntityManagerFactoryUtil util = new EntityManagerFactoryUtil();
+    EntityManager entityManager = util.getEnManager();
 	public GUI_CapNhatQuanAo( GUI_TimKiemQuanAo timKiemQuanAo) {
 		this.guiDatHang = guiDatHang;
 		this.timKiemQuanAo= timKiemQuanAo;
@@ -109,7 +112,7 @@ public class GUI_CapNhatQuanAo extends JPanel {
 				  txtSoLuong.setText(tblQuanAo.getValueAt(row, 6).toString());
 				  txtDonGia.setText(tblQuanAo.getValueAt(row, 9).toString());
 				  lblTiLeKhuyenMai.setText(tblQuanAo.getValueAt(row, 8).toString());
-				  DAO_QuanAo dao = new DAO_QuanAo();
+				  DAO_QuanAo dao = new DAO_QuanAo(entityManager);
 				  QuanAo qa = dao.getQuanAoByMa(txtMaQuanAo.getText());
 				  String duongDanHinhAnh = qa.getHinhAnh();
 				  ImageIcon icon = new ImageIcon(duongDanHinhAnh);
@@ -356,7 +359,7 @@ public class GUI_CapNhatQuanAo extends JPanel {
 	
 	//Các hàm cập nhật
 	public void updateComboLoaiQuanAo() {
-		DAO_LoaiQuanAo dao = new DAO_LoaiQuanAo();
+		DAO_LoaiQuanAo dao = new DAO_LoaiQuanAo(entityManager);
 		for(LoaiQuanAo loai : dao.getAllLoaiQuanAo()) {
 			cboLoaiQuanAo.addItem(loai.getTenLoai());
 		}
@@ -379,21 +382,21 @@ public class GUI_CapNhatQuanAo extends JPanel {
 	
 	public void updateLaiComboLoaiQuanAo() {
 		cboLoaiQuanAo.removeAllItems();
-		DAO_LoaiQuanAo dao = new DAO_LoaiQuanAo();
+		DAO_LoaiQuanAo dao = new DAO_LoaiQuanAo(entityManager);
 		for(LoaiQuanAo loai : dao.getAllLoaiQuanAo()) {
 			cboLoaiQuanAo.addItem(loai.getTenLoai());
 		}
 	}
 	
 	public void updateData() {
-		DAO_QuanAo dao= new DAO_QuanAo();
+		DAO_QuanAo dao= new DAO_QuanAo(entityManager);
 		DAO_ChuyenDoi chuyenDoi = new DAO_ChuyenDoi();
 		SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 		List<QuanAo> list = dao.getAllQuanAo();
 		for(QuanAo quanAo : list) {
 			DAO_NhaCungCap daoNCC= new DAO_NhaCungCap();
 			NhaCungCap ncc= daoNCC.getNCCByMa(quanAo.getNCC().getMaNCC());
-			DAO_LoaiQuanAo daoLoai= new DAO_LoaiQuanAo();
+			DAO_LoaiQuanAo daoLoai= new DAO_LoaiQuanAo(entityManager);
 			LoaiQuanAo loai= daoLoai.getLoaiQuanAoByMa(quanAo.getLoaiQuanAo().getMaLoai());
 			
 			Object [] data = {quanAo.getMaQuanAo(),quanAo.getTenQuanAo(),ncc.getTenNCC(),loai.getTenLoai(),quanAo.getKinhThuoc(),quanAo.getSoLuongCu(),quanAo.getSoLuongHienTai(),dateFormat.format(quanAo.getNgayNhap()),quanAo.getKm().getMaKM(),chuyenDoi.DinhDangTien(quanAo.getGia())};
@@ -402,7 +405,7 @@ public class GUI_CapNhatQuanAo extends JPanel {
 		
 	}
 	public void updateLaiSoLuong() {
-		DAO_QuanAo dao= new DAO_QuanAo();
+		DAO_QuanAo dao= new DAO_QuanAo(entityManager);
 		DAO_ChuyenDoi chuyenDoi = new DAO_ChuyenDoi();
 		SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 		List<QuanAo> list = dao.getAllQuanAo();
@@ -410,7 +413,7 @@ public class GUI_CapNhatQuanAo extends JPanel {
 		for(QuanAo quanAo : list) {
 			DAO_NhaCungCap daoNCC= new DAO_NhaCungCap();
 			NhaCungCap ncc= daoNCC.getNCCByMa(quanAo.getNCC().getMaNCC());
-			DAO_LoaiQuanAo daoLoai= new DAO_LoaiQuanAo();
+			DAO_LoaiQuanAo daoLoai= new DAO_LoaiQuanAo(entityManager);
 			LoaiQuanAo loai= daoLoai.getLoaiQuanAoByMa(quanAo.getLoaiQuanAo().getMaLoai());
 			
 			Object [] data = {quanAo.getMaQuanAo(),quanAo.getTenQuanAo(),ncc.getTenNCC(),loai.getTenLoai(),quanAo.getKinhThuoc(),quanAo.getSoLuongCu(),quanAo.getSoLuongHienTai(),dateFormat.format(quanAo.getNgayNhap()),quanAo.getKm().getMaKM(),chuyenDoi.DinhDangTien(quanAo.getGia())};
@@ -419,7 +422,7 @@ public class GUI_CapNhatQuanAo extends JPanel {
 		
 	}
 	public void updateLaiMaKM() {
-		DAO_QuanAo dao= new DAO_QuanAo();
+		DAO_QuanAo dao= new DAO_QuanAo(entityManager);
 		DAO_ChuyenDoi chuyenDoi = new DAO_ChuyenDoi();
 		SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 		List<QuanAo> list = dao.getAllQuanAo();
@@ -427,7 +430,7 @@ public class GUI_CapNhatQuanAo extends JPanel {
 		for(QuanAo quanAo : list) {
 			DAO_NhaCungCap daoNCC= new DAO_NhaCungCap();
 			NhaCungCap ncc= daoNCC.getNCCByMa(quanAo.getNCC().getMaNCC());
-			DAO_LoaiQuanAo daoLoai= new DAO_LoaiQuanAo();
+			DAO_LoaiQuanAo daoLoai= new DAO_LoaiQuanAo(entityManager);
 			LoaiQuanAo loai= daoLoai.getLoaiQuanAoByMa(quanAo.getLoaiQuanAo().getMaLoai());
 			
 			Object [] data = {quanAo.getMaQuanAo(),quanAo.getTenQuanAo(),ncc.getTenNCC(),loai.getTenLoai(),quanAo.getKinhThuoc(),quanAo.getSoLuongCu(),quanAo.getSoLuongHienTai(),dateFormat.format(quanAo.getNgayNhap()),quanAo.getKm().getMaKM(),chuyenDoi.DinhDangTien(quanAo.getGia())};
@@ -438,9 +441,10 @@ public class GUI_CapNhatQuanAo extends JPanel {
 	
 	//Các hàm thêm
 	public void themQuanAo() {
-		DAO_QuanAo dao = new DAO_QuanAo();
+		System.out.println("Thêm call");
+		DAO_QuanAo dao = new DAO_QuanAo(entityManager);
 		DAO_NhaCungCap daoNCC = new DAO_NhaCungCap();
-		DAO_LoaiQuanAo daoLoai = new DAO_LoaiQuanAo();
+		DAO_LoaiQuanAo daoLoai = new DAO_LoaiQuanAo(entityManager);
 		String maQuanAo = txtMaQuanAo.getText().trim();
 		String tenQuanAo = txtTenQuanAo.getText().trim();
 		String tenNhaCC = cboNCC.getSelectedItem().toString();
@@ -474,9 +478,25 @@ public class GUI_CapNhatQuanAo extends JPanel {
 	        duongDanHinhAnh = imageIcon.getDescription(); //Lấy đường dần
 	    }
 
-		String khuyenMai = "Không";
-		KhuyenMai km = new KhuyenMai(khuyenMai);
-		QuanAo quanAo = new QuanAo(maQuanAo,tenQuanAo,new NhaCungCap(ncc.getMaNCC()),new LoaiQuanAo(loai.getMaLoai()) ,kichThuoc,0,Integer.parseInt(soLuongTon),ngay,km , Float.parseFloat(gia),duongDanHinhAnh); 
+	    String khuyenMai = "Không"; // Đặt mặc định cho khuyến mãi là "Không"
+	    DAO_KhuyenMai daoKM = new DAO_KhuyenMai(entityManager);
+	    KhuyenMai existingKhuyenMai = daoKM.getKhuyenMaiByMa(khuyenMai);
+
+	    QuanAo quanAo = new QuanAo(maQuanAo, tenQuanAo, new NhaCungCap(ncc.getMaNCC()), new LoaiQuanAo(loai.getMaLoai()),
+	                                kichThuoc, 0, Integer.parseInt(soLuongTon), ngay, new KhuyenMai(khuyenMai),
+	                                Float.parseFloat(gia), duongDanHinhAnh); 
+	    if (existingKhuyenMai == null) {
+	        // Nếu không tồn tại, tạo một đối tượng KhuyenMai mới và lưu vào cơ sở dữ liệu
+	        KhuyenMai newKhuyenMai = new KhuyenMai(khuyenMai);
+	        newKhuyenMai.setNgayBatDau((java.sql.Date) new Date());
+	        newKhuyenMai.setNgayKetThuc((java.sql.Date) new Date());
+	        daoKM.create(newKhuyenMai); // Đảm bảo rằng phương thức create lưu đối tượng vào cơ sở dữ liệu
+	        // Gán đối tượng KhuyenMai mới vào đối tượng QuanAo
+	        quanAo.setKm(newKhuyenMai);
+	    } else {
+	        // Nếu đã tồn tại, gán đối tượng KhuyenMai đã tồn tại vào đối tượng QuanAo
+	        quanAo.setKm(existingKhuyenMai);
+	    }
 		if(dao.create(quanAo)) {
 			String [] data = {maQuanAo,tenQuanAo,tenNhaCC,loaiQuanAo,kichThuoc,"0",soLuongTon,ngayNhap,khuyenMai,txtDonGia.getText()};
 			modelThongTinQuanAo.addRow(data);
@@ -497,7 +517,7 @@ public class GUI_CapNhatQuanAo extends JPanel {
 	}
 	
 	public void xoaQuanAo() {
-		DAO_QuanAo dao = new DAO_QuanAo();
+		DAO_QuanAo dao = new DAO_QuanAo(entityManager);
 		int row = tblQuanAo.getSelectedRow();
 		if(row >=0) {
 			int n = JOptionPane.showConfirmDialog(null, "Chắc chắn xóa ? ", "Cảnh báo", JOptionPane.YES_NO_OPTION);
@@ -523,9 +543,9 @@ public class GUI_CapNhatQuanAo extends JPanel {
 
 	//Các hàm sửa
 	 public void suaQuanAo() { 
-		  DAO_QuanAo dao = new DAO_QuanAo();
+		  DAO_QuanAo dao = new DAO_QuanAo(entityManager);
 		  DAO_NhaCungCap daoNCC = new DAO_NhaCungCap();
-		  DAO_LoaiQuanAo daoLoai = new DAO_LoaiQuanAo();
+		  DAO_LoaiQuanAo daoLoai = new DAO_LoaiQuanAo(entityManager);
 		  int row = tblQuanAo.getSelectedRow();
 		  String maQuanAo  = txtMaQuanAo.getText().trim();
 		  String tenQuanAo = txtTenQuanAo.getText().trim(); 
@@ -576,7 +596,7 @@ public class GUI_CapNhatQuanAo extends JPanel {
 	
 	//Hàm tìm kiếm theo tên
 	public void timKiemQuanAo() {
-		DAO_QuanAo dao = new DAO_QuanAo();
+		DAO_QuanAo dao = new DAO_QuanAo(entityManager);
 		List<QuanAo> list = dao.timTheoTen(txtTimKiem.getText());
 		modelThongTinQuanAo.getDataVector().removeAllElements();
 		for (QuanAo quanAo : list) {
@@ -589,7 +609,7 @@ public class GUI_CapNhatQuanAo extends JPanel {
 	
 	//Hàm tạo mã quần áo tự động
 	public String taoMa() {
-		DAO_QuanAo dao = new DAO_QuanAo();
+		DAO_QuanAo dao = new DAO_QuanAo(entityManager);
 		int n = dao.getAllQuanAo().size();
 		if(n<9) {
 			do {
@@ -675,7 +695,7 @@ public class GUI_CapNhatQuanAo extends JPanel {
 	
 	
 	public void kiemTraThoiHanKM() {
-		 DAO_KhuyenMai daoKM = new DAO_KhuyenMai();
+		 DAO_KhuyenMai daoKM = new DAO_KhuyenMai(entityManager);
 		 List<String> danhSachMaKM = daoKM.getAllMaKhuyenMai();
 		 int rowCount = modelThongTinQuanAo.getRowCount();
 		 for (int i = 0; i < rowCount; i++) {
@@ -686,7 +706,7 @@ public class GUI_CapNhatQuanAo extends JPanel {
 		            Date ngayHienTai = new Date(); 
 		            if (ngayKetThuc != null && ngayKetThuc.before(ngayHienTai)) {
 		                tblQuanAo.setValueAt("Không", i, 6);
-		                DAO_QuanAo dao_QuanAo = new DAO_QuanAo();
+		                DAO_QuanAo dao_QuanAo = new DAO_QuanAo(entityManager);
 		                dao_QuanAo.updateMaKM(tblQuanAo.getValueAt(i, 0).toString(), "Không");
 		                DAO_ChiTietKhuyenMai dao_ctkm = new DAO_ChiTietKhuyenMai();
 		                dao_ctkm.delete(tblQuanAo.getValueAt(i, 0).toString(), maKhuyenMaiTrongBang);
