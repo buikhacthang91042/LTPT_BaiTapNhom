@@ -22,7 +22,9 @@ import javax.swing.JMenuItem;
 import javax.swing.SwingConstants;
 
 import DAO.DAO_NhanVien;
+import DAO.EntityManagerFactoryUtil;
 import entity.NhanVien;
+import jakarta.persistence.EntityManager;
 
 import java.awt.Insets;
 import java.awt.event.MouseAdapter;
@@ -45,6 +47,8 @@ public class GUI_Tong extends JFrame {
    
    
     public GUI_Tong() {
+    	EntityManagerFactoryUtil util = new EntityManagerFactoryUtil();
+        EntityManager entityManager = util.getEnManager();
     	setTitle("Cửa hàng quần áo thời trang");
     	setSize(new Dimension(871, 473));
         setLocationRelativeTo(null);
@@ -509,7 +513,7 @@ public class GUI_Tong extends JFrame {
 	    		int n=JOptionPane.showConfirmDialog(null, "Chắc chắn đăng xuất ?","Thông báo ",JOptionPane.YES_NO_OPTION);
 	    		if(n == JOptionPane.YES_OPTION) {
 		    		dispose();	
-		    		GUI_DangNhap dangNhap = new GUI_DangNhap();
+		    		GUI_DangNhap dangNhap = new GUI_DangNhap(entityManager);
 		    		dangNhap.setVisible(true);
 	    		}
 	    		

@@ -1,0 +1,142 @@
+package GUI;
+
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.sql.SQLException;
+import java.util.List;
+
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JPasswordField;
+import javax.swing.JTextField;
+
+import DAO.EntityManagerFactoryUtil;
+import entity.TaiKhoan;
+import jakarta.persistence.EntityManager;
+
+public class GUI_DangNhap extends JFrame {
+    JPanel contentPane;
+    JTextField txtTenDangNhap;
+    JPasswordField txtMatKhau;
+    EntityManager entityManager;
+
+    public GUI_DangNhap(EntityManager entityManager) {
+        this.entityManager = entityManager;
+        initComponents();
+    }
+
+    private void initComponents() {
+        setTitle("CỬA HÀNG QUẦN ÁO THỜI TRANG");
+        setBounds(100, 100, 990, 571);
+        contentPane = new JPanel();
+        contentPane.setBackground(new Color(255, 255, 255));
+        setContentPane(contentPane);
+        contentPane.setLayout(null);
+
+        // Tạo panel chứa các ô để nhập thông tin
+        JPanel PDangNhap = new JPanel();
+        PDangNhap.setBackground(new Color(211, 211, 211));
+        PDangNhap.setBounds(226, 115, 472, 300);
+        PDangNhap.setLayout(null);
+        contentPane.add(PDangNhap);
+
+        JLabel lbTenCH = new JLabel("CỬA HÀNG AM");
+        lbTenCH.setBounds(113, 10, 255, 36);
+        JLabel lbDangNhap = new JLabel("Đăng nhập");
+        lbDangNhap.setBounds(180, 40, 95, 30);
+        lbTenCH.setFont(new Font("Arial", Font.BOLD, 30));
+        lbDangNhap.setFont(new Font("Arial", Font.BOLD, 15));
+        lbTenCH.setForeground(new Color(0, 255, 100));
+
+        PDangNhap.add(lbTenCH);
+        PDangNhap.add(lbDangNhap);
+
+        // Tên đăng nhập
+        txtTenDangNhap = new JTextField(40);
+        txtTenDangNhap.setFont(new Font("Arial", Font.PLAIN, 16));
+        txtTenDangNhap.setBounds(30, 100, 410, 25);
+        PDangNhap.add(txtTenDangNhap);
+
+        // Đường kẻ 1
+
+        // Mật khẩu
+        txtMatKhau = new JPasswordField(40);
+        txtMatKhau.setFont(new Font("Arial", Font.PLAIN, 16));
+        txtMatKhau.setBounds(30, 150, 410, 25);
+        PDangNhap.add(txtMatKhau);
+
+        // Quên mật khẩu
+
+        // Các nút chức năng
+        JButton btnDangNhap = new JButton("Đăng nhập");
+        btnDangNhap.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                btnDangNhapActionPerformed(e);
+            }
+        });
+        btnDangNhap.setForeground(Color.white);
+        btnDangNhap.setBackground(new Color(83, 83, 255));
+        btnDangNhap.setIcon(new ImageIcon(GUI_DangNhap.class.getResource("/Image/icon_QuanLi.png")));
+        btnDangNhap.setFont(new Font("Arial", Font.BOLD, 20));
+        btnDangNhap.setBounds(0, 248, 236, 52);
+        PDangNhap.add(btnDangNhap);
+
+        // Đăng kí
+
+        JButton btnDangKi = new JButton("Đăng kí");
+        btnDangKi.setForeground(Color.white);
+        btnDangKi.setBackground(new Color(0, 255, 64));
+        btnDangKi.setIcon(new ImageIcon(GUI_DangNhap.class.getResource("/Image/icon_NhanVien.png")));
+        btnDangKi.setFont(new Font("Arial", Font.BOLD, 20));
+        btnDangKi.setBounds(234, 248, 238, 52);
+        PDangNhap.add(btnDangKi);
+
+        txtTenDangNhap.setText("NV001");
+        txtMatKhau.setText("NV01");
+
+        setResizable(false);
+        setLocationRelativeTo(null);
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
+    }
+
+    public void btnDangNhapActionPerformed(ActionEvent e) {
+        String tenDangNhap = txtTenDangNhap.getText();
+        String matKhau = new String(txtMatKhau.getPassword());
+
+        if (tenDangNhap.isEmpty() || matKhau.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Vui lòng nhập tên đăng nhập và mật khẩu");
+            return;
+        }
+
+        List<TaiKhoan> list = entityManager.createQuery("SELECT t FROM TaiKhoan t WHERE t.tenDangNhap = :tenDangNhap AND t.matKhau = :matKhau", TaiKhoan.class)
+                                            .setParameter("tenDangNhap", tenDangNhap)
+                                            .setParameter("matKhau", matKhau)
+                                            .getResultList();
+
+        if (!list.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Đăng nhập thành công");
+            // Điều hướng đến trang chính
+            dispose(); // Đóng cửa sổ đăng nhập
+            GUI_Tong m = new GUI_Tong(); // Mở cửa sổ trang chính
+            m.setVisible(true);
+        } else {
+            JOptionPane.showMessageDialog(null, "Sai tài khoản hoặc mật khẩu");
+        }
+    }
+
+    public static void main(String[] args) {
+        // Khởi tạo EntityManager từ EntityManagerFactoryUtil
+        EntityManagerFactoryUtil util = new EntityManagerFactoryUtil();
+        EntityManager entityManager = util.getEnManager();
+
+        // Khởi tạo GUI_DangNhap với EntityManager đã tạo
+        GUI_DangNhap dn = new GUI_DangNhap(entityManager);
+        dn.setVisible(true);
+    }
+}
