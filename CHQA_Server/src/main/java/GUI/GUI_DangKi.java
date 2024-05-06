@@ -12,7 +12,9 @@ import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
 import DAO.DAO_DangNhap;
+import DAO.EntityManagerFactoryUtil;
 import connect.ConnectDB;
+import jakarta.persistence.EntityManager;
 
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
@@ -26,7 +28,8 @@ public class GUI_DangKi extends JFrame{
 	private JTextField txtXacNhan;
 	private JPanel contentPane;
 	public GUI_DangKi() {
-		
+		EntityManagerFactoryUtil util = new EntityManagerFactoryUtil();
+        EntityManager entityManager = util.getEnManager();
 		
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -103,7 +106,7 @@ public class GUI_DangKi extends JFrame{
 			public void actionPerformed(ActionEvent e) {
 				
 				dispose();
-				GUI_DangNhap dangNhap = new GUI_DangNhap();
+				GUI_DangNhap dangNhap = new GUI_DangNhap(entityManager);
 				dangNhap.setVisible(true);
 			}
 		});
@@ -114,7 +117,7 @@ public class GUI_DangKi extends JFrame{
 		JButton btnDangKi = new JButton("Đăng kí");
 		btnDangKi.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				DAO_DangNhap dn = new DAO_DangNhap();
+				DAO_DangNhap dn = new DAO_DangNhap(entityManager);
 				if(validData()) {
 					if (dn.kiemTraTonTai(txtTaiKhoan.getText())) {
 	                    JOptionPane.showMessageDialog(null, "Tài khoản đã tồn tại !");

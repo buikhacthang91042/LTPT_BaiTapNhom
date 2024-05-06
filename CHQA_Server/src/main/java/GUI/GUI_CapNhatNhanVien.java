@@ -16,9 +16,11 @@ import javax.swing.table.DefaultTableModel;
 import DAO.DAO_DangNhap;
 import DAO.DAO_NhanVien;
 import DAO.DAO_QuanAo;
+import DAO.EntityManagerFactoryUtil;
 import connect.ConnectDB;
 import entity.NhanVien;
 import entity.TaiKhoan;
+import jakarta.persistence.EntityManager;
 
 import java.awt.event.ActionListener;
 import java.sql.Date;
@@ -45,9 +47,10 @@ public class GUI_CapNhatNhanVien extends JPanel {
 	private JComboBox cboGioiTinh;
 	private String ma;
 	private List<NhanVien> list;
-
+	EntityManagerFactoryUtil util = new EntityManagerFactoryUtil();
+    EntityManager entityManager = util.getEnManager();
 	public GUI_CapNhatNhanVien() {
-
+		
 		try {
 			ConnectDB.getInstance().connect();
 		} catch (SQLException e) {
@@ -300,7 +303,7 @@ public class GUI_CapNhatNhanVien extends JPanel {
 	                JOptionPane.QUESTION_MESSAGE);
 	        if (response == JOptionPane.YES_OPTION) {
 	            DAO_NhanVien dao = new DAO_NhanVien();
-	            DAO_DangNhap daoDN = new DAO_DangNhap();
+	            DAO_DangNhap daoDN = new DAO_DangNhap(entityManager);
 	            String maNV = (String) tblThongTinNhanVien.getValueAt(row, 0);
 	            daoDN.deleteByMaNV(maNV);
 	            if (dao.delete(maNV)) {
