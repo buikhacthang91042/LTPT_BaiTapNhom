@@ -1,0 +1,412 @@
+
+package GUI;
+
+import java.awt.Color;
+import java.awt.Font;
+
+import javax.swing.GroupLayout;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.JTextField;
+import javax.swing.table.DefaultTableModel;
+
+import DAO.DAO_DangNhap;
+import DAO.DAO_NhanVien;
+import DAO.DAO_QuanAo;
+import connect.ConnectDB;
+import entity.NhanVien;
+import entity.TaiKhoan;
+import java.awt.event.ActionListener;
+import java.sql.Date;
+import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.List;
+import java.awt.event.ActionEvent;
+import javax.swing.JComboBox;
+import javax.swing.DefaultComboBoxModel;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+
+
+public class GUI_CapNhatNhanVien extends JPanel {
+	private JTextField txtMaNhanVien;
+	private JTextField txtHoTen;
+	private JTextField txtSoDienThoai;
+	private JTextField txtNamSinh;
+	private JTextField txtNgayVaoLam;
+	private DefaultTableModel model;
+	private JTable tblThongTinNhanVien;
+	private JComboBox cboGioiTinh;
+	private String ma;
+	private List<NhanVien> list;
+    public GUI_CapNhatNhanVien() {
+    	
+ 		try {
+			ConnectDB.getInstance().connect();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	setBackground(new Color(0, 64, 64));
+    	setLayout(null);
+    	
+    	JLabel lblTieuDe = new JLabel("Quản lí nhân viên");
+    	lblTieuDe.setBounds(450, 10, 454, 70);
+    	lblTieuDe.setFont(new Font("Arial", Font.BOLD | Font.ITALIC, 50));
+    	lblTieuDe.setForeground(new Color(135, 206, 235));
+    	add(lblTieuDe);
+    	
+    	JPanel pnlNhapThongTin = new JPanel();
+    	pnlNhapThongTin.setBounds(300, 100, 700, 150);
+    	add(pnlNhapThongTin);
+    	pnlNhapThongTin.setLayout(null);
+    	
+    	JLabel lblMaNhanVien = new JLabel("Mã nhân viên");
+    	lblMaNhanVien.setFont(new Font("Arial", Font.BOLD, 20));
+    	lblMaNhanVien.setBounds(10, 17, 136, 24);
+    	pnlNhapThongTin.add(lblMaNhanVien);
+    	
+    	JLabel lblHoTen = new JLabel("Họ tên");
+    	lblHoTen.setFont(new Font("Arial", Font.BOLD, 20));
+    	lblHoTen.setBounds(10, 68, 136, 24);
+    	pnlNhapThongTin.add(lblHoTen);
+    	
+    	JLabel lblSoDienThoai = new JLabel("Số điện thoại");
+    	lblSoDienThoai.setFont(new Font("Arial", Font.BOLD, 20));
+    	lblSoDienThoai.setBounds(10, 108, 136, 38);
+    	pnlNhapThongTin.add(lblSoDienThoai);
+    	
+    	txtMaNhanVien = new JTextField();
+    	txtMaNhanVien.setBounds(161, 16, 124, 24);
+    	txtMaNhanVien.setEditable(false);
+    	txtMaNhanVien.setText(taoMa());
+    	pnlNhapThongTin.add(txtMaNhanVien);
+    	txtMaNhanVien.setColumns(10);
+    	
+    	txtHoTen = new JTextField();
+    	txtHoTen.setColumns(10);
+    	txtHoTen.setBounds(161, 68, 124, 24);
+    	pnlNhapThongTin.add(txtHoTen);
+    	
+    	txtSoDienThoai = new JTextField();
+    	txtSoDienThoai.setColumns(10);
+    	txtSoDienThoai.setBounds(161, 115, 124, 24);
+    	pnlNhapThongTin.add(txtSoDienThoai);
+    	
+    	JLabel lblNamSinh = new JLabel("Năm sinh");
+    	lblNamSinh.setFont(new Font("Arial", Font.BOLD, 20));
+    	lblNamSinh.setBounds(400, 17, 136, 24);
+    	pnlNhapThongTin.add(lblNamSinh);
+    	
+    	JLabel lblGioiTinh = new JLabel("Giới tính");
+    	lblGioiTinh.setFont(new Font("Arial", Font.BOLD, 20));
+    	lblGioiTinh.setBounds(400, 62, 136, 24);
+    	pnlNhapThongTin.add(lblGioiTinh);
+    	
+    	JLabel lblNgayVaoLam = new JLabel("Ngày vào làm");
+    	lblNgayVaoLam.setFont(new Font("Arial", Font.BOLD, 20));
+    	lblNgayVaoLam.setBounds(400, 108, 136, 24);
+    	pnlNhapThongTin.add(lblNgayVaoLam);
+    	
+    	txtNamSinh = new JTextField();
+    	txtNamSinh.setColumns(10);
+    	txtNamSinh.setBounds(555, 17, 124, 24);
+    	pnlNhapThongTin.add(txtNamSinh);
+    	
+    	txtNgayVaoLam = new JTextField();
+    	txtNgayVaoLam.setColumns(10);
+    	txtNgayVaoLam.setBounds(555, 108, 124, 24);
+    	pnlNhapThongTin.add(txtNgayVaoLam);
+    	
+    	cboGioiTinh = new JComboBox();
+    	cboGioiTinh.setModel(new DefaultComboBoxModel(new String[] {"Nam", "Nữ"}));
+    	cboGioiTinh.setBounds(555, 62, 124, 21);
+    	pnlNhapThongTin.add(cboGioiTinh);
+    	
+		
+		
+		
+		String [] tieude={"Mã nhân viên","Họ tên","Năm sinh"
+				,"Giới tính","Ngày vào làm","Số điện thoại"};
+		model = new DefaultTableModel(tieude,0);
+		
+		JScrollPane scrThongTinNhanVien = new JScrollPane();
+		scrThongTinNhanVien.setBounds(97, 358, 1100, 300);
+		add(scrThongTinNhanVien);
+		scrThongTinNhanVien.setViewportView(tblThongTinNhanVien = new  JTable(model));
+		tblThongTinNhanVien.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				int row = tblThongTinNhanVien.getSelectedRow();
+				  txtMaNhanVien.setText(tblThongTinNhanVien.getValueAt(row, 0).toString());
+				  txtHoTen.setText(tblThongTinNhanVien.getValueAt(row, 1).toString());
+				  txtNamSinh.setText(tblThongTinNhanVien.getValueAt(row, 2).toString());
+				  cboGioiTinh.setSelectedItem(tblThongTinNhanVien.getValueAt(row, 3).toString());
+				  txtNgayVaoLam.setText(tblThongTinNhanVien.getValueAt(row, 4).toString());
+				  txtSoDienThoai.setText(tblThongTinNhanVien.getValueAt(row, 5).toString());
+
+			}
+		});
+		scrThongTinNhanVien.setViewportView(tblThongTinNhanVien);
+		
+		JButton btnThem = new JButton("THÊM");
+		btnThem.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+		        if (validData()) {
+		            txtMaNhanVien.setText(taoMa());
+		            them();
+		            
+		        
+		        }
+				
+			}
+		});
+		btnThem.setFont(new Font("Arial", Font.BOLD, 20));
+		btnThem.setBounds(328, 270, 108, 33);
+		add(btnThem);
+		
+		JButton btnXoa = new JButton("XÓA");
+		btnXoa.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				xoa();
+			}
+		});
+		btnXoa.setFont(new Font("Arial", Font.BOLD, 20));
+		btnXoa.setBounds(494, 270, 108, 33);
+		add(btnXoa);
+		
+		JButton btnSua = new JButton("SỬA");
+		btnSua.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				int row = tblThongTinNhanVien.getSelectedRow();
+		        if (row >= 0) {
+		            if (validData()) {
+		                sua();
+		            }
+		        } 
+
+			}
+		});
+		btnSua.setFont(new Font("Arial", Font.BOLD, 20));
+		btnSua.setBounds(659, 270, 108, 33);
+		add(btnSua);
+		
+		JButton btnXoaTrang = new JButton("XÓA TRẮNG");
+		btnXoaTrang.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				txtMaNhanVien.setText("");
+				txtHoTen.setText("");
+				txtNamSinh.setText("");
+				txtNgayVaoLam.setText("");
+				txtSoDienThoai.setText("");
+			}
+		});
+		btnXoaTrang.setFont(new Font("Arial", Font.BOLD, 20));
+		btnXoaTrang.setBounds(822, 270, 157, 33);
+		add(btnXoaTrang);
+		
+		JLabel lblDanhSachNhanVien = new JLabel("Danh sách nhân viên");
+		lblDanhSachNhanVien.setForeground(new Color(135, 206, 235));
+		lblDanhSachNhanVien.setFont(new Font("Arial", Font.BOLD | Font.ITALIC, 20));
+		lblDanhSachNhanVien.setBounds(97, 311, 222, 49);
+		add(lblDanhSachNhanVien);
+		
+		
+    	
+    	setVisible(true);
+    	updateData();
+    	
+}
+    public void them() {
+    	
+    	DAO_NhanVien dao_nv = new DAO_NhanVien();
+		String ma = txtMaNhanVien.getText().trim();
+		String hoTen = txtHoTen.getText().trim();
+		String sdt = txtSoDienThoai.getText().trim();
+		String gt = cboGioiTinh.getSelectedItem().toString();
+		String namSinh = txtNamSinh.getText().trim();
+		java.util.Date ngayVaoLam = null;
+
+		
+		String ngayVaoLamText = txtNgayVaoLam.getText().trim();
+
+		if (!ngayVaoLamText.isEmpty()) {
+			try {
+				
+				SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+				ngayVaoLam = dateFormat.parse(ngayVaoLamText);
+			} catch (ParseException e) {
+				
+				e.printStackTrace();
+				
+			}
+		}
+		NhanVien nv = new NhanVien(ma, hoTen, namSinh, gt, ngayVaoLam, sdt);
+		if (dao_nv.create(nv)) {
+			String[] data = { ma, hoTen, namSinh, gt,
+					txtNgayVaoLam.getText(), sdt };
+			model.addRow(data);
+		}
+
+
+        }
+    
+    public void sua() {
+    	
+    	DAO_NhanVien dao = new DAO_NhanVien();
+		String maNhanVien = txtMaNhanVien.getText().trim();
+		String hoTen = txtHoTen.getText().trim();
+		String sdt = txtSoDienThoai.getText().trim();
+		String namSinh = txtNamSinh.getText().trim();
+		String gioiTinh = cboGioiTinh.getSelectedItem().toString();
+		
+		String ngayVaoLam = txtNgayVaoLam.getText().trim();
+		
+		NhanVien NV = new NhanVien(maNhanVien, hoTen, namSinh, gioiTinh,
+				Date.valueOf(ngayVaoLam), sdt);
+		if (dao.update(NV)) {
+			JOptionPane.showMessageDialog(this, "Sửa thành công");
+			String[] data = { maNhanVien, hoTen, namSinh, gioiTinh,
+					Date.valueOf(ngayVaoLam).toString(), sdt };
+			model.addRow(data);
+			int row = tblThongTinNhanVien.getSelectedRow();
+			model.removeRow(row);
+		}
+
+
+    }
+
+    
+    public void updateData() {
+		DAO_NhanVien da= new DAO_NhanVien();
+		List<NhanVien> list = da.getAllNV();
+		for(NhanVien nv : list) {
+			Object [] data = {nv.getMaNV(),nv.getTenNV(),nv.getNamSinh(),nv.getGioiTinh(), nv.getNgayVaolam(), nv.getsDT()};
+			model.addRow(data);
+		}
+		
+	}
+    
+    public void xoa() {
+    	DAO_NhanVien dao= new DAO_NhanVien();
+    	int row = tblThongTinNhanVien.getSelectedRow();
+		String malop = (String) tblThongTinNhanVien.getValueAt(row, 0);
+		if((dao).delete(malop)) {
+			model.removeRow(row);
+		}
+
+    }
+    
+    private boolean validData() {
+		String hoTen = txtHoTen.getText().trim();
+		String sdt = txtSoDienThoai.getText().trim();
+		String namSinh = txtNamSinh.getText().trim();
+
+		if (hoTen.trim().equals("")) {
+			JOptionPane.showMessageDialog(this, "Họ tên nhân viên không được rỗng!");
+			txtHoTen.selectAll();
+			txtHoTen.requestFocus();
+			return false;
+		}else if (hoTen.matches(".*\\d.*")) {
+	        JOptionPane.showMessageDialog(this, "Họ tên không chứa kí tự số!");
+	        txtHoTen.requestFocus();
+	        txtHoTen.selectAll();
+	        return false;
+	    } 
+		else {
+
+			if ((hoTen.matches(
+					"^[a-z0-9A-Z ÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂ ưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ]"))) {
+				JOptionPane.showMessageDialog(this, "Tên nhân viên gồm chữ cái, có thể chứa khoảng trắng");
+				txtHoTen.requestFocus();
+				txtHoTen.selectAll();
+				return false;
+			}
+		}
+
+		if (sdt.trim().equals("")) {
+			JOptionPane.showMessageDialog(this, "Số điện thoại không được rỗng !");
+			txtSoDienThoai.selectAll();
+			txtSoDienThoai.requestFocus();
+			return false;
+		} else if (!sdt.matches("^[0-9]{10}$")) {
+	        JOptionPane.showMessageDialog(this, "Số điện thoại chỉ chứa 10 kí tự số !");
+	        txtSoDienThoai.requestFocus();
+	        txtSoDienThoai.selectAll();
+	        return false;
+	    }
+
+		
+		if (namSinh.trim().equals("")) {
+			JOptionPane.showMessageDialog(this, " Năm sinh không được rỗng !");
+			txtNamSinh.selectAll();
+			txtNamSinh.requestFocus();
+			return false;
+		} else if (!namSinh.matches("^[0-9]{4}$")) {
+	        JOptionPane.showMessageDialog(this, "Năm sinh chỉ chứa 4 kí tự số !");
+	        txtNamSinh.requestFocus();
+	        txtNamSinh.selectAll();
+	        return false;
+	    }else if (kiemTraTrungSoDienThoai(sdt)) {
+	        JOptionPane.showMessageDialog(this, "Số điện thoại đã tồn tại!");
+	        txtSoDienThoai.requestFocus();
+	        txtSoDienThoai.selectAll();
+	        return false;
+	    }
+
+		return true;
+	}
+
+    
+    public boolean kiemTraTrungSoDienThoai(String sdt) {
+        DAO_NhanVien dao = new DAO_NhanVien();
+        List<NhanVien> list = dao.getAllNV();
+        
+        for (NhanVien nv : list) {
+            if (nv.getsDT().equals(sdt)) {
+                return true;
+            }
+        }
+        
+        return false; 
+    }
+    
+    public String taoMa() {
+
+		DAO_NhanVien dao = new DAO_NhanVien();
+		
+		int n = dao.getAllNV().size();
+		if(n<9) {
+		do {
+			 n=n+1;
+			
+			ma = "NV00" + String.valueOf(n);
+			list = dao.getAllNV();
+		} while (list.contains(ma));
+		
+	}else if(n<99) {
+		do {
+			 n=n+1;
+			
+			ma = "NV0" + String.valueOf(n);
+			list = dao.getAllNV();
+		} while (list.contains(ma));
+	}
+	else if(n<999) {
+		do {
+			 n=n+1;
+			
+			ma = "NV" + String.valueOf(n);
+			list = dao.getAllNV();
+		} while (list.contains(ma));
+	}
+		return ma;
+	}
+
+    }
+

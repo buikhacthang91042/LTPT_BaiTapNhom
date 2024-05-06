@@ -1,0 +1,68 @@
+package DAO;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+import connect.ConnectDB;
+
+public class DAO_ThongKe {
+    // Hàm thống kê tổng tiền theo khoảng thời gian
+	public double hienThiDoanhThuTheoNgay(Date trc, Date sau) {
+	    Connection con = ConnectDB.getInstance().getConnection();
+	    PreparedStatement stmt = null;
+
+	    try {
+	        String sql = "SELECT SUM(TongTien) FROM HoaDon WHERE NgayMua BETWEEN ? AND ?";
+	        stmt = con.prepareStatement(sql);
+
+	        // Sử dụng setDate để đặt giá trị cho ngày
+	        stmt.setDate(1, new java.sql.Date(trc.getTime()));
+	        stmt.setDate(2, new java.sql.Date(sau.getTime()));
+
+	        ResultSet rs = stmt.executeQuery();
+	        while (rs.next()) {
+	            double revenue = rs.getDouble(1);
+	            return revenue;
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+	    return 0;
+	}
+	
+	   // Hàm lấy 'TongTien' và 'NgayMua' của từng 'NgayMua'
+    public List<Object[]> layTongTienVaNgayTheoNgay(Date trc, Date sau) {
+        Connection con = ConnectDB.getInstance().getConnection();
+        PreparedStatement stmt = null;
+
+        try {
+            String sql = "SELECT NgayMua, SUM(TongTien) FROM HoaDon WHERE NgayMua BETWEEN ? AND ? GROUP BY NgayMua";
+            stmt = con.prepareStatement(sql);
+
+            // Sử dụng setDate để đặt giá trị cho ngày
+            stmt.setDate(1, new java.sql.Date(trc.getTime()));
+            stmt.setDate(2, new java.sql.Date(sau.getTime()));
+
+            ResultSet rs = stmt.executeQuery();
+            List<Object[]> result = new ArrayList<>();
+
+            while (rs.next()) {
+                Date ngayMua = rs.getDate(1);
+                double revenue = rs.getDouble(2);
+                Object[] rowData = { ngayMua, revenue };
+                result.add(rowData);
+            }
+
+            return result;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+}

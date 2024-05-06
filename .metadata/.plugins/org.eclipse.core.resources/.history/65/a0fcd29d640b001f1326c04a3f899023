@@ -1,0 +1,99 @@
+package entity;
+
+import java.sql.Date;
+import java.util.List;
+import java.util.Objects;
+
+public class HoaDon {
+	private String maHD;
+	private Date ngayMua;
+	private NhanVien NV;
+	private KhachHang KH;
+	private float tongTien;
+	
+
+	public HoaDon(String maHD, Date ngay, NhanVien NV, KhachHang KH, float tongTien) {
+		super();
+		this.maHD = maHD;
+		this.ngayMua =ngay;
+		this.NV = NV;
+		this.KH = KH;
+		this.tongTien = tongTien;
+	}
+	public float getTongTien() {
+		return tongTien;
+	}
+	public void setTongTien(float tongTien) {
+		this.tongTien = tongTien;
+	}
+	public String getMaHD() {
+		return maHD;
+	}
+	public void setMaHD(String maHD) {
+		this.maHD = maHD;
+	}
+	
+	public KhachHang getKH() {
+		return KH;
+	}
+	public void setKH(KhachHang KH) {
+		this.KH = KH;
+	}
+	public NhanVien getNV() {
+		return NV;
+	}
+	public void setNV(NhanVien NV) {
+		this.NV = NV;
+	}
+	public Date getNgayMua() {
+		return ngayMua;
+	}
+	public void setNgayMua(java.sql.Date ngayMua) {
+		this.ngayMua = ngayMua;
+	}
+	
+	
+
+	
+	@Override
+	public int hashCode() {
+		return Objects.hash(maHD, KH, NV, ngayMua);
+	}
+
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		HoaDon other = (HoaDon) obj;
+		return Objects.equals(maHD, other.maHD) && Objects.equals(KH, other.KH) && Objects.equals(NV, other.NV)
+				&& Objects.equals(ngayMua, other.ngayMua);
+	}
+
+
+
+	
+	
+	@Override
+	public String toString() {
+		return "HoaDon [maHD=" + maHD + ", ngayMua=" + ngayMua + ", NV=" + NV + ", KH=" + KH + ", tongTien=" + tongTien
+				+ "]";
+	}
+	public HoaDon() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+	
+	public float tinhTongTien(List<ChiTietHoaDon> chiTietHoaDon) {
+		float tongTien = 0;
+		for (ChiTietHoaDon ctHD : chiTietHoaDon) {
+			tongTien += (ctHD.tinhThanhTien(ctHD.getSoLuong(), ctHD.getQuanAo()));
+		}
+		return tongTien;
+	}
+
+}

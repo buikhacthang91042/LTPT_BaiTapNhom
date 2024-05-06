@@ -1,0 +1,236 @@
+package GUI;
+
+import javax.swing.JPanel;
+
+import DAO.DAO_KhachHang;
+import DAO.DAO_LoaiQuanAo;
+import DAO.DAO_NhaCungCap;
+import DAO.DAO_ThongKe;
+import connect.ConnectDB;
+import entity.HoaDon;
+import entity.KhachHang;
+import entity.LoaiQuanAo;
+import entity.NhaCungCap;
+
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.Rectangle;
+import java.awt.SystemColor;
+
+import javax.swing.JLabel;
+
+import java.awt.Font;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+
+import java.awt.Color;
+import java.awt.event.ActionListener;
+import java.sql.Date;
+import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.List;
+import java.awt.event.ActionEvent;
+
+import javax.swing.JTextField;
+
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartPanel;
+import org.jfree.chart.JFreeChart;
+import org.jfree.chart.axis.CategoryAxis;
+import org.jfree.chart.axis.NumberAxis;
+import org.jfree.chart.plot.CategoryPlot;
+import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.data.category.CategoryDataset;
+import org.jfree.data.category.DefaultCategoryDataset;
+import org.jfree.data.xy.XYSeries;
+import org.jfree.data.xy.XYSeriesCollection;
+
+public class GUI_ThongKeDoanhThu extends JPanel {
+	private JTextField txtNgayBatDau;
+	private JTextField txtNgayKetThuc;
+	private JTextField txtHienThiDoanhThu;
+
+	public GUI_ThongKeDoanhThu() {
+		setBackground(new Color(0, 64, 64));
+		setBounds(new Rectangle(0, 0, 1308, 678));
+		setLayout(null);
+		
+		//ConnectDB
+ 		try {
+			ConnectDB.getInstance().connect();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		JPanel pnForm = new JPanel();
+		pnForm.setLayout(null);
+		pnForm.setBackground(SystemColor.controlHighlight);
+		pnForm.setBounds(10, 20, 1288, 181);
+		add(pnForm);
+		
+		JLabel lblNgayBatDau = new JLabel("Ngày bắt đầu");
+		lblNgayBatDau.setFont(new Font("Tahoma", Font.BOLD, 22));
+		lblNgayBatDau.setBounds(72, 43, 225, 32);
+		pnForm.add(lblNgayBatDau);
+		
+		JLabel lblNgayKetThuc = new JLabel("Ngày kết thúc");
+		lblNgayKetThuc.setFont(new Font("Tahoma", Font.BOLD, 22));
+		lblNgayKetThuc.setBounds(606, 43, 225, 32);
+		pnForm.add(lblNgayKetThuc);
+		
+		JButton btnThongKe = new JButton("THỐNG KÊ");
+		btnThongKe.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				hienThiDoanhThuTheoNgay();
+			}
+		});
+		btnThongKe.setFont(new Font("Arial", Font.PLAIN, 20));
+		btnThongKe.setForeground(Color.WHITE);
+		btnThongKe.setBackground(new Color(0, 64, 0));
+		btnThongKe.setBounds(846, 116, 200, 45);
+		pnForm.add(btnThongKe);
+		
+		txtNgayBatDau = new JTextField();
+		txtNgayBatDau.setBounds(312, 44, 225, 32);
+		pnForm.add(txtNgayBatDau);
+		txtNgayBatDau.setColumns(10);
+		
+		txtNgayKetThuc = new JTextField();
+		txtNgayKetThuc.setBounds(846, 43, 225, 32);
+		pnForm.add(txtNgayKetThuc);
+		txtNgayKetThuc.setColumns(10);
+		
+		JPanel pnSoLieu = new JPanel();
+		pnSoLieu.setLayout(null);
+		pnSoLieu.setBackground(SystemColor.controlHighlight);
+		pnSoLieu.setBounds(0, 214, 1308, 90);
+		add(pnSoLieu);
+		
+		JLabel lblDoanhThu = new JLabel("Doanh Thu");
+		lblDoanhThu.setForeground(SystemColor.controlDkShadow);
+		lblDoanhThu.setFont(new Font("Tahoma", Font.PLAIN, 30));
+		lblDoanhThu.setBounds(94, 33, 192, 30);
+		pnSoLieu.add(lblDoanhThu);
+		
+		txtHienThiDoanhThu = new JTextField();
+		txtHienThiDoanhThu.setBounds(787, 33, 238, 30);
+		txtHienThiDoanhThu.setEditable(false);
+		pnSoLieu.add(txtHienThiDoanhThu);
+		txtHienThiDoanhThu.setColumns(10);
+		
+//		updateComboLoaiQuanAo();
+//		updateComboNhaCungCap();
+	}
+//	 public void updateComboLoaiQuanAo() {
+//			DAO_LoaiQuanAo dao = new DAO_LoaiQuanAo();
+//			for(LoaiQuanAo loai : dao.getAllLoaiQuanAo()) {
+//				cboLoaiQuanAo.addItem(loai.getTenLoai());
+//			}
+//		}
+		
+//		public void updateComboNhaCungCap() {
+//			DAO_NhaCungCap dao = new DAO_NhaCungCap();
+//			for(NhaCungCap loai : dao.getAllNhaCungCap()) {
+//				cboNhaCungCap.addItem(loai.getTenNCC());
+//			}
+//		}
+		
+		
+
+		public void hienThiDoanhThuTheoNgay() {
+		    DAO_ThongKe dao = new DAO_ThongKe();
+		    String trcText = txtNgayBatDau.getText().trim();
+		    String sauText = txtNgayKetThuc.getText().trim();
+		    try {
+		        if (txtNgayBatDau.getText().isEmpty() || txtNgayKetThuc.getText().isEmpty()) {
+		            JOptionPane.showMessageDialog(this, "Vui lòng nhập khoảng thời gian");
+		            return; // Kết thúc phương thức nếu thông tin không đủ
+		        }
+
+		        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+
+		        // Kiểm tra định dạng ngày
+		        dateFormat.setLenient(false);
+		        java.util.Date utilNgayBatDau = dateFormat.parse(txtNgayBatDau.getText());
+		        java.util.Date utilNgayKetThuc = dateFormat.parse(txtNgayKetThuc.getText());
+
+		        // Chuyển đổi java.util.Date sang java.sql.Date
+		        Date trc = new Date(utilNgayBatDau.getTime());
+		        Date sau = new Date(utilNgayKetThuc.getTime());
+
+		        double kq = dao.hienThiDoanhThuTheoNgay(trc, sau);
+		        String doanhThuString = String.valueOf(kq);
+
+		        // Hiển thị doanh thu
+		        txtHienThiDoanhThu.setText(doanhThuString);
+		        
+		        // Lấy dữ liệu từ hàm layTongTienVaNgayTheoNgay
+	            List<Object[]> data = dao.layTongTienVaNgayTheoNgay(trc, sau);
+	            
+		     // Vẽ biểu đồ BarChart
+	            veBieuDoBarChart(data);
+	
+		    } catch (ParseException e) {
+		        JOptionPane.showMessageDialog(this, "Định dạng ngày không chính xác. Sử dụng định dạng dd/MM/yyyy");
+		        e.printStackTrace();
+		    } catch (Exception e) {
+		        JOptionPane.showMessageDialog(this, "Đã xảy ra lỗi khi tính toán doanh thu.");
+		        e.printStackTrace();
+		    }
+		}
+		private void veBieuDoBarChart(List<Object[]> data) {
+	        CategoryDataset dataset = createDataset(data);
+	        JFreeChart barChart = createBarChart(dataset);
+
+	        ChartPanel chartPanel = new ChartPanel(barChart);
+	        chartPanel.setPreferredSize(new Dimension(600, 400));
+	        JFrame frame = new JFrame("Biểu đồ doanh thu");
+	        frame.getContentPane().add(chartPanel, BorderLayout.CENTER);
+	        frame.setSize(800, 600);
+	        frame.setLocationRelativeTo(null);
+	        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+	        frame.setVisible(true);
+	    }
+
+	    private CategoryDataset createDataset(List<Object[]> data) {
+	        DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+
+	        for (Object[] rowData : data) {
+	            Date ngayMua = (Date) rowData[0];
+	            double tongTien = (Double) rowData[1];
+
+	            dataset.addValue(tongTien, "Doanh thu", ngayMua);
+	        }
+
+	        return dataset;
+	    }
+
+	    private JFreeChart createBarChart(CategoryDataset dataset) {
+	        JFreeChart barChart = ChartFactory.createBarChart(
+	                "Biểu đồ doanh thu",
+	                "Ngày",
+	                "Doanh Thu",
+	                dataset,
+	                PlotOrientation.VERTICAL,
+	                true, true, false);
+
+	        CategoryPlot plot = (CategoryPlot) barChart.getPlot();
+	        plot.setBackgroundPaint(new Color(255, 255, 255));
+
+	        CategoryAxis axis = plot.getDomainAxis();
+	        axis.setLowerMargin(0.01);
+	        axis.setUpperMargin(0.01);
+	        axis.setCategoryMargin(0.1);
+
+	        NumberAxis yAxis = (NumberAxis) plot.getRangeAxis();
+	        yAxis.setStandardTickUnits(NumberAxis.createIntegerTickUnits());
+
+	        return barChart;
+	    }
+		
+			
+}

@@ -1,0 +1,55 @@
+package entity;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+
+@Entity
+public class ChiTietKhuyenMai {
+
+	@Id
+	@ManyToOne
+	@JoinColumn(name = "maKM", referencedColumnName = "maKM", nullable = false)
+	private KhuyenMai maKM;
+
+	private float tiLeKM;
+
+	public ChiTietKhuyenMai(KhuyenMai maKM, QuanAo quanAo, float tiLeKM) {
+		super();
+		this.maKM = maKM;
+		
+		this.tiLeKM = tiLeKM;
+	}
+
+	public ChiTietKhuyenMai() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+	@Override
+	public String toString() {
+		return "ChiTietKhuyenMai [maKM=" + maKM + ", tiLeKM=" + tiLeKM + "]";
+	}
+
+	public KhuyenMai getMaKM() {
+		return maKM;
+	}
+
+	public void setMaKM(KhuyenMai maKM) {
+		this.maKM = maKM;
+	}
+
+
+	public float getTiLeKM() {
+		return tiLeKM;
+	}
+
+	public void setTiLeKM(float tiLeKM) {
+		this.tiLeKM = tiLeKM;
+	}
+
+	public static int maQATangdan(QuanAo a, QuanAo b) {
+		return a.getMaQuanAo().compareTo(b.getMaQuanAo());
+	}
+}

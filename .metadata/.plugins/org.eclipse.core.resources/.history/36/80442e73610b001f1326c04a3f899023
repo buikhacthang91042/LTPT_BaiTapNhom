@@ -1,0 +1,85 @@
+package DAO;
+
+import java.math.BigDecimal;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+import connect.ConnectDB;
+import entity.ChiTietDonDatHang;
+import entity.QuanAo;
+import entity.DonDatHang;
+
+public class DAO_ChiTietDonDatHang {
+
+	public List<ChiTietDonDatHang> getAllChiTietDonDatHang(String maDatTruoc) {
+		Connection con = ConnectDB.getInstance().getConnection();
+		List<ChiTietDonDatHang> dsCTDDH = new ArrayList<ChiTietDonDatHang>();
+		String sql = "select ddh.MaDonHang, qa.MaQuanAo, qa.TenQuanAo, SoLuong,GiaBan,ThanhTien \r\n"
+				+ "from ChiTietDatHangTruoc ctdh join QuanAo qa on ctdh.MaQuanAo = qa.MaQuanAo\r\n"
+				+ "ChiTietDatHangTruoc ctdh join DonDatHang ddh on ctdh.MaDonHang = ddh.MaDonHang"
+				+ "where ct.MaDonHang = '"+maDatTruoc+"'";
+		try {
+			PreparedStatement stmt = con.prepareStatement(sql);
+			ResultSet rs = stmt.executeQuery();
+			while (rs.next()) {
+				ChiTietDonDatHang chiTietHoaDon = new ChiTietDonDatHang();
+				QuanAo qa = new QuanAo();
+				
+				qa.setMaQuanAo(rs.getString("MaQuanAo"));
+				qa.setTenQuanAo(rs.getString("TenQuanAo"));
+				chiTietHoaDon.setSoLuong(rs.getInt("SoLuong"));			
+				chiTietHoaDon.setGiaBan(rs.getFloat("GiaBan"));
+				chiTietHoaDon.setThanhTien(rs.getFloat("ThanhTien"));
+				chiTietHoaDon.setQuanAo(qa);
+				dsCTDDH.add(chiTietHoaDon);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return dsCTDDH;
+	}
+
+	
+	public void create(ChiTietDonDatHang ctddh) {
+		Connection con = ConnectDB.getInstance().getConnection();
+		PreparedStatement stmt = null;
+		int n=0;
+		System.out.println(ctddh);
+		try {
+			stmt = con.prepareStatement("insert into ChiTietPhieuDatHangTruoc values(?,?,?,?,?,?)");
+			stmt.setString(1, ctddh.getMaDatHang().getMaDonHang());
+			stmt.setString(2,ctddh.getQuanAo().getMaQuanAo());
+			stmt.setString(3,ctddh.getQuanAo().getTenQuanAo());
+			stmt.setInt(4, ctddh.getSoLuong());
+			stmt.setDouble(5, ctddh.getGiaBan());
+			stmt.setBigDecimal(6, BigDecimal.valueOf(ctddh.getThanhTien()));
+			n= stmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+//	public void createDetail(maDH, ngayMua, maNV, maKH, tongTien) {
+//		Connection con = ConnectDB.getInstance().getConnection();
+//		PreparedStatement stmt = null;
+//		int n=0;
+//		try {
+//			stmt = con.prepareStatement("insert into ChiTietDatHangTruoc values(?,?,?,?,?,?)");
+//			stmt.setString(1, ctddh.getMaDatHang().getMaDonHang());
+//			stmt.setString(2,ctddh.getQuanAo().getMaQuanAo());
+//			stmt.setString(3,ctddh.getQuanAo().getTenQuanAo());
+//			stmt.setInt(4, ctddh.getSoLuong());
+//			stmt.setDouble(5, ctddh.getGiaBan());
+//			stmt.setBigDecimal(6, BigDecimal.valueOf(ctddh.getThanhTien()));
+//			n= stmt.executeUpdate();
+//		} catch (SQLException e) {
+//			// TODO: handle exception
+//		}
+//	}
+
+}
