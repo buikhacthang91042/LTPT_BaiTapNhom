@@ -1,21 +1,41 @@
 package entity;
 
+import java.io.Serializable;
 import java.util.Objects;
 
+import org.hibernate.annotations.Formula;
+
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 @Entity
-public class ChiTietHoaDon {
+public class ChiTietHoaDon implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	@Id
+	@Column(name = "MaHD")
 	private HoaDon mahoaDon;
 	
 	@ManyToOne
     @JoinColumn(name = "MaQuanAo")
 	private QuanAo quanAo;
+	
+	@Column(name = "TenQuanAo")
+	@Formula("(SELECT q.TenQuanAo FROM QuanAo q WHERE q.MaQuanAo = MaQuanAo)")
+	private String tenQuanAo;
+
+	@Column(name = "SoLuong")
 	private int soLuong;
+	
+	@Column(name = "GiaBan")
 	private float giaBan;
+	
+	@Column(name = "ThanhTien")
 	private float thanhTien;
 
 
@@ -96,5 +116,13 @@ public class ChiTietHoaDon {
 		thanhTien = soLuong * quanAo.getGia() ;
 		return thanhTien;
 	}
+	public String getTenQuanAo() {
+	    return tenQuanAo;
+	}
+
+	public void setTenQuanAo(String tenQuanAo) {
+	    this.tenQuanAo = tenQuanAo;
+	}
+
 	
 }

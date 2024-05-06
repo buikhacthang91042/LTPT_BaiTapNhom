@@ -1,17 +1,30 @@
 package entity;
 
+import java.io.Serializable;
 import java.util.Objects;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 
 @Entity
-public class NhaCungCap {
+public class NhaCungCap implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	@Id
+	@Column(name = "MaNCC")
 	private String maNCC;
 	
+	@Column(name = "TenNCC")
 	private String tenNCC;
+	
+	@Column(name = "DiaChi")
 	private String diaChi;
+	
+	@Column(name = "SoDienThoai")
 	private String sDT;
 	
 	public NhaCungCap( String maNCC) {

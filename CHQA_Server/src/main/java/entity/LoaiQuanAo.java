@@ -1,15 +1,24 @@
 package entity;
 
+import java.io.Serializable;
 import java.util.Objects;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 
 @Entity
-public class LoaiQuanAo {
+public class LoaiQuanAo implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	@Id
+	@Column(name = "MaLoai")
 	private String maLoai;
 	
+	@Column(name = "TenLoai")
 	private String tenLoai;
 	
 	

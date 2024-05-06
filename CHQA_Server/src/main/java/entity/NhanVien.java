@@ -1,22 +1,39 @@
 package entity;
 
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 
 @Entity
-public class NhanVien {
+public class NhanVien implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+
 	@Id
+	@Column(name = "MaNV")
 	private String maNV;
 	
-	
+	@Column(name = "TenNV")
 	private String tenNV;
+	
+	@Column(name = "NamSinh")
 	private String namSinh;
+	
+	@Column(name = "GioiTinh")
 	private String gioiTinh;
+	
+	@Column(name = "NgayVaoLam")
 	private Date ngayVaolam;
+	
+	@Column(name = "Sdt")
 	private String sDT;
 	
 	public NhanVien(String maNV) {

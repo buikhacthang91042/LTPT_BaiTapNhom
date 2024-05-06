@@ -1,23 +1,39 @@
 package entity;
 
+import java.io.Serializable;
 import java.util.Objects;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 @Entity
-public class ChiTietDonDatHang {
+@Table(name = "ChiTietPhieuDatHangTruoc")
+public class ChiTietDonDatHang implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	@Id
+	@Column(name = "MaDonHang")
 	private DonDatHang maDatHang;
 	
 	@ManyToOne
 	@JoinColumn(name = "MaQuanAo")
 	private QuanAo quanAo;
 	
+	@Column(name = "SoLuong")
 	private int soLuong;
+	
+	@Column(name = "GiaBan")
 	private float giaBan;
+	
+	@Column(name = "ThanhTien")
 	private float thanhTien;
+	
 	public ChiTietDonDatHang(DonDatHang maDatHang, QuanAo quanAo, int soLuong, float giaBan, float thanhTien) {
 		super();
 		this.maDatHang = maDatHang;

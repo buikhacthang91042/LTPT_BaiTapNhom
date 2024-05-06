@@ -1,18 +1,29 @@
 package entity;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 
 @Entity
-public class DonDatHang {
+@Table(name = "DonHangDatTruoc")
+public class DonDatHang implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	@Id
+	@Column(name = "MaDonHang")
 	private String maDonHang;
 	
+	@Column(name = "NgayMua")
 	private Date ngayMua;
 	
 	@ManyToOne
@@ -23,6 +34,7 @@ public class DonDatHang {
     @JoinColumn(name = "MaKH")
     private KhachHang khachHang;
 	
+	@Column(name = "TongTien")
 	private float tongTien;
 	public DonDatHang(String maDonHang, Date ngayMua, NhanVien nV, KhachHang kH, float tongTien) {
 		super();

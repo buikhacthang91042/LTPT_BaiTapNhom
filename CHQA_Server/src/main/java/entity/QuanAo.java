@@ -1,28 +1,46 @@
 package entity;
 
+import java.io.Serializable;
 import java.util.Date;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Transient;
 @Entity
-public class QuanAo {
+public class QuanAo implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	@Id
+	@Column(name = "MaQuanAo")
 	private String maQuanAo;
 	
+	@Column(name = "TenQuanAo")
 	private String tenQuanAo;
 	
 	@ManyToOne
-	@JoinColumn(name = "MaNCC")
+	@JoinColumn(name = "NCC")
 	private NhaCungCap nhaCungCap;
 	
 	@ManyToOne
-	@JoinColumn(name = "loaiQuanAo")
+	@JoinColumn(name = "LoaiQuanAo")
 	private LoaiQuanAo loaiQuanAo;
+	
+	@Column(name = "KichThuoc")
 	private String kinhThuoc;
+	
+	@Column(name = "SoLuongCu")
 	private int soLuongCu;
+	
+	@Column(name = "SoLuongHienTai")
 	private int soLuongHienTai;
+	
+	@Column(name = "NgayNhap")
 	private Date ngayNhap;
 	
 	
@@ -30,10 +48,14 @@ public class QuanAo {
     @JoinColumn(name = "MaKM") 
     private KhuyenMai khuyenMai;
 	
+	@Column(name = "Gia")
 	private float gia;
+	
+	@Column(name = "HinhAnh")
 	private String hinhAnh;
 	
-	
+	@Transient // Không cần ánh xạ vào cơ sở dữ liệu
+	private String maVaTenQuanAo;
 	
 	public QuanAo(String maQuanAo, String tenQuanAo, NhaCungCap NCC, LoaiQuanAo loaiQuanAo, String kinhThuoc,
 			int soLuongCu, int soLuongHienTai, Date ngayNhap, KhuyenMai km, float gia, String hinhAnh) {
@@ -237,7 +259,16 @@ public class QuanAo {
 	}
 	
 
+	public String getMaVaTenQuanAo() {
+	    return this.maQuanAo + " - " + this.tenQuanAo;
+	}
 
+	public void setMaVaTenQuanAo(String maVaTenQuanAo) {
+	    // Split maVaTenQuanAo để lấy ra mã và tên quần áo và set giá trị cho maQuanAo và tenQuanAo
+	    String[] parts = maVaTenQuanAo.split(" - ");
+	    this.maQuanAo = parts[0];
+	    this.tenQuanAo = parts[1];
+	}
 	
 
 }

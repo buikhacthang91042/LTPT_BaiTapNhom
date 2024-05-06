@@ -1,22 +1,30 @@
 package entity;
 
+import java.io.Serializable;
+
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 
 @Entity
-public class ChiTietKhuyenMai {
-	@Id
+public class ChiTietKhuyenMai implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	@Id 
 	@ManyToOne
-	@JoinColumn(name = "maKM", referencedColumnName = "maKM", nullable = false)
+	@JoinColumn(name = "MaKM", referencedColumnName = "MaKM", nullable = false)
 	private KhuyenMai maKM;
 	
 	@ManyToOne
     @JoinColumn(name = "MaQuanAo")
 	private QuanAo quanAo;
 	
-	
+	@Column(name = "TiLeKM")
 	private float tiLeKM;
 
 	public ChiTietKhuyenMai(KhuyenMai maKM, QuanAo quanAo, float tiLeKM) {
