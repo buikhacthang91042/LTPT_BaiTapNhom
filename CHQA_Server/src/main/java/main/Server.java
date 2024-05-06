@@ -65,7 +65,7 @@ public class Server {
                         loginGUI.setVisible(true);
                         
                         // Gửi phản hồi cho client
-                        out.writeUTF("DaMoDangNhap");
+                        out.writeUTF("DaMoGiaoDienDangNhap");
                         out.flush();
                     }
                 
@@ -82,8 +82,7 @@ public class Server {
 				} catch (IOException ioe) {
 					ioe.printStackTrace();
 				}
-				mangerFactoryUtil.closeEnManager();
-				mangerFactoryUtil.closeEnManagerFactory();
+				
 			}
 		}
 	}

@@ -24,8 +24,7 @@ public class Client {
             // Đọc phản hồi từ server
             String response = in.readUTF();
             System.out.println("Server response: " + response);
-            
-            // Xử lý phản hồi nếu cần
+          
             
         } catch (IOException e) {
             e.printStackTrace();

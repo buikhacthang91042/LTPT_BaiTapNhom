@@ -21,6 +21,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
 import javax.swing.border.Border;
 
 import DAO.DAO_DangNhap;
@@ -195,6 +196,7 @@ public class GUI_DangNhap extends JFrame {
     }
 
     public void btnDangNhapActionPerformed(ActionEvent e) {
+    	
     	   String tenDangNhap = txtTenDangNhap.getText();
     	    String matKhau = new String(txtMatKhau.getPassword());
     	    if (!entityManager.isOpen()) {
@@ -208,16 +210,18 @@ public class GUI_DangNhap extends JFrame {
 
     	    // Tạo một đối tượng DAO_DangNhap
     	    DAO_DangNhap daoDangNhap = new DAO_DangNhap(entityManager);
-
+    	    System.out.println("btnDangNhapActionPerformed called");
     	    // Gọi phương thức dangNhap từ đối tượng daoDangNhap
     	    List<TaiKhoan> list = daoDangNhap.dangNhap(tenDangNhap, matKhau);
-
+    	    System.out.println(list);
     	    if (!list.isEmpty()) {
     	        JOptionPane.showMessageDialog(null, "Đăng nhập thành công");
-    	        // Điều hướng đến trang chính
+    	        
     	        dispose(); // Đóng cửa sổ đăng nhập
-    	        GUI_Tong m = new GUI_Tong(); // Mở cửa sổ trang chính
-    	        m.setVisible(true);
+    	        SwingUtilities.invokeLater(() -> {
+    	            GUI_Tong m = new GUI_Tong(); 
+    	            m.setVisible(true);
+    	        });
     	    } else {
     	        JOptionPane.showMessageDialog(null, "Sai tài khoản hoặc mật khẩu");
     	    }
