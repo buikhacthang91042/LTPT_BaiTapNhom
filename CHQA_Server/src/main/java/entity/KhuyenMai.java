@@ -17,10 +17,10 @@ public class KhuyenMai implements Serializable{
 	 */
 	private static final long serialVersionUID = 1L;
 	@Id
-	@Column(nullable = true)
+	@Column(nullable = true,columnDefinition = "nvarchar(255)")
 	private String maKM;
 	
-	@Column(nullable = true)
+	@Column(nullable = true,columnDefinition = "nvarchar(255)")
 	private String tenChuongTrinh;
 	
 	@Column(nullable = true)

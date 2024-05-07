@@ -22,10 +22,12 @@ import DAO.DAO_LoaiQuanAo;
 import DAO.DAO_NhaCungCap;
 import DAO.DAO_NhanVien;
 import DAO.DAO_QuanAo;
+import DAO.EntityManagerFactoryUtil;
 import connect.ConnectDB;
 import entity.LoaiQuanAo;
 import entity.NhaCungCap;
 import entity.NhanVien;
+import jakarta.persistence.EntityManager;
 
 import javax.swing.JScrollPane;
 import java.awt.event.KeyAdapter;
@@ -43,7 +45,8 @@ public class GUI_CapNhatNhaCungCap extends JPanel {
 	private GUI_TimKiemNhaCungCap timKiemNhaCC;
 	private GUI_TimKiemQuanAo timKiemQuanAo;
 	private int deletedRowCount = 1;
-
+	EntityManagerFactoryUtil util = new EntityManagerFactoryUtil();
+    EntityManager entityManager = util.getEnManager();
 	public GUI_CapNhatNhaCungCap(GUI_CapNhatQuanAo quanAo, GUI_DatHang datHang,
 			GUI_TimKiemNhaCungCap timKiemNhaCC, GUI_TimKiemQuanAo timKiemQuanAo) {
 		setBackground(new Color(0, 64, 64));
@@ -253,7 +256,7 @@ public class GUI_CapNhatNhaCungCap extends JPanel {
 	
 	//Hàm thêm
 	public void themNhaCC() {
-		DAO_NhaCungCap NhaCC_dao = new DAO_NhaCungCap();
+		DAO_NhaCungCap NhaCC_dao = new DAO_NhaCungCap(entityManager);
 		String maNCC = txtMaNCC.getText().trim();
 		String tenNCC = txtTenNCC.getText().trim();
 		String diaChi = txtDiachi.getText().trim();
@@ -267,7 +270,7 @@ public class GUI_CapNhatNhaCungCap extends JPanel {
 
 	//Hàm kiểm tra
 	public boolean kiemTraTrungSoDienThoai(String sdt) {
-		DAO_NhaCungCap dao = new DAO_NhaCungCap();
+		DAO_NhaCungCap dao = new DAO_NhaCungCap(entityManager);
 		List<NhaCungCap> list = dao.getAllNhaCungCap();
 
 		for (NhaCungCap ncc : list) {
@@ -404,7 +407,7 @@ public class GUI_CapNhatNhaCungCap extends JPanel {
 	}
 	//Hàm cập nhật
 	public void updateData() {
-		DAO_NhaCungCap dao = new DAO_NhaCungCap();
+		DAO_NhaCungCap dao = new DAO_NhaCungCap(entityManager);
 		List<NhaCungCap> list = dao.getAllNhaCungCap();
 
 		for (NhaCungCap ncc : list) {
@@ -424,7 +427,7 @@ public class GUI_CapNhatNhaCungCap extends JPanel {
 	}
 
 	public void xoaNhaCungCap() {
-		DAO_NhaCungCap dao = new DAO_NhaCungCap();
+		DAO_NhaCungCap dao = new DAO_NhaCungCap(entityManager);
 		int row = tblThongTinNhaCC.getSelectedRow();
 		String maNCC = tblThongTinNhaCC.getValueAt(row, 0).toString();
 		if (dao.delete(maNCC)) {
@@ -447,7 +450,7 @@ public class GUI_CapNhatNhaCungCap extends JPanel {
 	
 	//Hàm sửa
 	public void suaNhaCungCap() {
-		DAO_NhaCungCap dao = new DAO_NhaCungCap();
+		DAO_NhaCungCap dao = new DAO_NhaCungCap(entityManager);
 		String maNCC = txtMaNCC.getText().trim();
 		String tenNCC = txtTenNCC.getText().trim();
 		String diaChi = txtDiachi.getText().trim();
@@ -470,7 +473,7 @@ public class GUI_CapNhatNhaCungCap extends JPanel {
 	// Tạo mã tăng tự động
 	public String taoMa() {
 
-		DAO_NhaCungCap dao = new DAO_NhaCungCap();
+		DAO_NhaCungCap dao = new DAO_NhaCungCap(entityManager);
 
 		int n = dao.getAllNhaCungCap().size();
 		if (n < 9) {

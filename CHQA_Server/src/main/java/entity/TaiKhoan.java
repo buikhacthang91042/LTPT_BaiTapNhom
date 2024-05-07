@@ -15,13 +15,13 @@ public class TaiKhoan implements Serializable{
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@Column(name = "TenDangNhap")
+	@Column(name = "TenDangNhap",columnDefinition = "nvarchar(255)")
 	private String taiKhoan;
 	
-	@Column(name = "Email")
+	@Column(name = "Email",columnDefinition = "nvarchar(255)")
 	private String gmail;
 	
-	@Column(name = "MatKhau")
+	@Column(name = "MatKhau",columnDefinition = "nvarchar(255)")
 	private String matKhau;
 	
 	

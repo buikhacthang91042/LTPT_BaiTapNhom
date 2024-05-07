@@ -366,7 +366,7 @@ public class GUI_CapNhatQuanAo extends JPanel {
 	}
 	
 	public void updateComboNhaCungCap() {
-		DAO_NhaCungCap dao = new DAO_NhaCungCap();
+		DAO_NhaCungCap dao = new DAO_NhaCungCap(entityManager);
 		for(NhaCungCap loai : dao.getAllNhaCungCap()) {
 			cboNCC.addItem(loai.getTenNCC());
 		}
@@ -374,7 +374,7 @@ public class GUI_CapNhatQuanAo extends JPanel {
 		
 	public void updateLaiComboNhaCungCap() {
 		cboNCC.removeAllItems();
-		DAO_NhaCungCap dao = new DAO_NhaCungCap();
+		DAO_NhaCungCap dao = new DAO_NhaCungCap(entityManager);
 		for(NhaCungCap loai : dao.getAllNhaCungCap()) {
 			cboNCC.addItem(loai.getTenNCC());
 	}
@@ -394,7 +394,7 @@ public class GUI_CapNhatQuanAo extends JPanel {
 		SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 		List<QuanAo> list = dao.getAllQuanAo();
 		for(QuanAo quanAo : list) {
-			DAO_NhaCungCap daoNCC= new DAO_NhaCungCap();
+			DAO_NhaCungCap daoNCC= new DAO_NhaCungCap(entityManager);
 			NhaCungCap ncc= daoNCC.getNCCByMa(quanAo.getNCC().getMaNCC());
 			DAO_LoaiQuanAo daoLoai= new DAO_LoaiQuanAo(entityManager);
 			LoaiQuanAo loai= daoLoai.getLoaiQuanAoByMa(quanAo.getLoaiQuanAo().getMaLoai());
@@ -411,7 +411,7 @@ public class GUI_CapNhatQuanAo extends JPanel {
 		List<QuanAo> list = dao.getAllQuanAo();
 		modelThongTinQuanAo.getDataVector().removeAllElements();
 		for(QuanAo quanAo : list) {
-			DAO_NhaCungCap daoNCC= new DAO_NhaCungCap();
+			DAO_NhaCungCap daoNCC= new DAO_NhaCungCap(entityManager);
 			NhaCungCap ncc= daoNCC.getNCCByMa(quanAo.getNCC().getMaNCC());
 			DAO_LoaiQuanAo daoLoai= new DAO_LoaiQuanAo(entityManager);
 			LoaiQuanAo loai= daoLoai.getLoaiQuanAoByMa(quanAo.getLoaiQuanAo().getMaLoai());
@@ -428,7 +428,7 @@ public class GUI_CapNhatQuanAo extends JPanel {
 		List<QuanAo> list = dao.getAllQuanAo();
 		modelThongTinQuanAo.getDataVector().removeAllElements();
 		for(QuanAo quanAo : list) {
-			DAO_NhaCungCap daoNCC= new DAO_NhaCungCap();
+			DAO_NhaCungCap daoNCC= new DAO_NhaCungCap(entityManager);
 			NhaCungCap ncc= daoNCC.getNCCByMa(quanAo.getNCC().getMaNCC());
 			DAO_LoaiQuanAo daoLoai= new DAO_LoaiQuanAo(entityManager);
 			LoaiQuanAo loai= daoLoai.getLoaiQuanAoByMa(quanAo.getLoaiQuanAo().getMaLoai());
@@ -443,7 +443,7 @@ public class GUI_CapNhatQuanAo extends JPanel {
 	public void themQuanAo() {
 		System.out.println("Thêm call");
 		DAO_QuanAo dao = new DAO_QuanAo(entityManager);
-		DAO_NhaCungCap daoNCC = new DAO_NhaCungCap();
+		DAO_NhaCungCap daoNCC = new DAO_NhaCungCap(entityManager);
 		DAO_LoaiQuanAo daoLoai = new DAO_LoaiQuanAo(entityManager);
 		String maQuanAo = txtMaQuanAo.getText().trim();
 		String tenQuanAo = txtTenQuanAo.getText().trim();
@@ -488,8 +488,7 @@ public class GUI_CapNhatQuanAo extends JPanel {
 	    if (existingKhuyenMai == null) {
 	        // Nếu không tồn tại, tạo một đối tượng KhuyenMai mới và lưu vào cơ sở dữ liệu
 	        KhuyenMai newKhuyenMai = new KhuyenMai(khuyenMai);
-	        newKhuyenMai.setNgayBatDau((java.sql.Date) new Date());
-	        newKhuyenMai.setNgayKetThuc((java.sql.Date) new Date());
+	       
 	        daoKM.create(newKhuyenMai); // Đảm bảo rằng phương thức create lưu đối tượng vào cơ sở dữ liệu
 	        // Gán đối tượng KhuyenMai mới vào đối tượng QuanAo
 	        quanAo.setKm(newKhuyenMai);
@@ -544,7 +543,7 @@ public class GUI_CapNhatQuanAo extends JPanel {
 	//Các hàm sửa
 	 public void suaQuanAo() { 
 		  DAO_QuanAo dao = new DAO_QuanAo(entityManager);
-		  DAO_NhaCungCap daoNCC = new DAO_NhaCungCap();
+		  DAO_NhaCungCap daoNCC = new DAO_NhaCungCap(entityManager);
 		  DAO_LoaiQuanAo daoLoai = new DAO_LoaiQuanAo(entityManager);
 		  int row = tblQuanAo.getSelectedRow();
 		  String maQuanAo  = txtMaQuanAo.getText().trim();

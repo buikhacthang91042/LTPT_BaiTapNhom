@@ -30,9 +30,11 @@ import javax.swing.table.DefaultTableModel;
 
 import DAO.DAO_KhachHang;
 import DAO.DAO_NhaCungCap;
+import DAO.EntityManagerFactoryUtil;
 import connect.ConnectDB;
 import entity.KhachHang;
 import entity.NhaCungCap;
+import jakarta.persistence.EntityManager;
 
 import javax.swing.DefaultComboBoxModel;
 
@@ -44,7 +46,8 @@ public class GUI_TimKiemNhaCungCap extends JPanel {
 	private DefaultTableModel modelTimKiemNhaCC;
 	private JTable tblNhaCC;
 	private GUI_CapNhatNhaCungCap quanLiNhaCC;
-
+	EntityManagerFactoryUtil util = new EntityManagerFactoryUtil();
+    EntityManager entityManager = util.getEnManager();
 	public GUI_TimKiemNhaCungCap() {
 		setBounds(new Rectangle(0, 0, 1308, 678));
 		setLayout(null);
@@ -217,7 +220,7 @@ public class GUI_TimKiemNhaCungCap extends JPanel {
 	}
 
 	public void updateData() {
-		DAO_NhaCungCap dao = new DAO_NhaCungCap();
+		DAO_NhaCungCap dao = new DAO_NhaCungCap(entityManager);
 		List<NhaCungCap> list = dao.getAllNhaCungCap();
 		for (NhaCungCap ncc : list) {
 			Object[] data = { ncc.getMaNCC(), ncc.getTenNCC(), ncc.getsDT(),
@@ -229,7 +232,7 @@ public class GUI_TimKiemNhaCungCap extends JPanel {
 
 	public void updateLaiData() {
 		modelTimKiemNhaCC.setRowCount(0);
-		DAO_NhaCungCap dao = new DAO_NhaCungCap();
+		DAO_NhaCungCap dao = new DAO_NhaCungCap(entityManager);
 		List<NhaCungCap> list = dao.getAllNhaCungCap();
 		for (NhaCungCap ncc : list) {
 			Object[] data = { ncc.getMaNCC(), ncc.getTenNCC(), ncc.getsDT(),
@@ -240,7 +243,7 @@ public class GUI_TimKiemNhaCungCap extends JPanel {
 	}
 
 	public void updateComboMaNhaCungCap() {
-		DAO_NhaCungCap dao = new DAO_NhaCungCap();
+		DAO_NhaCungCap dao = new DAO_NhaCungCap(entityManager);
 		for (NhaCungCap loai : dao.getAllNhaCungCap()) {
 			cboMaNhaCungCap.addItem(loai.getMaNCC());
 		}
@@ -249,7 +252,7 @@ public class GUI_TimKiemNhaCungCap extends JPanel {
 	public void updateLaiComboMaNhaCungCap() {
 		cboMaNhaCungCap.removeAllItems();
 		cboMaNhaCungCap.addItem("Không");
-		DAO_NhaCungCap dao = new DAO_NhaCungCap();
+		DAO_NhaCungCap dao = new DAO_NhaCungCap(entityManager);
 		for (NhaCungCap loai : dao.getAllNhaCungCap()) {
 			cboMaNhaCungCap.addItem(loai.getMaNCC());
 		}
@@ -257,7 +260,7 @@ public class GUI_TimKiemNhaCungCap extends JPanel {
 
 	// Các hàm tìm
 	public void timTheoTen() {
-		DAO_NhaCungCap dao = new DAO_NhaCungCap();
+		DAO_NhaCungCap dao = new DAO_NhaCungCap(entityManager);
 		String ten = txtTenNCC.getText();
 
 		List<NhaCungCap> list = dao.timTheoTen(ten);
@@ -270,7 +273,7 @@ public class GUI_TimKiemNhaCungCap extends JPanel {
 	}
 
 	public void timTheoSDT() {
-		DAO_NhaCungCap dao = new DAO_NhaCungCap();
+		DAO_NhaCungCap dao = new DAO_NhaCungCap(entityManager);
 		String sdt = txtSdt.getText();
 
 		List<NhaCungCap> list = dao.timTheoSoDienThoai(sdt);
@@ -283,7 +286,7 @@ public class GUI_TimKiemNhaCungCap extends JPanel {
 	}
 
 	public void timTheoMa() {
-		DAO_NhaCungCap dao = new DAO_NhaCungCap();
+		DAO_NhaCungCap dao = new DAO_NhaCungCap(entityManager);
 		String ma = cboMaNhaCungCap.getSelectedItem().toString();
 
 		List<NhaCungCap> list = dao.timTheoMa(ma);
@@ -296,7 +299,7 @@ public class GUI_TimKiemNhaCungCap extends JPanel {
 	}
 
 	public void timTheoDiaChi() {
-		DAO_NhaCungCap dao = new DAO_NhaCungCap();
+		DAO_NhaCungCap dao = new DAO_NhaCungCap(entityManager);
 		String diaChi = txtDiaChi.getText();
 
 		List<NhaCungCap> list = dao.timTheoDiaChi(diaChi);
@@ -309,7 +312,7 @@ public class GUI_TimKiemNhaCungCap extends JPanel {
 	}
 
 	public void timTheoTenvaDiaChi() {
-		DAO_NhaCungCap dao = new DAO_NhaCungCap();
+		DAO_NhaCungCap dao = new DAO_NhaCungCap(entityManager);
 		String diaChi = txtDiaChi.getText();
 		String ten = txtTenNCC.getText();
 
@@ -323,7 +326,7 @@ public class GUI_TimKiemNhaCungCap extends JPanel {
 	}
 
 	public void timTheoTenvaMa() {
-		DAO_NhaCungCap dao = new DAO_NhaCungCap();
+		DAO_NhaCungCap dao = new DAO_NhaCungCap(entityManager);
 		String ma = cboMaNhaCungCap.getSelectedItem().toString();
 		String ten = txtTenNCC.getText();
 
@@ -337,7 +340,7 @@ public class GUI_TimKiemNhaCungCap extends JPanel {
 	}
 
 	public void timTheoTenvaSDT() {
-		DAO_NhaCungCap dao = new DAO_NhaCungCap();
+		DAO_NhaCungCap dao = new DAO_NhaCungCap(entityManager);
 		String sdt = txtSdt.getText();
 		String ten = txtTenNCC.getText();
 
@@ -351,7 +354,7 @@ public class GUI_TimKiemNhaCungCap extends JPanel {
 	}
 
 	public void timTheoSDTvaMa() {
-		DAO_NhaCungCap dao = new DAO_NhaCungCap();
+		DAO_NhaCungCap dao = new DAO_NhaCungCap(entityManager);
 		String sdt = txtSdt.getText();
 		String ma = cboMaNhaCungCap.getSelectedItem().toString();
 
@@ -365,7 +368,7 @@ public class GUI_TimKiemNhaCungCap extends JPanel {
 	}
 
 	public void timTheoSDTvaDiaChi() {
-		DAO_NhaCungCap dao = new DAO_NhaCungCap();
+		DAO_NhaCungCap dao = new DAO_NhaCungCap(entityManager);
 		String sdt = txtSdt.getText();
 		String diaChi = txtDiaChi.getText();
 
@@ -379,7 +382,7 @@ public class GUI_TimKiemNhaCungCap extends JPanel {
 	}
 
 	public void timTheoDiaChivaMa() {
-		DAO_NhaCungCap dao = new DAO_NhaCungCap();
+		DAO_NhaCungCap dao = new DAO_NhaCungCap(entityManager);
 		String diaChi = txtDiaChi.getText();
 		String ma = cboMaNhaCungCap.getSelectedItem().toString();
 
@@ -393,7 +396,7 @@ public class GUI_TimKiemNhaCungCap extends JPanel {
 	}
 
 	public void timTheoTenvaDiaChivaMa() {
-		DAO_NhaCungCap dao = new DAO_NhaCungCap();
+		DAO_NhaCungCap dao = new DAO_NhaCungCap(entityManager);
 		String diaChi = txtDiaChi.getText();
 		String ma = cboMaNhaCungCap.getSelectedItem().toString();
 
@@ -408,7 +411,7 @@ public class GUI_TimKiemNhaCungCap extends JPanel {
 	}
 
 	public void timTheoTenvaSDTvaMa() {
-		DAO_NhaCungCap dao = new DAO_NhaCungCap();
+		DAO_NhaCungCap dao = new DAO_NhaCungCap(entityManager);
 		String sdt = txtSdt.getText();
 		String ma = cboMaNhaCungCap.getSelectedItem().toString();
 
@@ -423,7 +426,7 @@ public class GUI_TimKiemNhaCungCap extends JPanel {
 	}
 
 	public void timTheoSDTvaMavadiaChi() {
-		DAO_NhaCungCap dao = new DAO_NhaCungCap();
+		DAO_NhaCungCap dao = new DAO_NhaCungCap(entityManager);
 		String sdt = txtSdt.getText();
 		String ma = cboMaNhaCungCap.getSelectedItem().toString();
 
@@ -438,7 +441,7 @@ public class GUI_TimKiemNhaCungCap extends JPanel {
 	}
 
 	public void timTheoTenvaDiaChivaMavaSDT() {
-		DAO_NhaCungCap dao = new DAO_NhaCungCap();
+		DAO_NhaCungCap dao = new DAO_NhaCungCap(entityManager);
 		String sdt = txtSdt.getText();
 		String ma = cboMaNhaCungCap.getSelectedItem().toString();
 		String ten = txtTenNCC.getText();

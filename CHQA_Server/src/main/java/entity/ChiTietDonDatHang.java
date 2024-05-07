@@ -18,11 +18,11 @@ public class ChiTietDonDatHang implements Serializable{
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@Column(name = "MaDonHang")
+	@Column(name = "MaDonHang",columnDefinition = "nvarchar(255)")
 	private DonDatHang maDatHang;
 	
 	@ManyToOne
-	@JoinColumn(name = "MaQuanAo")
+	@JoinColumn(name = "MaQuanAo",columnDefinition = "nvarchar(255)")
 	private QuanAo quanAo;
 	
 	@Column(name = "SoLuong")

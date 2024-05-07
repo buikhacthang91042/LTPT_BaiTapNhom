@@ -15,16 +15,16 @@ public class NhaCungCap implements Serializable{
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@Column(name = "MaNCC")
+	@Column(name = "MaNCC",columnDefinition = "nvarchar(255)")
 	private String maNCC;
 	
-	@Column(name = "TenNCC")
+	@Column(name = "TenNCC",columnDefinition = "nvarchar(255)")
 	private String tenNCC;
 	
-	@Column(name = "DiaChi")
+	@Column(name = "DiaChi",columnDefinition = "nvarchar(255)")
 	private String diaChi;
 	
-	@Column(name = "SoDienThoai")
+	@Column(name = "SoDienThoai",columnDefinition = "nvarchar(255)")
 	private String sDT;
 	
 	public NhaCungCap( String maNCC) {

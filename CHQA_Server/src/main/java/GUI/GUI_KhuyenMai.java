@@ -453,16 +453,18 @@ public class GUI_KhuyenMai extends JPanel {
 		}
 		
 		//LoadDS
-		 public void updateData() {
-				DAO_KhuyenMai dao = new DAO_KhuyenMai(entityManager);
-				List<KhuyenMai> list = dao.getAllKhuyenMai();
-				SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-				for(KhuyenMai km : list) {
-					Object [] data = {km.getMaKM(),km.getTenChuongTrinh(),dateFormat.format(km.getNgayBatDau()),dateFormat.format(km.getNgayKetThuc())};
-					modelDSKhuyenMai.addRow(data);
-				}
-				
-			}
+		public void updateData() {
+		    DAO_KhuyenMai dao = new DAO_KhuyenMai(entityManager);
+		    List<KhuyenMai> list = dao.getAllKhuyenMai();
+		    SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+		    for (KhuyenMai km : list) {
+		        String ngayBatDauStr = (km.getNgayBatDau() != null) ? dateFormat.format(km.getNgayBatDau()) : "";
+		        String ngayKetThucStr = (km.getNgayKetThuc() != null) ? dateFormat.format(km.getNgayKetThuc()) : "";
+		        Object[] data = { km.getMaKM(), km.getTenChuongTrinh(), ngayBatDauStr, ngayKetThucStr };
+		        modelDSKhuyenMai.addRow(data);
+		    }
+		}
+
 		 
 		 public void updateDataKM() {
 				DAO_KhuyenMai dao = new DAO_KhuyenMai(entityManager);
@@ -504,7 +506,18 @@ public class GUI_KhuyenMai extends JPanel {
 
 		     return null;
 		 }
-		 
+		// Lấy ngày bắt đầu của khuyến mãi đã chọn
+				 private Date getStartDateOfSelectedPromotion(String maKM) {
+				     DAO_KhuyenMai daoKM = new DAO_KhuyenMai(entityManager);
+				     KhuyenMai km = daoKM.getKhuyenMaiByMa(maKM);
+
+				     
+				     if (km != null) {
+				         return km.getNgayBatDau();
+				     }
+
+				     return null;
+				 }
 		//Thêm
 		public void themKM() {
 		    DAO_KhuyenMai dao = new DAO_KhuyenMai(entityManager);
@@ -551,9 +564,13 @@ public class GUI_KhuyenMai extends JPanel {
 				    
 				    // Lấy ngày kết thúc của khuyến mãi đã chọn
 				    Date ngayKT = getEndDateOfSelectedPromotion(maKM);
+				    Date ngayBD = getStartDateOfSelectedPromotion(maKM);
 				    if (ngayKT != null && ngayKT.before(new Date())) {
 				        JOptionPane.showMessageDialog(this, "Khuyến mãi đã kết thúc !");
 				        return; 
+				    }
+				    if(ngayBD == null || ngayKT == null) {
+				    	return;
 				    }
 				   
 				    QuanAo qa = new QuanAo(maQuanAo);
@@ -604,11 +621,15 @@ public class GUI_KhuyenMai extends JPanel {
 	
 			            // Lấy ngày kết thúc của khuyến mãi đã chọn
 			            Date ngayKT = getEndDateOfSelectedPromotion(maKM);
+			            Date ngayBD = getStartDateOfSelectedPromotion(maKM);
 			            if (ngayKT != null && ngayKT.before(new Date())) {
 			                JOptionPane.showMessageDialog(this, "Khuyến mãi đã kết thúc !");
 			                return;
 			            }
-	
+			            
+			            if(ngayBD == null || ngayKT == null) {
+					    	return;
+					    }
 			            QuanAo qa = new QuanAo(maQuanAo);
 			            ChiTietKhuyenMai ctkm = new ChiTietKhuyenMai(new KhuyenMai(maKM), qa, tiLeKM);
 	

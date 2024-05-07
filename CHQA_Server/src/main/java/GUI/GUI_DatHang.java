@@ -332,7 +332,7 @@ public class GUI_DatHang extends JPanel {
 						  txtLoaiQuanAo.setText(loai.getTenLoai());
 						  
 						  String maNCC = qa.getNCC().getMaNCC();
-						  DAO_NhaCungCap dao_ncc = new DAO_NhaCungCap();
+						  DAO_NhaCungCap dao_ncc = new DAO_NhaCungCap(entityManager);
 						  NhaCungCap ncc = dao_ncc.getNCCByMa(maNCC);
 						  txtNCC.setText(ncc.getTenNCC());
 						  
@@ -759,7 +759,7 @@ public class GUI_DatHang extends JPanel {
 			DAO_QuanAo dao= new DAO_QuanAo(entityManager);
 			List<QuanAo> list = dao.getAllQuanAo();
 			for(QuanAo quanAo : list) {
-				DAO_NhaCungCap daoNCC= new DAO_NhaCungCap();
+				DAO_NhaCungCap daoNCC= new DAO_NhaCungCap(entityManager);
 				NhaCungCap ncc= daoNCC.getNCCByMa(quanAo.getNCC().getMaNCC());
 				DAO_LoaiQuanAo daoLoai= new DAO_LoaiQuanAo(entityManager);
 				LoaiQuanAo loai= daoLoai.getLoaiQuanAoByMa(quanAo.getLoaiQuanAo().getMaLoai());
@@ -855,7 +855,7 @@ public class GUI_DatHang extends JPanel {
 			DAO_QuanAo dao= new DAO_QuanAo(entityManager);
 			List<QuanAo> list = dao.getAllQuanAo();
 			for(QuanAo quanAo : list) {
-				DAO_NhaCungCap daoNCC= new DAO_NhaCungCap();
+				DAO_NhaCungCap daoNCC= new DAO_NhaCungCap(entityManager);
 				NhaCungCap ncc= daoNCC.getNCCByMa(quanAo.getNCC().getMaNCC());
 				DAO_LoaiQuanAo daoLoai= new DAO_LoaiQuanAo(entityManager);
 				LoaiQuanAo loai= daoLoai.getLoaiQuanAoByMa(quanAo.getLoaiQuanAo().getMaLoai());
@@ -953,7 +953,7 @@ public class GUI_DatHang extends JPanel {
 			List<QuanAo> list = dao.timTheoTen(txtMaQuanAo.getText());
 			modelDsQuanAo.getDataVector().removeAllElements();
 			for (QuanAo quanAo : list) {
-				DAO_NhaCungCap daoNCC= new DAO_NhaCungCap();
+				DAO_NhaCungCap daoNCC= new DAO_NhaCungCap(entityManager);
 				NhaCungCap ncc= daoNCC.getNCCByMa(quanAo.getNCC().getMaNCC());
 				DAO_LoaiQuanAo daoLoai= new DAO_LoaiQuanAo(entityManager);
 				LoaiQuanAo loai= daoLoai.getLoaiQuanAoByMa(quanAo.getLoaiQuanAo().getMaLoai());
@@ -972,7 +972,7 @@ public class GUI_DatHang extends JPanel {
 			List<QuanAo> list = dao.timTheoMa(ma);
 			modelDsQuanAo.getDataVector().removeAllElements();
 			for (QuanAo quanAo : list) {
-				DAO_NhaCungCap daoNCC= new DAO_NhaCungCap();
+				DAO_NhaCungCap daoNCC= new DAO_NhaCungCap(entityManager);
 				NhaCungCap ncc= daoNCC.getNCCByMa(quanAo.getNCC().getMaNCC());
 				DAO_LoaiQuanAo daoLoai= new DAO_LoaiQuanAo(entityManager);
 				LoaiQuanAo loai= daoLoai.getLoaiQuanAoByMa(quanAo.getLoaiQuanAo().getMaLoai());

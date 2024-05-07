@@ -15,10 +15,10 @@ public class LoaiQuanAo implements Serializable{
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@Column(name = "MaLoai")
+	@Column(name = "MaLoai",columnDefinition = "nvarchar(255)")
 	private String maLoai;
 	
-	@Column(name = "TenLoai")
+	@Column(name = "TenLoai",columnDefinition = "nvarchar(255)")
 	private String tenLoai;
 	
 	

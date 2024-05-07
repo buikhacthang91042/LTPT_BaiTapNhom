@@ -17,21 +17,21 @@ public class QuanAo implements Serializable{
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@Column(name = "MaQuanAo")
+	@Column(name = "MaQuanAo", columnDefinition = "nvarchar(255)")
 	private String maQuanAo;
 	
-	@Column(name = "TenQuanAo")
+	@Column(name = "TenQuanAo",columnDefinition = "nvarchar(255)")
 	private String tenQuanAo;
 	
 	@ManyToOne
-	@JoinColumn(name = "NCC")
+	@JoinColumn(name = "NCC",columnDefinition = "nvarchar(255)")
 	private NhaCungCap nhaCungCap;
 	
 	@ManyToOne
-	@JoinColumn(name = "LoaiQuanAo")
+	@JoinColumn(name = "LoaiQuanAo",columnDefinition = "nvarchar(255)")
 	private LoaiQuanAo loaiQuanAo;
 	
-	@Column(name = "KichThuoc")
+	@Column(name = "KichThuoc",columnDefinition = "nvarchar(255)")
 	private String kinhThuoc;
 	
 	@Column(name = "SoLuongCu")
@@ -45,13 +45,13 @@ public class QuanAo implements Serializable{
 	
 	
 	@ManyToOne
-    @JoinColumn(name = "MaKM", nullable = true) 
+    @JoinColumn(name = "MaKM", nullable = true,columnDefinition = "nvarchar(255)") 
     private KhuyenMai khuyenMai;
 	
 	@Column(name = "Gia")
 	private float gia;
 	
-	@Column(name = "HinhAnh")
+	@Column(name = "HinhAnh",columnDefinition = "nvarchar(255)")
 	private String hinhAnh;
 	
 	@Transient // Không cần ánh xạ vào cơ sở dữ liệu

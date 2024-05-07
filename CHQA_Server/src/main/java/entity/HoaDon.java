@@ -18,18 +18,18 @@ public class HoaDon implements Serializable{
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@Column(name = "MaHD")
+	@Column(name = "MaHD",columnDefinition = "nvarchar(255)")
 	private String maHD;
 	
 	@Column(name = "NgayMua")
 	private Date ngayMua;
 	
 	@ManyToOne
-    @JoinColumn(name = "MaNV")
+    @JoinColumn(name = "MaNV",columnDefinition = "nvarchar(255)")
     private NhanVien nhanVien;
 	
 	@ManyToOne
-	@JoinColumn(name = "MaKH")
+	@JoinColumn(name = "MaKH",columnDefinition = "nvarchar(255)")
 	private KhachHang khachHang;
 	
 	@Column(name = "TongTien")

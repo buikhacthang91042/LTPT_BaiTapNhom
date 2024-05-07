@@ -18,22 +18,22 @@ public class NhanVien implements Serializable{
 
 
 	@Id
-	@Column(name = "MaNV")
+	@Column(name = "MaNV",columnDefinition = "nvarchar(255)")
 	private String maNV;
 	
-	@Column(name = "TenNV")
+	@Column(name = "TenNV",columnDefinition = "nvarchar(255)")
 	private String tenNV;
 	
-	@Column(name = "NamSinh")
+	@Column(name = "NamSinh",columnDefinition = "nvarchar(255)")
 	private String namSinh;
 	
-	@Column(name = "GioiTinh")
+	@Column(name = "GioiTinh",columnDefinition = "nvarchar(255)")
 	private String gioiTinh;
 	
 	@Column(name = "NgayVaoLam")
 	private Date ngayVaolam;
 	
-	@Column(name = "Sdt")
+	@Column(name = "Sdt",columnDefinition = "nvarchar(255)")
 	private String sDT;
 	
 	public NhanVien(String maNV) {

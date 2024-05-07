@@ -18,14 +18,14 @@ public class ChiTietHoaDon implements Serializable{
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@Column(name = "MaHD")
+	@Column(name = "MaHD",columnDefinition = "nvarchar(255)")
 	private HoaDon mahoaDon;
 	
 	@ManyToOne
-    @JoinColumn(name = "MaQuanAo")
+    @JoinColumn(name = "MaQuanAo",columnDefinition = "nvarchar(255)")
 	private QuanAo quanAo;
 	
-	@Column(name = "TenQuanAo")
+	@Column(name = "TenQuanAo",columnDefinition = "nvarchar(255)")
 	@Formula("(SELECT q.TenQuanAo FROM QuanAo q WHERE q.MaQuanAo = MaQuanAo)")
 	private String tenQuanAo;
 

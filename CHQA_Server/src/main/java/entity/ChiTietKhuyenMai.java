@@ -17,11 +17,11 @@ public class ChiTietKhuyenMai implements Serializable{
 
 	@Id 
 	@ManyToOne
-	@JoinColumn(name = "MaKM", referencedColumnName = "MaKM", nullable = true)
+	@JoinColumn(name = "MaKM", referencedColumnName = "MaKM", nullable = true,columnDefinition = "nvarchar(255)")
 	private KhuyenMai maKM;
 	
 	@ManyToOne
-    @JoinColumn(name = "MaQuanAo",nullable = true)
+    @JoinColumn(name = "MaQuanAo",nullable = true,columnDefinition = "nvarchar(255)")
 	private QuanAo quanAo;
 	
 	@Column(name = "TiLeKM",nullable = true)
