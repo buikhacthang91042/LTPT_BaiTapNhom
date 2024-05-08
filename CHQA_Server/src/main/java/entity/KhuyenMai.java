@@ -6,8 +6,10 @@ import java.util.Date;
 import java.util.List;
 
 import DAO.DAO_ChiTietKhuyenMai;
+import DAO.EntityManagerFactoryUtil;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EntityManager;
 import jakarta.persistence.Id;
 
 @Entity
@@ -82,7 +84,9 @@ public class KhuyenMai implements Serializable{
     }
 	 
 	public float layTileKhuyenMai(String maQuanAo, String maKhuyenMai) {
-		DAO_ChiTietKhuyenMai dao = new DAO_ChiTietKhuyenMai();
+		EntityManagerFactoryUtil util = new EntityManagerFactoryUtil();
+	    EntityManager entityManager = util.getEnManager();
+		DAO_ChiTietKhuyenMai dao = new DAO_ChiTietKhuyenMai(entityManager);
 		ctkm = dao.getAllChiTietKhuyenMai();
 	    for (ChiTietKhuyenMai chiTiet : ctkm) {
 	        if (chiTiet.getQuanAo().getMaQuanAo().equals(maQuanAo) &&

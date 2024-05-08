@@ -483,7 +483,7 @@ public class GUI_KhuyenMai extends JPanel {
 			}
 		 
 		 public void updateDataQAKM() {
-				DAO_ChiTietKhuyenMai dao = new DAO_ChiTietKhuyenMai();
+				DAO_ChiTietKhuyenMai dao = new DAO_ChiTietKhuyenMai(entityManager);
 				List<ChiTietKhuyenMai> list = dao.getAllChiTietKhuyenMai();
 				
 				for(ChiTietKhuyenMai ctkm : list) {
@@ -535,7 +535,7 @@ public class GUI_KhuyenMai extends JPanel {
 		}
 		
 		public void themQuanAoKM() {
-		    DAO_ChiTietKhuyenMai dao = new DAO_ChiTietKhuyenMai();
+		    DAO_ChiTietKhuyenMai dao = new DAO_ChiTietKhuyenMai(entityManager);
 		    if(cboMaQuanAo.getSelectedItem().equals("Không") && txtTiLeKM.getText().equals("") && cboMaQuanAoNhieu1.getSelectedItem().equals("Không") 
 		    	&& cboMaQuanAoNhieu2.getSelectedItem().equals("Không") && txtTiLeKmNhieu.getText().equals("")) {
 		    	JOptionPane.showMessageDialog(null, "Thông tin quần áo khuyến mãi không được rỗng !");
@@ -663,7 +663,7 @@ public class GUI_KhuyenMai extends JPanel {
                 cboMaKM.removeAllItems();
                 cboMaKMNhieu.removeAllItems();
                 updateDataKM();
-                DAO_ChiTietKhuyenMai daoCT = new DAO_ChiTietKhuyenMai();
+                DAO_ChiTietKhuyenMai daoCT = new DAO_ChiTietKhuyenMai(entityManager);
                 
                 if (daoCT.deleteAllByMaKM(maKM)) {
 
@@ -681,7 +681,7 @@ public class GUI_KhuyenMai extends JPanel {
     
 		  
 		  public void xoaQAKM(String maQuanAo, String maKM) {
-			  DAO_ChiTietKhuyenMai dao = new DAO_ChiTietKhuyenMai();
+			  DAO_ChiTietKhuyenMai dao = new DAO_ChiTietKhuyenMai(entityManager);
 			  DAO_QuanAo daoQuanAo = new DAO_QuanAo(entityManager);
 			  int row = tblQaKM.getSelectedRow();
 			 
@@ -715,7 +715,7 @@ public class GUI_KhuyenMai extends JPanel {
 
 		    }
 		  public void suaQAKM() {
-			    DAO_ChiTietKhuyenMai dao = new DAO_ChiTietKhuyenMai();
+			    DAO_ChiTietKhuyenMai dao = new DAO_ChiTietKhuyenMai(entityManager);
 			    int row = tblQaKM.getSelectedRow();
 			    String maQA = tblQaKM.getValueAt(row, 0).toString();
 			    String makm = tblQaKM.getValueAt(row, 2).toString();
@@ -746,7 +746,7 @@ public class GUI_KhuyenMai extends JPanel {
 
 		  //Kiểm tra quần áo đó đã có khuyến mãi đó chưa
 		  private boolean kiemTraDaCoKMDoChua(String maQuanAo, String maKM, float tiLeKM) {
-			    DAO_ChiTietKhuyenMai dao = new DAO_ChiTietKhuyenMai();
+			    DAO_ChiTietKhuyenMai dao = new DAO_ChiTietKhuyenMai(entityManager);
 			    List<ChiTietKhuyenMai> list = dao.getAllChiTietKhuyenMai();
 
 			    for (ChiTietKhuyenMai ctkm : list) {

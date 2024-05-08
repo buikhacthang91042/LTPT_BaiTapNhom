@@ -707,7 +707,7 @@ public class GUI_CapNhatQuanAo extends JPanel {
 		                tblQuanAo.setValueAt("Không", i, 6);
 		                DAO_QuanAo dao_QuanAo = new DAO_QuanAo(entityManager);
 		                dao_QuanAo.updateMaKM(tblQuanAo.getValueAt(i, 0).toString(), "Không");
-		                DAO_ChiTietKhuyenMai dao_ctkm = new DAO_ChiTietKhuyenMai();
+		                DAO_ChiTietKhuyenMai dao_ctkm = new DAO_ChiTietKhuyenMai(entityManager);
 		                dao_ctkm.delete(tblQuanAo.getValueAt(i, 0).toString(), maKhuyenMaiTrongBang);
 		               
 		            }
