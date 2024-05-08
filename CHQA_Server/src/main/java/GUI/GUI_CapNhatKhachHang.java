@@ -16,11 +16,14 @@ import DAO.DAO_KhachHang;
 import DAO.DAO_LoaiQuanAo;
 import DAO.DAO_NhaCungCap;
 import DAO.DAO_QuanAo;
+import DAO.EntityManagerFactoryUtil;
 import connect.ConnectDB;
 import entity.KhachHang;
 import entity.LoaiQuanAo;
 import entity.NhaCungCap;
 import entity.QuanAo;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityManagerFactory;
 
 import javax.swing.JScrollPane;
 import java.awt.event.ActionListener;
@@ -39,6 +42,8 @@ public class GUI_CapNhatKhachHang extends JPanel {
 	private JComboBox cboGioitinh;
 	private String ma;
 	private List<KhachHang> kh;
+	EntityManagerFactoryUtil util = new EntityManagerFactoryUtil();
+    EntityManager entityManager = util.getEnManager();
 	public GUI_CapNhatKhachHang() {
 		setLayout(null);
 		setBackground(new Color(0, 64, 64));
@@ -227,7 +232,10 @@ public class GUI_CapNhatKhachHang extends JPanel {
 		
 	}
 	public void them() {
-		DAO_KhachHang DAO = new DAO_KhachHang();
+		EntityManagerFactoryUtil util = new EntityManagerFactoryUtil();
+	    EntityManager entityManager = util.getEnManager();
+    
+		DAO_KhachHang DAO = new DAO_KhachHang(entityManager);
 		String ma = txtMakhachhang.getText().trim();
 		String ten = txtHoten.getText().trim();
 		String diachi = txtDiaChi.getText().trim();
@@ -241,7 +249,10 @@ public class GUI_CapNhatKhachHang extends JPanel {
 		}
 	}
 	public void updateData() {
-		DAO_KhachHang dao= new DAO_KhachHang();
+		EntityManagerFactoryUtil util = new EntityManagerFactoryUtil();
+	    EntityManager entityManager = util.getEnManager();
+    
+		DAO_KhachHang dao = new DAO_KhachHang(entityManager);
 		List<KhachHang> list = dao.getAllKhachHang();
 		for(KhachHang kh : list) {
 			Object [] data = {kh.getMaKH(),kh.getHoTen(),kh.getNamSinh(),kh.getsDT(),kh.getGioiTinh(),kh.getDiaChi()};
@@ -251,7 +262,10 @@ public class GUI_CapNhatKhachHang extends JPanel {
 	}
 	
 	public void updateLaiData() {
-		DAO_KhachHang dao= new DAO_KhachHang();
+		EntityManagerFactoryUtil util = new EntityManagerFactoryUtil();
+	    EntityManager entityManager = util.getEnManager();
+    
+		DAO_KhachHang dao = new DAO_KhachHang(entityManager);
 		modelKhachHang.setRowCount(0);
 		List<KhachHang> list = dao.getAllKhachHang();
 		for(KhachHang kh : list) {
@@ -270,7 +284,10 @@ public class GUI_CapNhatKhachHang extends JPanel {
 	}
 	
 	public void xoaKhachHang() {
-		DAO_KhachHang dao = new DAO_KhachHang();
+		EntityManagerFactoryUtil util = new EntityManagerFactoryUtil();
+	    EntityManager entityManager = util.getEnManager();
+    
+		DAO_KhachHang dao = new DAO_KhachHang(entityManager);
 		int row = tblThongTinKhachHang.getSelectedRow();
 		if(row >=1) {
 			int n = JOptionPane.showConfirmDialog(null, "Chắc chắn xóa ?", "Cảnh báo",JOptionPane.YES_NO_OPTION);
@@ -286,7 +303,10 @@ public class GUI_CapNhatKhachHang extends JPanel {
 
 	}
 	public void suaKhachHang() {
-		DAO_KhachHang dao = new DAO_KhachHang();
+		EntityManagerFactoryUtil util = new EntityManagerFactoryUtil();
+	    EntityManager entityManager = util.getEnManager();
+    
+		DAO_KhachHang dao = new DAO_KhachHang(entityManager);
 		String ma = txtMakhachhang.getText().trim();
 		String ten = txtHoten.getText().trim();
 		String diachi = txtDiaChi.getText().trim();
@@ -450,7 +470,10 @@ public class GUI_CapNhatKhachHang extends JPanel {
 	}
 	
 	public boolean kiemTraTrungSoDienThoai(String sdt) {
-        DAO_KhachHang dao = new DAO_KhachHang();
+		EntityManagerFactoryUtil util = new EntityManagerFactoryUtil();
+	    EntityManager entityManager = util.getEnManager();
+    
+		DAO_KhachHang dao = new DAO_KhachHang(entityManager);
         List<KhachHang> list = dao.getAllKhachHang();
         
         for (KhachHang kh : list) {
@@ -464,8 +487,10 @@ public class GUI_CapNhatKhachHang extends JPanel {
 	
 	public String taoMa() {
 
-		DAO_KhachHang dao = new DAO_KhachHang();
-		
+		EntityManagerFactoryUtil util = new EntityManagerFactoryUtil();
+	    EntityManager entityManager = util.getEnManager();
+    
+		DAO_KhachHang dao = new DAO_KhachHang(entityManager);
 		int n = dao.getAllKhachHang().size();
 		if(n<9) {
 		do {

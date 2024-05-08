@@ -625,7 +625,10 @@ public class GUI_DatHang extends JPanel {
 				btnThemKHMoi.setEnabled(false);
 				btnThemKHMoi.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
-						DAO_KhachHang DAO = new DAO_KhachHang();
+						EntityManagerFactoryUtil util = new EntityManagerFactoryUtil();
+					    EntityManager entityManager = util.getEnManager();
+				    
+						DAO_KhachHang DAO = new DAO_KhachHang(entityManager);
 						String ma = taoMaKH();
 						
 						String ten = txtTenKhachHang.getText().trim();
@@ -986,7 +989,10 @@ public class GUI_DatHang extends JPanel {
 		
 		
 		public void timKHtheoSoDienThoai() {
-			DAO_KhachHang dao = new DAO_KhachHang();
+			EntityManagerFactoryUtil util = new EntityManagerFactoryUtil();
+		    EntityManager entityManager = util.getEnManager();
+	    
+			DAO_KhachHang dao = new DAO_KhachHang(entityManager);
 			String soDienThoai = txtNhapSoDienThoai.getText().trim();
 			
 			List<KhachHang> list = dao.timTheoSoDienThoai(soDienThoai);
@@ -1099,7 +1105,10 @@ public class GUI_DatHang extends JPanel {
 		}
 		public String taoMaKH() {
 
-			DAO_KhachHang dao = new DAO_KhachHang();
+			EntityManagerFactoryUtil util = new EntityManagerFactoryUtil();
+		    EntityManager entityManager = util.getEnManager();
+	    
+			DAO_KhachHang dao = new DAO_KhachHang(entityManager);
 			
 			int n = dao.getAllKhachHang().size();
 			if(n<9) {

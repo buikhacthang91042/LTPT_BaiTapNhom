@@ -14,22 +14,22 @@ public class KhachHang implements Serializable{
 	 */
 	private static final long serialVersionUID = 1L;
 	@Id
-	@Column(name = "MaKH")
+	@Column(name = "MaKH",columnDefinition = "nvarchar(255)")
 	private String maKH;
 	
-	@Column(name = "HoTen")
+	@Column(name = "HoTen",columnDefinition = "nvarchar(255)")
 	private String hoTen;
 	
 	@Column(name = "NamSinh")
 	private String namSinh;
 	
-	@Column(name = "SoDienThoai")
+	@Column(name = "SoDienThoai",columnDefinition = "nvarchar(255)")
 	private String sDT;
 	
-	@Column(name = "GioiTinh")
+	@Column(name = "GioiTinh",columnDefinition = "nvarchar(255)")
 	private String gioiTinh;
 	
-	@Column(name = "DiaChi")
+	@Column(name = "DiaChi",columnDefinition = "nvarchar(255)")
 	private String diaChi;
 	
 	

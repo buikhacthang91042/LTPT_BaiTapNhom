@@ -26,7 +26,7 @@ public class DAO_ChiTietKhuyenMai {
 	List<ChiTietKhuyenMai> ctkm = new ArrayList<>();
 	
 	public List<ChiTietKhuyenMai> getAllChiTietKhuyenMai() {
-		Query query = entityManager.createQuery( "SELECT * FROM ChiTietKhuyenMai");
+		Query query = entityManager.createQuery( "SELECT ctkm FROM ChiTietKhuyenMai ctkm");
 		return query.getResultList();
 //		List<ChiTietKhuyenMai> ctkm = new ArrayList<>();
 		
@@ -59,8 +59,8 @@ public class DAO_ChiTietKhuyenMai {
 //		return ctkm;
 	}
 	public List<ChiTietKhuyenMai> getCTKMByMa(String maKM) {
-		Query query = entityManager.createQuery("Select * From ChiTietKhuyenMai Where maKH=maKH");
-		query.setParameter("maKM", maKM);
+		Query query = entityManager.createQuery("Select ctkm From ChiTietKhuyenMai ctkm Where ctkm.maKH= :MaKH");
+		query.setParameter("MaKM", maKM);
 		return query.getResultList();
 //		List<ChiTietKhuyenMai> ctkm = new ArrayList<>();
 //		ConnectDB.getInstance();

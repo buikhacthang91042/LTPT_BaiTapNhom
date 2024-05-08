@@ -21,9 +21,11 @@ import javax.swing.table.DefaultTableModel;
 
 import DAO.DAO_KhachHang;
 import DAO.DAO_QuanAo;
+import DAO.EntityManagerFactoryUtil;
 import connect.ConnectDB;
 import entity.KhachHang;
 import entity.QuanAo;
+import jakarta.persistence.EntityManager;
 
 import java.awt.Color;
 import javax.swing.DefaultComboBoxModel;
@@ -192,7 +194,10 @@ public class GUI_TimKiemKhachHang extends JPanel {
 	}
 
 	public void updateData() {
-		DAO_KhachHang dao = new DAO_KhachHang();
+		EntityManagerFactoryUtil util = new EntityManagerFactoryUtil();
+	    EntityManager entityManager = util.getEnManager();
+    
+		DAO_KhachHang dao = new DAO_KhachHang(entityManager);
 		List<KhachHang> list = dao.getAllKhachHang();
 		for (KhachHang kh : list) {
 			Object[] data = { kh.getMaKH(), kh.getHoTen(), kh.getNamSinh(), kh.getsDT(), kh.getGioiTinh(),
@@ -203,14 +208,20 @@ public class GUI_TimKiemKhachHang extends JPanel {
 	}
 
 	public void updateComboMaKH() {
-		DAO_KhachHang dao = new DAO_KhachHang();
+		EntityManagerFactoryUtil util = new EntityManagerFactoryUtil();
+	    EntityManager entityManager = util.getEnManager();
+    
+		DAO_KhachHang dao = new DAO_KhachHang(entityManager);
 		for (KhachHang kh : dao.getAllKhachHang()) {
 			cboMaKhachHang.addItem(kh.getMaKH());
 		}
 	}
 
 	public void timTheoTen() {
-		DAO_KhachHang dao = new DAO_KhachHang();
+		EntityManagerFactoryUtil util = new EntityManagerFactoryUtil();
+	    EntityManager entityManager = util.getEnManager();
+    
+		DAO_KhachHang dao = new DAO_KhachHang(entityManager);
 		List<KhachHang> list = dao.timTheoTen(txtTenKH.getText());
 		modelKhachHang.getDataVector().removeAllElements();
 		for (KhachHang khachhang : list) {
@@ -221,7 +232,10 @@ public class GUI_TimKiemKhachHang extends JPanel {
 	}
 
 	public void timTheoSDT() {
-		DAO_KhachHang dao = new DAO_KhachHang();
+		EntityManagerFactoryUtil util = new EntityManagerFactoryUtil();
+	    EntityManager entityManager = util.getEnManager();
+    
+		DAO_KhachHang dao = new DAO_KhachHang(entityManager);
 		List<KhachHang> list = dao.timTheoSoDienThoai(txtSdt.getText());
 		modelKhachHang.getDataVector().removeAllElements();
 		for (KhachHang khachhang : list) {
@@ -232,7 +246,10 @@ public class GUI_TimKiemKhachHang extends JPanel {
 	}
 
 	public void timTheoMa() {
-		DAO_KhachHang dao = new DAO_KhachHang();
+		EntityManagerFactoryUtil util = new EntityManagerFactoryUtil();
+	    EntityManager entityManager = util.getEnManager();
+    
+		DAO_KhachHang dao = new DAO_KhachHang(entityManager);
 		String ma = cboMaKhachHang.getSelectedItem().toString();
 		List<KhachHang> list = dao.timTheoMa(ma);
 		modelKhachHang.getDataVector().removeAllElements();
@@ -244,7 +261,10 @@ public class GUI_TimKiemKhachHang extends JPanel {
 	}
 
 	public void timTheoGioiTinh() {
-		DAO_KhachHang dao = new DAO_KhachHang();
+		EntityManagerFactoryUtil util = new EntityManagerFactoryUtil();
+	    EntityManager entityManager = util.getEnManager();
+    
+		DAO_KhachHang dao = new DAO_KhachHang(entityManager);
 		String gioitinh = cboGioiTinh.getSelectedItem().toString();
 		List<KhachHang> list = dao.timTheoGioiTinh(gioitinh);
 		modelKhachHang.getDataVector().removeAllElements();
@@ -256,7 +276,10 @@ public class GUI_TimKiemKhachHang extends JPanel {
 	}
 
 	public void timTheoTenvaGioiTinh() {
-		DAO_KhachHang dao = new DAO_KhachHang();
+		EntityManagerFactoryUtil util = new EntityManagerFactoryUtil();
+	    EntityManager entityManager = util.getEnManager();
+    
+		DAO_KhachHang dao = new DAO_KhachHang(entityManager);
 		String ten = txtTenKH.getText();
 		String gioitinh = cboGioiTinh.getSelectedItem().toString();
 		List<KhachHang> list = dao.timTheoTenvaGioiTinh(ten, gioitinh);
@@ -270,7 +293,10 @@ public class GUI_TimKiemKhachHang extends JPanel {
 	}
 
 	public void timTheoTenvaMa() {
-		DAO_KhachHang dao = new DAO_KhachHang();
+		EntityManagerFactoryUtil util = new EntityManagerFactoryUtil();
+	    EntityManager entityManager = util.getEnManager();
+    
+		DAO_KhachHang dao = new DAO_KhachHang(entityManager);
 		String ten = txtTenKH.getText();
 		String ma = cboMaKhachHang.getSelectedItem().toString();
 		List<KhachHang> list = dao.timTheoTenvaMa(ten, ma);
@@ -284,7 +310,10 @@ public class GUI_TimKiemKhachHang extends JPanel {
 	}
 
 	public void timTheoTenvaSDT() {
-		DAO_KhachHang dao = new DAO_KhachHang();
+		EntityManagerFactoryUtil util = new EntityManagerFactoryUtil();
+	    EntityManager entityManager = util.getEnManager();
+    
+		DAO_KhachHang dao = new DAO_KhachHang(entityManager);
 		String ten = txtTenKH.getText();
 		String sdt = txtSdt.getText();
 		List<KhachHang> list = dao.timTheoTenvaSDT(ten, sdt);
@@ -298,7 +327,10 @@ public class GUI_TimKiemKhachHang extends JPanel {
 	}
 
 	public void timTheoSDTvaMa() {
-		DAO_KhachHang dao = new DAO_KhachHang();
+		EntityManagerFactoryUtil util = new EntityManagerFactoryUtil();
+	    EntityManager entityManager = util.getEnManager();
+    
+		DAO_KhachHang dao = new DAO_KhachHang(entityManager);
 		String sdt = txtSdt.getText();
 		String ma = cboMaKhachHang.getSelectedItem().toString();
 		List<KhachHang> list = dao.timTheoSDTvaMa(sdt, ma);
@@ -312,7 +344,10 @@ public class GUI_TimKiemKhachHang extends JPanel {
 	}
 
 	public void timTheoSDTvaGioiTinh() {
-		DAO_KhachHang dao = new DAO_KhachHang();
+		EntityManagerFactoryUtil util = new EntityManagerFactoryUtil();
+	    EntityManager entityManager = util.getEnManager();
+    
+		DAO_KhachHang dao = new DAO_KhachHang(entityManager);
 		String sdt = txtSdt.getText();
 		String gioitinh = cboGioiTinh.getSelectedItem().toString();
 		List<KhachHang> list = dao.timTheoSDTvaGioiTinh(sdt, gioitinh);
@@ -326,7 +361,10 @@ public class GUI_TimKiemKhachHang extends JPanel {
 	}
 
 	public void timTheoGioiTinhvaMa() {
-		DAO_KhachHang dao = new DAO_KhachHang();
+		EntityManagerFactoryUtil util = new EntityManagerFactoryUtil();
+	    EntityManager entityManager = util.getEnManager();
+    
+		DAO_KhachHang dao = new DAO_KhachHang(entityManager);
 		String gioitinh = cboGioiTinh.getSelectedItem().toString();
 		String ma = cboMaKhachHang.getSelectedItem().toString();
 		List<KhachHang> list = dao.timTheogioivaMa(gioitinh, ma);
@@ -340,7 +378,10 @@ public class GUI_TimKiemKhachHang extends JPanel {
 	}
 
 	public void timTheoTenvaGioiTinhvaMa() {
-		DAO_KhachHang dao = new DAO_KhachHang();
+		EntityManagerFactoryUtil util = new EntityManagerFactoryUtil();
+	    EntityManager entityManager = util.getEnManager();
+    
+		DAO_KhachHang dao = new DAO_KhachHang(entityManager);
 		String gioitinh = cboGioiTinh.getSelectedItem().toString();
 		String ma = cboMaKhachHang.getSelectedItem().toString();
 		String ten = txtTenKH.getText();
@@ -355,7 +396,10 @@ public class GUI_TimKiemKhachHang extends JPanel {
 	}
 
 	public void timTheoTenvaSDTvaMa() {
-		DAO_KhachHang dao = new DAO_KhachHang();
+		EntityManagerFactoryUtil util = new EntityManagerFactoryUtil();
+	    EntityManager entityManager = util.getEnManager();
+    
+		DAO_KhachHang dao = new DAO_KhachHang(entityManager);
 		String sdt = txtSdt.getText();
 		String ma = cboMaKhachHang.getSelectedItem().toString();
 		String ten = txtTenKH.getText();
@@ -370,7 +414,10 @@ public class GUI_TimKiemKhachHang extends JPanel {
 	}
 
 	public void timTheoSDTvaMavaGioiTinh() {
-		DAO_KhachHang dao = new DAO_KhachHang();
+		EntityManagerFactoryUtil util = new EntityManagerFactoryUtil();
+	    EntityManager entityManager = util.getEnManager();
+    
+		DAO_KhachHang dao = new DAO_KhachHang(entityManager);
 		String sdt = txtSdt.getText();
 		String ma = cboMaKhachHang.getSelectedItem().toString();
 		String gioitinh = cboGioiTinh.getSelectedItem().toString();
@@ -385,7 +432,10 @@ public class GUI_TimKiemKhachHang extends JPanel {
 	}
 
 	public void timTheoTenvaGioiTinhvaMavaSDT() {
-		DAO_KhachHang dao = new DAO_KhachHang();
+		EntityManagerFactoryUtil util = new EntityManagerFactoryUtil();
+	    EntityManager entityManager = util.getEnManager();
+    
+		DAO_KhachHang dao = new DAO_KhachHang(entityManager);
 		String sdt = txtSdt.getText();
 		String ma = cboMaKhachHang.getSelectedItem().toString();
 		String ten = txtTenKH.getText();

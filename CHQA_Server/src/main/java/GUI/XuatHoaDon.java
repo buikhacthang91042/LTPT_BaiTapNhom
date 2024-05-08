@@ -29,12 +29,14 @@ import DAO.DAO_HoaDon;
 import DAO.DAO_KhachHang;
 import DAO.DAO_NhanVien;
 import DAO.DAO_QuanAo;
+import DAO.EntityManagerFactoryUtil;
 import connect.ConnectDB;
 import entity.ChiTietHoaDon;
 import entity.HoaDon;
 import entity.KhachHang;
 import entity.NhanVien;
 import entity.QuanAo;
+import jakarta.persistence.EntityManager;
 public class XuatHoaDon {
 	private DAO_HoaDon hoaDon_dao;
 	private DAO_NhanVien nhanVien_dao;
@@ -76,7 +78,9 @@ public class XuatHoaDon {
 		chuyenDoi_dao = new DAO_ChuyenDoi();
 		hoaDon_dao = new DAO_HoaDon();
 		nhanVien_dao = new DAO_NhanVien();
-		khachHang_dao = new DAO_KhachHang();
+		EntityManagerFactoryUtil util = new EntityManagerFactoryUtil();
+	    EntityManager entityManager = util.getEnManager();
+		khachHang_dao = new DAO_KhachHang(entityManager);
 		CTHD_dao = new DAO_ChiTietHoaDon();
 	
 

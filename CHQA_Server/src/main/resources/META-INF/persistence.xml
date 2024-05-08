@@ -10,11 +10,11 @@
             <property name="javax.persistence.jdbc.driver" value="com.microsoft.sqlserver.jdbc.SQLServerDriver"/>
             
             <!-- Connection URL -->
-            <property name="javax.persistence.jdbc.url" value="jdbc:sqlserver://localhost:1433;databaseName=LTPT"/>
+            <property name="javax.persistence.jdbc.url" value="jdbc:sqlserver://localhost:1433;databaseName=CuaHangQuanAo"/>
             
             <!-- Database credentials -->
             <property name="javax.persistence.jdbc.user" value="sa"/>
-            <property name="javax.persistence.jdbc.password" value="123"/>
+            <property name="javax.persistence.jdbc.password" value="123456"/>
             
             <!-- Hibernate dialect for SQL Server -->
             <property name="hibernate.dialect" value="org.hibernate.dialect.SQLServer2012Dialect"/>

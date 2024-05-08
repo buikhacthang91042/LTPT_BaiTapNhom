@@ -7,13 +7,14 @@ import java.net.Socket;
 
 public class Client {
 	public static void main(String[] args) {
-        final String serverAddress = "192.168.232.1"; // Địa chỉ IP của server
+        final String serverAddress = "192.168.11.57"; // Địa chỉ IP của server
         final int serverPort = 9999; // Cổng của server
         
         try (
             Socket socket = new Socket(serverAddress, serverPort);
             ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
-            ObjectInputStream in = new ObjectInputStream(socket.getInputStream())
+        	ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
+
         ) {
             System.out.println("Connected to server: " + serverAddress + ":" + serverPort);
             
