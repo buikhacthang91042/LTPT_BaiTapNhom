@@ -42,8 +42,8 @@ import javax.net.ssl.SSLSocketFactory;
 import java.util.Properties;
 
 public class GUI_QuenMatKhau extends JFrame {
-	EntityManagerFactoryUtil util = new EntityManagerFactoryUtil();
-	EntityManager entityManager = util.getEnManager();
+//	EntityManagerFactoryUtil util = new EntityManagerFactoryUtil();
+//	EntityManager entityManager = util.getEnManager();
 	private static final long serialVersionUID = 1L;
 	private JPanel pnlContent;
 	private JTextField txtTendangnhap;
@@ -51,6 +51,11 @@ public class GUI_QuenMatKhau extends JFrame {
 	private JTextField txtNhapmacode;
 	private JTextField txtMaCode;
 
+	 EntityManager entityManager;
+	public GUI_QuenMatKhau(EntityManager entityManager) {
+        this.entityManager = entityManager;
+        getComponents();
+    }
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {

@@ -1540,3 +1540,13 @@
 2024-05-09 02:29:35,543 [Worker-107: Launching Server] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/CHQA_Client: CHQA_Client:CHQA_Client:0.0.1-SNAPSHOT with classifier null to /CHQA_Client/target/classes
 2024-05-09 02:29:35,569 [Worker-107: Launching Server] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/CHQA_Client: CHQA_Client:CHQA_Client:0.0.1-SNAPSHOT with classifier null to /CHQA_Client/target/classes
 2024-05-09 02:29:35,595 [Worker-107: Launching Server] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/CHQA_Client: CHQA_Client:CHQA_Client:0.0.1-SNAPSHOT with classifier null to /CHQA_Client/target/classes
+2024-05-09 02:44:47,824 [Worker-5: Loading available Gradle versions] INFO  o.e.b.c.i.u.g.PublishedGradleVersions - Gradle version information cache is up-to-date. Trying to read.
+2024-05-09 03:10:06,379 [Worker-41: Building] WARN  o.e.m.c.i.embedder.EclipseLogger - The artifact org.hibernate:hibernate-core:jar:6.4.4.Final has been relocated to org.hibernate.orm:hibernate-core:jar:6.4.4.Final
+2024-05-09 03:10:06,412 [Worker-41: Building] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/CHQA_Client: CHQA_Client:CHQA_Client:0.0.1-SNAPSHOT with classifier  to /CHQA_Client/target/classes
+2024-05-09 03:10:07,390 [Worker-41: Building] WARN  o.a.m.s.f.DefaultMavenResourcesFiltering - Using platform encoding (Cp1252 actually) to copy filtered resources, i.e. build is platform dependent!
+2024-05-09 03:10:07,397 [Worker-41: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - Copying 1 resource from src\main\resources to target\classes
+2024-05-09 03:10:07,407 [Worker-41: Building] WARN  o.a.m.s.f.DefaultMavenResourcesFiltering - Using platform encoding (Cp1252 actually) to copy filtered resources, i.e. build is platform dependent!
+2024-05-09 03:10:07,408 [Worker-41: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - skip non existing resourceDirectory D:\1daihoc\HK2_Nam3\LTPTJAVA\DoAnMon\LTPT_BaiTapNhom\CHQA_Server\src\test\resources
+2024-05-09 03:12:39,763 [Worker-44: Launching GUI_QuenMatKhau] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/CHQA_Client: CHQA_Client:CHQA_Client:0.0.1-SNAPSHOT with classifier null to /CHQA_Client/target/classes
+2024-05-09 03:12:39,805 [Worker-44: Launching GUI_QuenMatKhau] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/CHQA_Client: CHQA_Client:CHQA_Client:0.0.1-SNAPSHOT with classifier null to /CHQA_Client/target/classes
+2024-05-09 03:12:39,846 [Worker-44: Launching GUI_QuenMatKhau] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/CHQA_Client: CHQA_Client:CHQA_Client:0.0.1-SNAPSHOT with classifier null to /CHQA_Client/target/classes
