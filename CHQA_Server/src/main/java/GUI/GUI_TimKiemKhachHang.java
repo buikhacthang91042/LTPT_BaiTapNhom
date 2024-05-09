@@ -93,6 +93,12 @@ public class GUI_TimKiemKhachHang extends JPanel {
 		JButton btnTimKiem = new JButton("Tìm kiếm");
 		btnTimKiem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				if((txtTenKH.getText().isEmpty()) && (cboGioiTinh.getSelectedItem().equals("Không"))
+						&& (txtSdt.getText().isEmpty())
+						&& (cboMaKhachHang.getSelectedItem().toString().equals("Không"))) {
+					modelKhachHang.getDataVector().removeAllElements();
+					updateData();
+				}else {
 				if ((!txtTenKH.getText().isEmpty()) && (cboGioiTinh.getSelectedItem().equals("Không"))
 						&& (txtSdt.getText().isEmpty())
 						&& (cboMaKhachHang.getSelectedItem().toString().equals("Không"))) {
@@ -146,6 +152,7 @@ public class GUI_TimKiemKhachHang extends JPanel {
 
 				} else {
 					timTheoTenvaGioiTinhvaMavaSDT();
+				}
 				}
 
 			}

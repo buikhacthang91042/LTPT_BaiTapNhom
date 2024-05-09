@@ -16,7 +16,7 @@ public class Server {
 
 	public static void main(String[] args) throws IOException {
 		// TODO Auto-generated method stub
-		try (ServerSocket serverSocket = new ServerSocket(9999)) {
+		try (ServerSocket serverSocket = new ServerSocket(8888)) {
 			
 			ExecutorService executorService = Executors.newCachedThreadPool();
 			System.out.println("Server listening on port 9999...");

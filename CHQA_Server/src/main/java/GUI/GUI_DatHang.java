@@ -98,7 +98,7 @@ public class GUI_DatHang extends JPanel {
 		    	setLayout(null);
 		    	
 		    	DAO_ChuyenDoi ChuyenDoi = new DAO_ChuyenDoi();
-		    	DAO_HoaDon hoaDon = new DAO_HoaDon();
+		    	DAO_HoaDon hoaDon = new DAO_HoaDon(entityManager);
 		    	
 				
 				
@@ -904,7 +904,7 @@ public class GUI_DatHang extends JPanel {
 		//Hàm thêm hóa đơn mới
 		public void themHoaDon() {
 			DAO_ChuyenDoi ChuyenDoi = new DAO_ChuyenDoi();
-			DAO_HoaDon hoaDon = new DAO_HoaDon();
+			DAO_HoaDon hoaDon = new DAO_HoaDon(entityManager);
 			String maHD = taoMa();
 			String tenNV = txtTenNhanVien.getText();
 			String maNV = GUI_DangNhap.txtTenDangNhap.getText();
@@ -1043,7 +1043,7 @@ public class GUI_DatHang extends JPanel {
 		//Tạo mã tăng tự động theo thứ tự
 		public String taoMa() {
 
-			DAO_HoaDon dao = new DAO_HoaDon();
+			DAO_HoaDon dao = new DAO_HoaDon(entityManager);
 			
 			int n = dao.getAllHoaDon().size();
 			if(n<9) {
@@ -1074,7 +1074,7 @@ public class GUI_DatHang extends JPanel {
 		}
 		public String layMaHD() {
 
-			DAO_HoaDon dao = new DAO_HoaDon();
+			DAO_HoaDon dao = new DAO_HoaDon(entityManager);
 			
 			int n = dao.getAllHoaDon().size();
 			if(n<=9) {

@@ -25,12 +25,14 @@ import DAO.DAO_LoaiQuanAo;
 import DAO.DAO_NhaCungCap;
 import DAO.DAO_NhanVien;
 import DAO.DAO_QuanAo;
+import DAO.EntityManagerFactoryUtil;
 import connect.ConnectDB;
 import entity.ChiTietHoaDon;
 import entity.HoaDon;
 import entity.LoaiQuanAo;
 import entity.NhaCungCap;
 import entity.NhanVien;
+import jakarta.persistence.EntityManager;
 
 import javax.swing.JScrollPane;
 import javax.swing.table.TableModel;
@@ -43,6 +45,8 @@ public class GUI_LichSuMuaHang extends JPanel {
 	private List<HoaDon> list;
 	private JTable tblHoaDon, tblChiTietHoaDon;
 	private JTextField txtTimTheoMa;
+	EntityManagerFactoryUtil util = new EntityManagerFactoryUtil();
+    EntityManager entityManager = util.getEnManager();
 	public  GUI_LichSuMuaHang() {
 		// TODO Auto-generated constructor stub
 
@@ -146,7 +150,7 @@ public class GUI_LichSuMuaHang extends JPanel {
 	
 	//Các hàm cập nhật
 	public void updateData() {
-		DAO_HoaDon dao = new DAO_HoaDon();
+		DAO_HoaDon dao = new DAO_HoaDon(entityManager);
 		DAO_ChuyenDoi chuyenDoi = new DAO_ChuyenDoi();
 		List<HoaDon> list = dao.getAllHoaDon();
 		for(HoaDon hd : list) {
@@ -168,7 +172,7 @@ public class GUI_LichSuMuaHang extends JPanel {
 	
 	//Hàm tìm
 	public void timTheoMa() {
-		DAO_HoaDon dao = new DAO_HoaDon();
+		DAO_HoaDon dao = new DAO_HoaDon(entityManager);
 		DAO_ChuyenDoi chuyenDoi = new DAO_ChuyenDoi();
 		List<HoaDon> list = dao.search(txtTimTheoMa.getText());
 		modelHoaDon.setRowCount(0);

@@ -50,6 +50,8 @@ public class GUI_DatHangTruoc extends JPanel{
 	private String ma,tenNhanVien;
 	private List<HoaDon> list;
 	private JLabel lblTien,lblTienTraLai;
+	EntityManagerFactoryUtil util = new EntityManagerFactoryUtil();
+    EntityManager entityManager = util.getEnManager();
  GUI_DatHangTruoc() {
     	setBounds(new Rectangle(0, 0, 1308, 678));
     	setLayout(null);
@@ -269,10 +271,15 @@ public class GUI_DatHangTruoc extends JPanel{
 		String tenNhanVien;
 		int row = tblDonDatHang.getSelectedRow();
 		DAO_ChuyenDoi ChuyenDoi = new DAO_ChuyenDoi();
+<<<<<<< HEAD
 		DAO_HoaDon hoaDon = new DAO_HoaDon();
 		EntityManagerFactoryUtil util = new EntityManagerFactoryUtil();
 	    EntityManager entityManager = util.getEnManager();
 		DAO_NhanVien nv_dao = new DAO_NhanVien(entityManager);
+=======
+		DAO_HoaDon hoaDon = new DAO_HoaDon(entityManager);
+		DAO_NhanVien nv_dao = new DAO_NhanVien();
+>>>>>>> e461a82c85da96ccf7dbe681e4e446baf43eb782
 		
 		String maHD = taoMa();
 		String tenNV = layTenNhanVien();
@@ -315,7 +322,7 @@ public class GUI_DatHangTruoc extends JPanel{
 	//Tạo mã tăng tự động theo thứ tự
 			public String taoMa() {
 
-				DAO_HoaDon dao = new DAO_HoaDon();
+				DAO_HoaDon dao = new DAO_HoaDon(entityManager);
 				
 				int n = dao.getAllHoaDon().size();
 				if(n<9) {
