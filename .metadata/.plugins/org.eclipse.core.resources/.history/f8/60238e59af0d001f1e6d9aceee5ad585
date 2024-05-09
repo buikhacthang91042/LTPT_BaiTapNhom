@@ -1,0 +1,523 @@
+package GUI;
+
+import javax.swing.JPanel;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
+import java.awt.Font;
+import java.awt.Color;
+import javax.swing.JTextField;
+import javax.swing.JComboBox;
+import javax.swing.JTable;
+import javax.swing.JButton;
+import javax.swing.table.DefaultTableModel;
+
+import DAO.DAO_KhachHang;
+import DAO.DAO_LoaiQuanAo;
+import DAO.DAO_NhaCungCap;
+import DAO.DAO_QuanAo;
+import DAO.EntityManagerFactoryUtil;
+import connect.ConnectDB;
+import entity.KhachHang;
+import entity.LoaiQuanAo;
+import entity.NhaCungCap;
+import entity.QuanAo;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityManagerFactory;
+
+import javax.swing.JScrollPane;
+import java.awt.event.ActionListener;
+import java.sql.SQLException;
+import java.util.List;
+import java.awt.event.ActionEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+
+public class GUI_CapNhatKhachHang extends JPanel {
+
+	private static final long serialVersionUID = 1L;
+	private JTextField txtMakhachhang,txtHoten,txtSdt,txtNamsinh,txtDiaChi;
+	private JTable tblThongTinKhachHang;
+	private DefaultTableModel modelKhachHang;
+	private JComboBox cboGioitinh;
+	private String ma;
+	private List<KhachHang> kh;
+	EntityManagerFactoryUtil util = new EntityManagerFactoryUtil();
+    EntityManager entityManager = util.getEnManager();
+	public GUI_CapNhatKhachHang() {
+		setLayout(null);
+		setBackground(new Color(0, 64, 64));
+
+		//ConnectDB
+ 		try {
+			ConnectDB.getInstance().connect();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		JLabel lblTieuDe = new JLabel("Quáº£n lÃ­ khÃ¡ch hÃ ng");
+		lblTieuDe.setFont(new Font("Arial", Font.BOLD | Font.ITALIC, 35));
+		lblTieuDe.setForeground(new Color(135, 206, 235));
+		lblTieuDe.setBounds(472, 11, 362, 80);
+		add(lblTieuDe);
+		
+		String gioiTinh[]= {"Nam","Ná»¯"};
+		
+		
+		
+		tblThongTinKhachHang = new JTable();
+		 String[] tieude = {
+				"MÃ£ khÃ¡ch hÃ ng", "Há» vÃ  tÃªn", "NÄƒm Sinh", "Sá»‘ Ä‘iá»‡n thoáº¡i ", "Giá»›i tÃ­nh","Äá»‹a chá»‰"
+			};
+		
+		
+		modelKhachHang = new DefaultTableModel(tieude,0);
+		JScrollPane scrThongTinKhachHang = new JScrollPane();
+		scrThongTinKhachHang.setBounds(82, 386, 1116, 202);
+		add(scrThongTinKhachHang);
+			
+		scrThongTinKhachHang.setViewportView(tblThongTinKhachHang = new  JTable(modelKhachHang));
+		tblThongTinKhachHang.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				  int row = tblThongTinKhachHang.getSelectedRow();
+				  txtMakhachhang.setText(tblThongTinKhachHang.getValueAt(row, 0).toString());
+				  txtHoten.setText(tblThongTinKhachHang.getValueAt(row, 1).toString());
+				  txtNamsinh.setText(tblThongTinKhachHang.getValueAt(row, 2).toString());
+				  txtSdt.setText(tblThongTinKhachHang.getValueAt(row, 3).toString());
+				  cboGioitinh.setSelectedItem(tblThongTinKhachHang.getValueAt(row, 4).toString());
+				  txtDiaChi.setText(tblThongTinKhachHang.getValueAt(row, 5).toString());
+				  
+			}
+		});
+		scrThongTinKhachHang.setViewportView(tblThongTinKhachHang);
+		
+		JPanel pnlNhapThongTinKhachHang = new JPanel();
+		pnlNhapThongTinKhachHang.setBounds(103, 87, 1066, 244);
+		add(pnlNhapThongTinKhachHang);
+		pnlNhapThongTinKhachHang.setLayout(null);
+		
+		JLabel lblMakhachhang = new JLabel("MÃ£ khÃ¡ch hÃ ng");
+		lblMakhachhang.setBounds(45, 28, 142, 22);
+		pnlNhapThongTinKhachHang.add(lblMakhachhang);
+		lblMakhachhang.setFont(new Font("Arial", Font.BOLD, 18));
+		
+		txtMakhachhang = new JTextField();
+		txtMakhachhang.setFont(new Font("Arial", Font.BOLD, 16));
+		txtMakhachhang.setBounds(217, 24, 245, 26);
+		txtMakhachhang.setEditable(false);
+		
+		pnlNhapThongTinKhachHang.add(txtMakhachhang);
+		txtMakhachhang.setColumns(10);
+		
+		JLabel lblHoten = new JLabel("Há» vÃ  tÃªn");
+		lblHoten.setBounds(45, 64, 108, 37);
+		pnlNhapThongTinKhachHang.add(lblHoten);
+		lblHoten.setFont(new Font("Arial", Font.BOLD, 18));
+		
+		txtHoten = new JTextField();
+		txtHoten.setFont(new Font("Arial", Font.PLAIN, 14));
+		txtHoten.setBounds(217, 70, 245, 26);
+		pnlNhapThongTinKhachHang.add(txtHoten);
+		txtHoten.setColumns(10);
+		
+		JLabel lblSodienthoai = new JLabel("Sá»‘ Ä‘iá»‡n thoáº¡i");
+		lblSodienthoai.setBounds(45, 115, 144, 32);
+		pnlNhapThongTinKhachHang.add(lblSodienthoai);
+		lblSodienthoai.setFont(new Font("Arial", Font.BOLD, 18));
+		
+		txtSdt = new JTextField();
+		txtSdt.setFont(new Font("Arial", Font.PLAIN, 14));
+		txtSdt.setBounds(217, 118, 245, 26);
+		pnlNhapThongTinKhachHang.add(txtSdt);
+		txtSdt.setColumns(10);
+		
+		JLabel lblNamsinh = new JLabel("NÄƒm sinh");
+		lblNamsinh.setBounds(632, 19, 98, 41);
+		pnlNhapThongTinKhachHang.add(lblNamsinh);
+		lblNamsinh.setFont(new Font("Arial", Font.BOLD, 18));
+		
+		txtNamsinh = new JTextField();
+		txtNamsinh.setFont(new Font("Arial", Font.PLAIN, 14));
+		txtNamsinh.setBounds(755, 24, 245, 26);
+		pnlNhapThongTinKhachHang.add(txtNamsinh);
+		txtNamsinh.setColumns(10);
+		
+		JLabel lblGioitinh = new JLabel("Giá»›i tÃ­nh");
+		lblGioitinh.setBounds(632, 62, 98, 41);
+		pnlNhapThongTinKhachHang.add(lblGioitinh);
+		lblGioitinh.setFont(new Font("Arial", Font.BOLD, 18));
+		cboGioitinh = new JComboBox(gioiTinh);
+		cboGioitinh.setBounds(755, 68, 98, 26);
+		pnlNhapThongTinKhachHang.add(cboGioitinh);
+		cboGioitinh.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		cboGioitinh.setToolTipText("");
+		
+		JLabel lblDiaChi = new JLabel("Äá»‹a chá»‰");
+		lblDiaChi.setBounds(632, 115, 144, 32);
+		pnlNhapThongTinKhachHang.add(lblDiaChi);
+		lblDiaChi.setFont(new Font("Arial", Font.BOLD, 18));
+		
+		txtDiaChi = new JTextField();
+		txtDiaChi.setFont(new Font("Arial", Font.PLAIN, 14));
+		txtDiaChi.setBounds(755, 120, 245, 26);
+		pnlNhapThongTinKhachHang.add(txtDiaChi);
+		txtDiaChi.setColumns(10);
+		
+		JButton btnThem = new JButton("ThÃªm");
+		btnThem.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				      if (validData()) {
+			            txtMakhachhang.setText(taoMa());
+			            them();
+			        }
+
+			}
+		});
+		btnThem.setBounds(75, 185, 171, 49);
+		pnlNhapThongTinKhachHang.add(btnThem);
+		btnThem.setForeground(new Color(0, 255, 0));
+		btnThem.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		
+		JButton btnXoa = new JButton("XÃ³a");
+		btnXoa.setBounds(307, 185, 171, 49);
+		pnlNhapThongTinKhachHang.add(btnXoa);
+		btnXoa.setForeground(Color.GREEN);
+		btnXoa.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		btnXoa.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				xoaKhachHang();
+			}
+		});
+		
+		
+		JButton btnSua = new JButton("Sá»­a");
+		btnSua.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (validDataSua()) {
+	                suaKhachHang();
+	            }
+			}
+		});
+		btnSua.setBounds(559, 185, 171, 49);
+		pnlNhapThongTinKhachHang.add(btnSua);
+		btnSua.setForeground(Color.GREEN);
+		btnSua.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		
+		JButton btnXoatrang = new JButton("XÃ³a tráº¯ng");
+		btnXoatrang.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+		            xoaTrang();
+		               
+				}
+			
+		});
+		btnXoatrang.setBounds(801, 185, 171, 49);
+		pnlNhapThongTinKhachHang.add(btnXoatrang);
+		btnXoatrang.setForeground(Color.GREEN);
+		btnXoatrang.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		
+		JLabel lblDanhSachKhachHang = new JLabel("Danh sÃ¡ch khÃ¡ch hÃ ng");
+		lblDanhSachKhachHang.setForeground(new Color(135, 206, 235));
+		lblDanhSachKhachHang.setFont(new Font("Arial", Font.BOLD | Font.ITALIC, 20));
+		lblDanhSachKhachHang.setBounds(81, 341, 231, 55);
+		add(lblDanhSachKhachHang);
+		
+		updateData();
+		
+	}
+	public void them() {
+		EntityManagerFactoryUtil util = new EntityManagerFactoryUtil();
+	    EntityManager entityManager = util.getEnManager();
+    
+		DAO_KhachHang DAO = new DAO_KhachHang(entityManager);
+		String ma = txtMakhachhang.getText().trim();
+		String ten = txtHoten.getText().trim();
+		String diachi = txtDiaChi.getText().trim();
+		String sdt = txtSdt.getText().trim();
+		String gioitinh = cboGioitinh.getSelectedItem().toString();
+		String namsinh = txtNamsinh.getText().trim();
+		KhachHang kh = new KhachHang(ma,ten,namsinh,sdt,gioitinh,diachi);
+		if(DAO.themKH(kh)) {
+			String [] data = {ma,ten,namsinh,sdt,gioitinh,diachi};
+			modelKhachHang.addRow(data);
+		}
+	}
+	public void updateData() {
+		EntityManagerFactoryUtil util = new EntityManagerFactoryUtil();
+	    EntityManager entityManager = util.getEnManager();
+    
+		DAO_KhachHang dao = new DAO_KhachHang(entityManager);
+		List<KhachHang> list = dao.getAllKhachHang();
+		for(KhachHang kh : list) {
+			Object [] data = {kh.getMaKH(),kh.getHoTen(),kh.getNamSinh(),kh.getsDT(),kh.getGioiTinh(),kh.getDiaChi()};
+			modelKhachHang.addRow(data);
+		}
+		
+	}
+	
+	public void updateLaiData() {
+		EntityManagerFactoryUtil util = new EntityManagerFactoryUtil();
+	    EntityManager entityManager = util.getEnManager();
+    
+		DAO_KhachHang dao = new DAO_KhachHang(entityManager);
+		modelKhachHang.setRowCount(0);
+		List<KhachHang> list = dao.getAllKhachHang();
+		for(KhachHang kh : list) {
+			Object [] data = {kh.getMaKH(),kh.getHoTen(),kh.getNamSinh(),kh.getsDT(),kh.getGioiTinh(),kh.getDiaChi()};
+			modelKhachHang.addRow(data);
+		}
+		
+	}
+	
+	public void xoaTrang() {
+		txtHoten.setText("");
+		txtMakhachhang.setText("");
+		txtDiaChi.setText("");
+		txtNamsinh.setText("");
+		txtSdt.setText("");
+	}
+	
+	public void xoaKhachHang() {
+		EntityManagerFactoryUtil util = new EntityManagerFactoryUtil();
+	    EntityManager entityManager = util.getEnManager();
+    
+		DAO_KhachHang dao = new DAO_KhachHang(entityManager);
+		int row = tblThongTinKhachHang.getSelectedRow();
+		if(row >=1) {
+			int n = JOptionPane.showConfirmDialog(null, "Cháº¯c cháº¯n xÃ³a ?", "Cáº£nh bÃ¡o",JOptionPane.YES_NO_OPTION);
+			if(n==JOptionPane.YES_OPTION) {
+				String maKhachHang = (String) tblThongTinKhachHang.getValueAt(row, 0);
+				if(dao.delete(maKhachHang)) {
+					modelKhachHang.removeRow(row);
+				}
+			}else return;
+		}else {
+			JOptionPane.showMessageDialog(null,"Vui lÃ²ng chá»n khÃ¡ch hÃ ng cáº§n xÃ³a");
+		}
+
+	}
+	public void suaKhachHang() {
+		EntityManagerFactoryUtil util = new EntityManagerFactoryUtil();
+	    EntityManager entityManager = util.getEnManager();
+    
+		DAO_KhachHang dao = new DAO_KhachHang(entityManager);
+		String ma = txtMakhachhang.getText().trim();
+		String ten = txtHoten.getText().trim();
+		String diachi = txtDiaChi.getText().trim();
+		String sdt = txtSdt.getText().trim();
+		String gioitinh = cboGioitinh.getSelectedItem().toString();
+		String namsinh = txtNamsinh.getText().trim();
+		KhachHang kh = new KhachHang(ma,ten,namsinh,sdt,gioitinh,diachi);
+		if(dao.update(kh)) {
+			JOptionPane.showMessageDialog(this, "Sá»­a thÃ nh cÃ´ng");
+			String [] data = {ma,ten,namsinh,sdt,gioitinh,diachi};
+			modelKhachHang.addRow(data);
+			int row = tblThongTinKhachHang.getSelectedRow();
+			modelKhachHang.removeRow(row);
+		}
+
+	}
+	private boolean validData() {
+		String hoTen = txtHoten.getText().trim();
+		String sdt = txtSdt.getText().trim();
+		String diaChi = txtDiaChi.getText().trim();
+		String namSinh = txtNamsinh.getText().trim();
+
+		if (hoTen.trim().equals("")) {
+			JOptionPane.showMessageDialog(this, "Há» tÃªn khÃ¡ch hÃ ng trá»‘ng!");
+			txtHoten.selectAll();
+			txtHoten.requestFocus();
+			return false;
+		} else {
+
+			if ((hoTen.matches(
+					"^[a-zA-Z Ã€ÃÃ‚ÃƒÃˆÃ‰ÃŠÃŒÃÃ’Ã“Ã”Ã•Ã™ÃšÄ‚ÄÄ¨Å¨Æ Ã Ã¡Ã¢Ã£Ã¨Ã©ÃªÃ¬Ã­Ã²Ã³Ã´ÃµÃ¹ÃºÄƒÄ‘Ä©Å©Æ¡Æ¯Ä‚áº áº¢áº¤áº¦áº¨áºªáº¬áº®áº°áº²áº´áº¶áº¸áººáº¼á»€á»€á»‚ Æ°Äƒáº¡áº£áº¥áº§áº©áº«áº­áº¯áº±áº³áºµáº·áº¹áº»áº½á»á»á»ƒá»„á»†á»ˆá»Šá»Œá»Žá»á»’á»”á»–á»˜á»šá»œá»žá» á»¢á»¤á»¦á»¨á»ªá»…á»‡á»‰á»‹á»á»á»‘á»“á»•á»—á»™á»›á»á»Ÿá»¡á»£á»¥á»§á»©á»«á»¬á»®á»°á»²á»´Ãá»¶á»¸á»­á»¯á»±á»³á»µá»·á»¹]"))) {
+				JOptionPane.showMessageDialog(this, "TÃªn khÃ¡ch hÃ ng gá»“m chá»¯ cÃ¡i, cÃ³ thá»ƒ chá»©a khoáº£ng tráº¯ng");
+				txtHoten.requestFocus();
+				txtHoten.selectAll();
+				return false;
+			}
+		}
+
+		if (sdt.trim().equals("")) {
+			JOptionPane.showMessageDialog(this, "Sá»‘ Ä‘iá»‡n thoáº¡i khÃ¡ch hÃ ng trá»‘ng !");
+			txtSdt.selectAll();
+			txtSdt.requestFocus();
+			return false;
+		} else  {
+
+			if (!(sdt.matches("^[0-9]{10}$"))) {
+				JOptionPane.showMessageDialog(this, "Sá»‘ Ä‘iá»‡n thoáº¡i khÃ¡ch hÃ ng gá»“m 10 sá»‘");
+				txtSdt.requestFocus();
+				txtSdt.selectAll();
+				return false;
+			}else if (kiemTraTrungSoDienThoai(sdt)) {
+		        JOptionPane.showMessageDialog(this, "Sá»‘ Ä‘iá»‡n thoáº¡i Ä‘Ã£ tá»“n táº¡i!");
+		        txtSdt.requestFocus();
+		        txtSdt.selectAll();
+		        return false;
+		    }
+		}
+
+		if (diaChi.trim().equals("")) {
+			JOptionPane.showMessageDialog(this, "Äá»‹a chá»‰ khÃ´ng Ä‘Æ°á»£c trá»‘ng!");
+			txtDiaChi.selectAll();
+			txtDiaChi.requestFocus();
+			return false;
+		} else {
+
+			if (diaChi.matches(
+					"^[a-z0-9A-Z Ã€ÃÃ‚ÃƒÃˆÃ‰ÃŠÃŒÃÃ’Ã“Ã”Ã•Ã™ÃšÄ‚ÄÄ¨Å¨Æ Ã Ã¡Ã¢Ã£Ã¨Ã©ÃªÃ¬Ã­Ã²Ã³Ã´ÃµÃ¹ÃºÄƒÄ‘Ä©Å©Æ¡Æ¯Ä‚áº áº¢áº¤áº¦áº¨áºªáº¬áº®áº°áº²áº´áº¶áº¸áººáº¼á»€á»€á»‚ Æ°Äƒáº¡áº£áº¥áº§áº©áº«áº­áº¯áº±áº³áºµáº·áº¹áº»áº½á»á»á»ƒá»„á»†á»ˆá»Šá»Œá»Žá»á»’á»”á»–á»˜á»šá»œá»žá» á»¢á»¤á»¦á»¨á»ªá»…á»‡á»‰á»‹á»á»á»‘á»“á»•á»—á»™á»›á»á»Ÿá»¡á»£á»¥á»§á»©á»«á»¬á»®á»°á»²á»´Ãá»¶á»¸á»­á»¯á»±á»³á»µá»·á»¹]")) {
+				JOptionPane.showMessageDialog(this, "Äá»‹a chá»‰ gá»“m chá»¯ cÃ¡i, sá»‘,...");
+				txtDiaChi.requestFocus();
+				txtDiaChi.selectAll();
+				return false;
+
+			}
+		}
+		if (namSinh.trim().equals("")) {
+			JOptionPane.showMessageDialog(this, " NÄƒm sinh khÃ¡ch hÃ ng trá»‘ng!");
+			txtNamsinh.selectAll();
+			txtNamsinh.requestFocus();
+			return false;
+		} else {
+
+			if (!namSinh.matches("^[0-9]{4}$")) {
+				JOptionPane.showMessageDialog(this, " NÄƒm sinh khÃ¡ch hÃ ng gá»“m 4 sá»‘");
+				txtNamsinh.requestFocus();
+				txtNamsinh.selectAll();
+				return false;
+			}
+		}
+
+		return true;
+	}
+	private boolean validDataSua() {
+		String hoTen = txtHoten.getText().trim();
+		String sdt = txtSdt.getText().trim();
+		String diaChi = txtDiaChi.getText().trim();
+		String namSinh = txtNamsinh.getText().trim();
+
+		if (hoTen.trim().equals("")) {
+			JOptionPane.showMessageDialog(this, "Há» tÃªn khÃ¡ch hÃ ng trá»‘ng!");
+			txtHoten.selectAll();
+			txtHoten.requestFocus();
+			return false;
+		} else {
+
+			if ((hoTen.matches(
+					"^[a-zA-Z Ã€ÃÃ‚ÃƒÃˆÃ‰ÃŠÃŒÃÃ’Ã“Ã”Ã•Ã™ÃšÄ‚ÄÄ¨Å¨Æ Ã Ã¡Ã¢Ã£Ã¨Ã©ÃªÃ¬Ã­Ã²Ã³Ã´ÃµÃ¹ÃºÄƒÄ‘Ä©Å©Æ¡Æ¯Ä‚áº áº¢áº¤áº¦áº¨áºªáº¬áº®áº°áº²áº´áº¶áº¸áººáº¼á»€á»€á»‚ Æ°Äƒáº¡áº£áº¥áº§áº©áº«áº­áº¯áº±áº³áºµáº·áº¹áº»áº½á»á»á»ƒá»„á»†á»ˆá»Šá»Œá»Žá»á»’á»”á»–á»˜á»šá»œá»žá» á»¢á»¤á»¦á»¨á»ªá»…á»‡á»‰á»‹á»á»á»‘á»“á»•á»—á»™á»›á»á»Ÿá»¡á»£á»¥á»§á»©á»«á»¬á»®á»°á»²á»´Ãá»¶á»¸á»­á»¯á»±á»³á»µá»·á»¹]"))) {
+				JOptionPane.showMessageDialog(this, "TÃªn khÃ¡ch hÃ ng gá»“m chá»¯ cÃ¡i, cÃ³ thá»ƒ chá»©a khoáº£ng tráº¯ng");
+				txtHoten.requestFocus();
+				txtHoten.selectAll();
+				return false;
+			}
+		}
+
+		if (sdt.trim().equals("")) {
+			JOptionPane.showMessageDialog(this, "Sá»‘ Ä‘iá»‡n thoáº¡i khÃ¡ch hÃ ng trá»‘ng !");
+			txtSdt.selectAll();
+			txtSdt.requestFocus();
+			return false;
+		} else  {
+
+			if (!(sdt.matches("^[0-9]{10}$"))) {
+				JOptionPane.showMessageDialog(this, "Sá»‘ Ä‘iá»‡n thoáº¡i khÃ¡ch hÃ ng gá»“m 10 sá»‘");
+				txtSdt.requestFocus();
+				txtSdt.selectAll();
+				return false;
+			}
+		}
+
+		if (diaChi.trim().equals("")) {
+			JOptionPane.showMessageDialog(this, "Äá»‹a chá»‰ khÃ´ng Ä‘Æ°á»£c trá»‘ng!");
+			txtDiaChi.selectAll();
+			txtDiaChi.requestFocus();
+			return false;
+		} else {
+
+			if (diaChi.matches(
+					"^[a-z0-9A-Z Ã€ÃÃ‚ÃƒÃˆÃ‰ÃŠÃŒÃÃ’Ã“Ã”Ã•Ã™ÃšÄ‚ÄÄ¨Å¨Æ Ã Ã¡Ã¢Ã£Ã¨Ã©ÃªÃ¬Ã­Ã²Ã³Ã´ÃµÃ¹ÃºÄƒÄ‘Ä©Å©Æ¡Æ¯Ä‚áº áº¢áº¤áº¦áº¨áºªáº¬áº®áº°áº²áº´áº¶áº¸áººáº¼á»€á»€á»‚ Æ°Äƒáº¡áº£áº¥áº§áº©áº«áº­áº¯áº±áº³áºµáº·áº¹áº»áº½á»á»á»ƒá»„á»†á»ˆá»Šá»Œá»Žá»á»’á»”á»–á»˜á»šá»œá»žá» á»¢á»¤á»¦á»¨á»ªá»…á»‡á»‰á»‹á»á»á»‘á»“á»•á»—á»™á»›á»á»Ÿá»¡á»£á»¥á»§á»©á»«á»¬á»®á»°á»²á»´Ãá»¶á»¸á»­á»¯á»±á»³á»µá»·á»¹]")) {
+				JOptionPane.showMessageDialog(this, "Äá»‹a chá»‰ gá»“m chá»¯ cÃ¡i, sá»‘,...");
+				txtDiaChi.requestFocus();
+				txtDiaChi.selectAll();
+				return false;
+
+			}
+		}
+		if (namSinh.trim().equals("")) {
+			JOptionPane.showMessageDialog(this, " NÄƒm sinh khÃ¡ch hÃ ng trá»‘ng!");
+			txtNamsinh.selectAll();
+			txtNamsinh.requestFocus();
+			return false;
+		} else {
+
+			if (!namSinh.matches("^[0-9]{4}$")) {
+				JOptionPane.showMessageDialog(this, " NÄƒm sinh khÃ¡ch hÃ ng gá»“m 4 sá»‘");
+				txtNamsinh.requestFocus();
+				txtNamsinh.selectAll();
+				return false;
+			}
+		}
+
+		return true;
+	}
+	
+	public boolean kiemTraTrungSoDienThoai(String sdt) {
+		EntityManagerFactoryUtil util = new EntityManagerFactoryUtil();
+	    EntityManager entityManager = util.getEnManager();
+    
+		DAO_KhachHang dao = new DAO_KhachHang(entityManager);
+        List<KhachHang> list = dao.getAllKhachHang();
+        
+        for (KhachHang kh : list) {
+            if (kh.getsDT().equals(sdt)) {
+                return true;
+            }
+        }
+        
+        return false; 
+    }
+	
+	public String taoMa() {
+
+		EntityManagerFactoryUtil util = new EntityManagerFactoryUtil();
+	    EntityManager entityManager = util.getEnManager();
+    
+		DAO_KhachHang dao = new DAO_KhachHang(entityManager);
+		int n = dao.getAllKhachHang().size();
+		if(n<9) {
+		do {
+			 n=n+1;
+			
+			ma = "KH00" + String.valueOf(n);
+			kh = dao.getAllKhachHang();
+		} while (kh.contains(ma));
+		
+	}else if(n<99) {
+		do {
+			 n=n+1;
+			
+			ma = "KH0" + String.valueOf(n);
+			kh = dao.getAllKhachHang();
+		} while (kh.contains(ma));
+	}
+	else if(n<999) {
+		do {
+			 n=n+1;
+			
+			ma = "KH" + String.valueOf(n);
+			kh = dao.getAllKhachHang();
+		} while (kh.contains(ma));
+	}
+		return ma;
+	}
+}
+
+
