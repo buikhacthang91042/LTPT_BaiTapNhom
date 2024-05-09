@@ -26,6 +26,7 @@ import DAO.DAO_ChuyenDoi;
 import DAO.DAO_DonHangDatTruoc;
 import DAO.DAO_HoaDon;
 import DAO.DAO_NhanVien;
+import DAO.EntityManagerFactoryUtil;
 import connect.ConnectDB;
 import entity.ChiTietDonDatHang;
 import entity.ChiTietHoaDon;
@@ -34,6 +35,8 @@ import entity.HoaDon;
 import entity.KhachHang;
 import entity.NhanVien;
 import entity.QuanAo;
+import jakarta.persistence.EntityManager;
+
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.KeyAdapter;
@@ -47,6 +50,8 @@ public class GUI_DatHangTruoc extends JPanel{
 	private String ma,tenNhanVien;
 	private List<HoaDon> list;
 	private JLabel lblTien,lblTienTraLai;
+	EntityManagerFactoryUtil util = new EntityManagerFactoryUtil();
+    EntityManager entityManager = util.getEnManager();
  GUI_DatHangTruoc() {
     	setBounds(new Rectangle(0, 0, 1308, 678));
     	setLayout(null);
@@ -266,7 +271,7 @@ public class GUI_DatHangTruoc extends JPanel{
 		String tenNhanVien;
 		int row = tblDonDatHang.getSelectedRow();
 		DAO_ChuyenDoi ChuyenDoi = new DAO_ChuyenDoi();
-		DAO_HoaDon hoaDon = new DAO_HoaDon();
+		DAO_HoaDon hoaDon = new DAO_HoaDon(entityManager);
 		DAO_NhanVien nv_dao = new DAO_NhanVien();
 		
 		String maHD = taoMa();
@@ -310,7 +315,7 @@ public class GUI_DatHangTruoc extends JPanel{
 	//Tạo mã tăng tự động theo thứ tự
 			public String taoMa() {
 
-				DAO_HoaDon dao = new DAO_HoaDon();
+				DAO_HoaDon dao = new DAO_HoaDon(entityManager);
 				
 				int n = dao.getAllHoaDon().size();
 				if(n<9) {

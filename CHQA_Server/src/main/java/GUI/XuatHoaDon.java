@@ -44,7 +44,8 @@ public class XuatHoaDon {
 	private DAO_QuanAo quanAo_dao;
 	private DAO_ChiTietHoaDon CTHD_dao;
 	private DAO_ChuyenDoi chuyenDoi_dao;
-	
+	EntityManagerFactoryUtil util = new EntityManagerFactoryUtil();
+    EntityManager entityManager = util.getEnManager();
 	public XuatHoaDon(String mahd,String tienKhachTra,String tienTraLai) {
 		try {
 			ConnectDB.getInstance().connect();
@@ -76,10 +77,8 @@ public class XuatHoaDon {
 		
 
 		chuyenDoi_dao = new DAO_ChuyenDoi();
-		hoaDon_dao = new DAO_HoaDon();
+		hoaDon_dao = new DAO_HoaDon(entityManager);
 		nhanVien_dao = new DAO_NhanVien();
-		EntityManagerFactoryUtil util = new EntityManagerFactoryUtil();
-	    EntityManager entityManager = util.getEnManager();
 		khachHang_dao = new DAO_KhachHang(entityManager);
 		CTHD_dao = new DAO_ChiTietHoaDon();
 	

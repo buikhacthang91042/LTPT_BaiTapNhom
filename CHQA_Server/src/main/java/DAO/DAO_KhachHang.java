@@ -92,15 +92,15 @@ public class DAO_KhachHang {
     public ArrayList<KhachHang> timTheoSoDienThoai(String sdt) {
         // Sử dụng TypedQuery để tránh cảnh báo unchecked cast
         TypedQuery<KhachHang> query = entityManager.createQuery(
-            "SELECT kh FROM KhachHang kh WHERE kh.SoDienThoai = :sdt", KhachHang.class);
-        query.setParameter("sdt", sdt);
+            "SELECT kh FROM KhachHang kh WHERE kh.sDT = :sDT", KhachHang.class);
+        query.setParameter("sDT", sdt);
         List<KhachHang> resultList = query.getResultList();
         return new ArrayList<>(resultList); // Chuyển đổi List thành ArrayList
     }
 	
 	public ArrayList<KhachHang> timTheoTen(String ten) {
 		TypedQuery<KhachHang> query = entityManager.createQuery(
-	            "SELECT kh FROM KhachHang kh WHERE kh.HoTen = :ten", KhachHang.class);
+	            "SELECT kh FROM KhachHang kh WHERE kh.hoTen = :ten", KhachHang.class);
 	        query.setParameter("ten", ten);
 	        List<KhachHang> resultList = query.getResultList();
 	        return new ArrayList<>(resultList);
@@ -108,7 +108,7 @@ public class DAO_KhachHang {
 	
 	public ArrayList<KhachHang> timTheoMa(String ma) {
 		TypedQuery<KhachHang> query = entityManager.createQuery(
-	            "SELECT kh FROM KhachHang kh WHERE kh.MaKH = :ma", KhachHang.class);
+	            "SELECT kh FROM KhachHang kh WHERE kh.maKH = :ma", KhachHang.class);
 	        query.setParameter("ma", ma);
 	        List<KhachHang> resultList = query.getResultList();
 	        return new ArrayList<>(resultList);
@@ -116,7 +116,7 @@ public class DAO_KhachHang {
 	
 	public ArrayList<KhachHang> timTheoGioiTinh(String gioitinh) {
 		TypedQuery<KhachHang> query = entityManager.createQuery(
-	            "SELECT kh FROM KhachHang kh WHERE kh.GioiTinh = :gt", KhachHang.class);
+	            "SELECT kh FROM KhachHang kh WHERE kh.gioiTinh = :gt", KhachHang.class);
 	        query.setParameter("gt", gioitinh);
 	        List<KhachHang> resultList = query.getResultList();
 	        return new ArrayList<>(resultList);
@@ -125,9 +125,9 @@ public class DAO_KhachHang {
 	 public ArrayList<KhachHang> timTheoTenvaGioiTinh(String ten, String gioitinh) {
 	        // Tạo truy vấn JPA để tìm khách hàng dựa trên tên và giới tính
 	        TypedQuery<KhachHang> query = entityManager.createQuery(
-	            "SELECT kh FROM KhachHang kh WHERE kh.HoTen = :ten AND kh.GioiTinh = :gioitinh", KhachHang.class);
+	            "SELECT kh FROM KhachHang kh WHERE kh.hoTen = :ten AND kh.gioiTinh = :gioiTinh", KhachHang.class);
 	        query.setParameter("ten", ten);
-	        query.setParameter("gioitinh", gioitinh);
+	        query.setParameter("gioiTinh", gioitinh);
 
 	        // Lấy danh sách kết quả
 	        List<KhachHang> resultList = query.getResultList();
@@ -138,7 +138,7 @@ public class DAO_KhachHang {
 	
 	public ArrayList<KhachHang> timTheoTenvaMa(String ten, String ma) {
 		TypedQuery<KhachHang> query = entityManager.createQuery(
-	            "SELECT kh FROM KhachHang kh WHERE kh.HoTen = :ten AND kh.MaKH = :ma", KhachHang.class);
+	            "SELECT kh FROM KhachHang kh WHERE kh.hoTen = :ten AND kh.maKH = :ma", KhachHang.class);
 	        query.setParameter("ten", ten);
 	        query.setParameter("ma", ma);
 
@@ -151,9 +151,9 @@ public class DAO_KhachHang {
 	
 	public ArrayList<KhachHang> timTheoTenvaSDT(String ten, String sdt) {
 		TypedQuery<KhachHang> query = entityManager.createQuery(
-	            "SELECT kh FROM KhachHang kh WHERE kh.HoTen = :ten AND kh.SoDienThoai = :sdt", KhachHang.class);
+	            "SELECT kh FROM KhachHang kh WHERE kh.hoTen = :ten AND kh.sDT = :sDT", KhachHang.class);
 	        query.setParameter("ten", ten);
-	        query.setParameter("sdt", sdt);
+	        query.setParameter("sDT", sdt);
 
 	        // Lấy danh sách kết quả
 	        List<KhachHang> resultList = query.getResultList();
@@ -164,7 +164,7 @@ public class DAO_KhachHang {
 	
 	public ArrayList<KhachHang> timTheogioivaMa(String gioitinh, String ma) {
 		TypedQuery<KhachHang> query = entityManager.createQuery(
-	            "SELECT kh FROM KhachHang kh WHERE kh.GioiTinh = :gioitinh AND kh.MaKH = :ma ", KhachHang.class);
+	            "SELECT kh FROM KhachHang kh WHERE kh.gioiTinh = :gioitinh AND kh.maKH = :ma ", KhachHang.class);
 	       
 	        query.setParameter("gioitinh", gioitinh);
 	        query.setParameter("ma", ma);
@@ -177,7 +177,7 @@ public class DAO_KhachHang {
 	}
 	public ArrayList<KhachHang> timTheoSDTvaMa(String sdt, String ma) {
 		TypedQuery<KhachHang> query = entityManager.createQuery(
-	            "SELECT kh FROM KhachHang kh WHERE kh.SoDienThoai = :sdt AND kh.MaKH = :ma ", KhachHang.class);
+	            "SELECT kh FROM KhachHang kh WHERE kh.sDT = :sdt AND kh.maKH = :ma ", KhachHang.class);
 	       
 	        query.setParameter("sdt", sdt);
 	        query.setParameter("ma", ma);
@@ -191,7 +191,7 @@ public class DAO_KhachHang {
 	
 	public ArrayList<KhachHang> timTheoSDTvaGioiTinh(String sdt, String gioitinh) {
 		TypedQuery<KhachHang> query = entityManager.createQuery(
-	            "SELECT kh FROM KhachHang kh WHERE kh.SoDienThoai = :sdt AND kh.GioiTinh = :gt ", KhachHang.class);
+	            "SELECT kh FROM KhachHang kh WHERE kh.sDT = :sdt AND kh.gioiTinh = :gt ", KhachHang.class);
 	       
 	        query.setParameter("sdt", sdt);
 	        query.setParameter("gt", gioitinh);
@@ -206,7 +206,7 @@ public class DAO_KhachHang {
 	 public ArrayList<KhachHang> timTheoTenvaGioiTinhvaMa(String ten, String gioitinh, String ma) {
 	        // Tạo truy vấn JPA để tìm khách hàng dựa trên tên, giới tính và mã
 	        TypedQuery<KhachHang> query = entityManager.createQuery(
-	            "SELECT kh FROM KhachHang kh WHERE kh.HoTen = :ten AND kh.GioiTinh = :gioitinh AND kh.MaKH = :ma", KhachHang.class);
+	            "SELECT kh FROM KhachHang kh WHERE kh.hoTen = :ten AND kh.gioiTinh = :gioitinh AND kh.maKH = :ma", KhachHang.class);
 	        query.setParameter("ten", ten);
 	        query.setParameter("gioitinh", gioitinh);
 	        query.setParameter("ma", ma);
@@ -221,7 +221,7 @@ public class DAO_KhachHang {
 	 public ArrayList<KhachHang> timTheoTenvaSDTvaMa(String ten, String sdt, String ma) {
 	        // Tạo truy vấn JPA để tìm khách hàng dựa trên tên, số điện thoại và mã
 	        TypedQuery<KhachHang> query = entityManager.createQuery(
-	            "SELECT kh FROM KhachHang kh WHERE kh.HoTen = :ten AND kh.SoDienThoai = :sdt AND kh.MaKH = :ma", KhachHang.class);
+	            "SELECT kh FROM KhachHang kh WHERE kh.hoTen = :ten AND kh.sDT = :sdt AND kh.maKH = :ma", KhachHang.class);
 	        query.setParameter("ten", ten);
 	        query.setParameter("sdt", sdt);
 	        query.setParameter("ma", ma);
@@ -236,7 +236,7 @@ public class DAO_KhachHang {
 	 public ArrayList<KhachHang> timTheoSDTvaMavaGioiTinh(String sdt, String ma, String gioitinh) {
 	        // Tạo truy vấn JPA để tìm khách hàng dựa trên số điện thoại, mã và giới tính
 	        TypedQuery<KhachHang> query = entityManager.createQuery(
-	            "SELECT kh FROM KhachHang kh WHERE kh.SoDienThoai = :sdt AND kh.MaKH = :ma AND kh.GioiTinh = :gioitinh", KhachHang.class);
+	            "SELECT kh FROM KhachHang kh WHERE kh.sDT = :sdt AND kh.maKH = :ma AND kh.gioiTinh = :gioitinh", KhachHang.class);
 	        query.setParameter("sdt", sdt);
 	        query.setParameter("ma", ma);
 	        query.setParameter("gioitinh", gioitinh);
@@ -250,7 +250,7 @@ public class DAO_KhachHang {
 	 public ArrayList<KhachHang> timTheoTenvaGioiTinhvaMavaSDT(String ten, String gioitinh, String ma, String sdt) {
 	        // Tạo truy vấn JPA để tìm khách hàng dựa trên tên, giới tính, mã và số điện thoại
 	        TypedQuery<KhachHang> query = entityManager.createQuery(
-	            "SELECT kh FROM KhachHang kh WHERE kh.HoTen = :ten AND kh.GioiTinh = :gioitinh AND kh.MaKH = :ma AND kh.SoDienThoai = :sdt", KhachHang.class);
+	            "SELECT kh FROM KhachHang kh WHERE kh.hoTen = :ten AND kh.gioiTinh = :gioitinh AND kh.maKH = :ma AND kh.sDT = :sdt", KhachHang.class);
 	        query.setParameter("ten", ten);
 	        query.setParameter("gioitinh", gioitinh);
 	        query.setParameter("ma", ma);
