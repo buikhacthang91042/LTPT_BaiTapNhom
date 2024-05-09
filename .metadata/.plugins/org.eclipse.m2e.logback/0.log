@@ -1550,3 +1550,4 @@
 2024-05-09 03:12:39,763 [Worker-44: Launching GUI_QuenMatKhau] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/CHQA_Client: CHQA_Client:CHQA_Client:0.0.1-SNAPSHOT with classifier null to /CHQA_Client/target/classes
 2024-05-09 03:12:39,805 [Worker-44: Launching GUI_QuenMatKhau] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/CHQA_Client: CHQA_Client:CHQA_Client:0.0.1-SNAPSHOT with classifier null to /CHQA_Client/target/classes
 2024-05-09 03:12:39,846 [Worker-44: Launching GUI_QuenMatKhau] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/CHQA_Client: CHQA_Client:CHQA_Client:0.0.1-SNAPSHOT with classifier null to /CHQA_Client/target/classes
+2024-05-09 08:56:40,068 [Worker-6: Loading available Gradle versions] INFO  o.e.b.c.i.u.g.PublishedGradleVersions - Gradle version information cache is out-of-date. Trying to update.

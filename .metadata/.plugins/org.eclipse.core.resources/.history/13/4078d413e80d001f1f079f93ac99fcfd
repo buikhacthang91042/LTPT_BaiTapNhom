@@ -1,0 +1,399 @@
+package GUI;
+
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.Rectangle;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.sql.Date;
+import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.List;
+
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.JTextField;
+import javax.swing.table.DefaultTableModel;
+
+import DAO.DAO_ChiTietDonDatHang;
+import DAO.DAO_ChiTietHoaDon;
+import DAO.DAO_ChuyenDoi;
+import DAO.DAO_DonHangDatTruoc;
+import DAO.DAO_HoaDon;
+import DAO.DAO_NhanVien;
+import connect.ConnectDB;
+import entity.ChiTietDonDatHang;
+import entity.ChiTietHoaDon;
+import entity.DonDatHang;
+import entity.HoaDon;
+import entity.KhachHang;
+import entity.NhanVien;
+import entity.QuanAo;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import javax.swing.ImageIcon;
+
+public class GUI_DatHangTruoc extends JPanel{
+	private JTextField txtTimTheoMa,txtTienKhachTra;
+	private DefaultTableModel modelDonDatHang,modelChiTietDonHang;
+	private JTable tblDonDatHang,tblChiTietDonHang;
+	private String ma,tenNhanVien;
+	private List<HoaDon> list;
+	private JLabel lblTien,lblTienTraLai;
+ GUI_DatHangTruoc() {
+    	setBounds(new Rectangle(0, 0, 1308, 678));
+    	setLayout(null);
+        setBackground(new Color(0, 64, 64));
+        
+      //ConnectDB
+ 		try {
+			ConnectDB.getInstance().connect();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+ 		
+	
+		JLabel lblDatHangTruoc = new JLabel("Danh sách đơn hàng đặt trước");
+		lblDatHangTruoc.setFont(new Font("Arial", Font.BOLD | Font.ITALIC, 35));
+		lblDatHangTruoc.setBounds(460, 0, 550, 69);
+		lblDatHangTruoc.setForeground(new Color(135, 206, 235));
+		add(lblDatHangTruoc);
+		
+		
+		//ConnectDB
+ 		try {
+			ConnectDB.getInstance().connect();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+		
+		String [] tieude={"Mã đơn hàng","Ngày mua","Mã nhân viên","Tên nhân viên","Mã khách hàng","Tên khách hàng","Tổng tiền"};
+ 		modelDonDatHang = new DefaultTableModel(tieude,0);
+ 		JScrollPane scrDonHangDatTruoc = new JScrollPane();
+ 	
+ 		 scrDonHangDatTruoc.setBounds(10, 67, 757, 465);
+		add( scrDonHangDatTruoc);
+		 scrDonHangDatTruoc.setViewportView(tblDonDatHang = new  JTable(modelDonDatHang));
+		 tblDonDatHang.addMouseListener(new MouseAdapter() {
+		 	@Override
+		 	public void mouseClicked(MouseEvent e) {
+		 		try {
+					lblTien.setText(tinhTongTien());
+				} catch (Exception e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+		 	}
+		 });
+		 scrDonHangDatTruoc.setViewportView(tblDonDatHang);
+		
+		JButton btnXemChiTiet = new JButton("XEM CHI TIẾT");
+		btnXemChiTiet.setBounds(787, 534, 159, 42);
+		add(btnXemChiTiet);
+		btnXemChiTiet.addActionListener(new ActionListener() {
+		    public void actionPerformed(ActionEvent e) {
+		    	modelChiTietDonHang.setRowCount(0);
+		        updateDataChiTiet();
+		    }
+		});
+		btnXemChiTiet.setForeground(new Color(0, 0, 0));
+		btnXemChiTiet.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		btnXemChiTiet.setBackground(new Color(0, 250, 154));
+		
+		JLabel lblTimKiemDonHang = new JLabel("Tìm kiếm đơn hàng");
+		lblTimKiemDonHang.setForeground(new Color(255, 0, 0));
+		lblTimKiemDonHang.setFont(new Font("Arial", Font.BOLD | Font.ITALIC, 20));
+		lblTimKiemDonHang.setBounds(10, 542, 190, 24);
+		add(lblTimKiemDonHang);
+		
+		String [] tieude1={"Mã quần áo","Tên quần áo","Số Lượng","Giá bán","Khuyến mãi","Thành tiền"};
+		modelChiTietDonHang = new DefaultTableModel(tieude1,0);
+		JScrollPane scrChiTietDatHang = new JScrollPane();
+		scrChiTietDatHang.setViewportView(tblChiTietDonHang = new  JTable(modelChiTietDonHang));
+		scrChiTietDatHang.setViewportView(tblChiTietDonHang);
+		scrChiTietDatHang.setBounds(787, 67, 489, 465);
+		add(scrChiTietDatHang);
+		
+		
+		txtTimTheoMa = new JTextField();
+		txtTimTheoMa.setFont(new Font("Arial", Font.PLAIN, 16));
+		txtTimTheoMa.setBounds(210, 542, 120, 24);
+		add(txtTimTheoMa);
+		txtTimTheoMa.setColumns(10);
+		
+		JButton btnTim = new JButton("TÌM");
+		btnTim.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				modelChiTietDonHang.setRowCount(0);
+				timTheoMa();
+				
+			}
+		});
+		btnTim.setForeground(new Color(0, 0, 0));
+		btnTim.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		btnTim.setBackground(new Color(0, 250, 154));
+		add(btnTim);
+		btnTim.setBounds(353, 543, 120, 24);
+		
+		JButton btnThanhToan = new JButton("THANH TOÁN");
+		btnThanhToan.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					themVaoHoaDon();
+					xoaDonHang();
+					
+				} catch (Exception e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				
+
+			}
+		});
+		btnThanhToan.setForeground(new Color(255, 255, 255));
+		btnThanhToan.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		btnThanhToan.setBackground(new Color(255, 0, 0));
+		btnThanhToan.setBounds(608, 534, 159, 42);
+		add(btnThanhToan);
+		
+		JLabel lblTongTien = new JLabel("Tổng tiền:");
+		lblTongTien.setForeground(Color.RED);
+		lblTongTien.setFont(new Font("Arial", Font.BOLD | Font.ITALIC, 20));
+		lblTongTien.setBounds(10, 589, 120, 24);
+		add(lblTongTien);
+		
+		JLabel lblTienKhachTra = new JLabel("Tiền khách trả:");
+		lblTienKhachTra.setForeground(Color.RED);
+		lblTienKhachTra.setFont(new Font("Arial", Font.BOLD | Font.ITALIC, 20));
+		lblTienKhachTra.setBounds(10, 623, 149, 24);
+		add(lblTienKhachTra);
+		
+		txtTienKhachTra = new JTextField();
+		txtTienKhachTra.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				tinhTienTraLai();
+			}
+		});
+		
+		txtTienKhachTra.setFont(new Font("Arial", Font.PLAIN, 16));
+		txtTienKhachTra.setColumns(10);
+		txtTienKhachTra.setBounds(153, 623, 120, 24);
+		add(txtTienKhachTra);
+		
+		JLabel lblTraLai = new JLabel("Tiền trả lại:");
+		lblTraLai.setForeground(Color.RED);
+		lblTraLai.setFont(new Font("Arial", Font.BOLD | Font.ITALIC, 20));
+		lblTraLai.setBounds(321, 623, 120, 24);
+		add(lblTraLai);
+		
+		lblTien = new JLabel("0 Đồng");
+		lblTien.setEnabled(false);
+		lblTien.setForeground(new Color(255, 0, 0));
+		lblTien.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 20));
+		lblTien.setBounds(111, 589, 120, 22);
+		try {
+			lblTien.setText(tinhTongTien());
+		} catch (Exception e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		add(lblTien);
+		
+		lblTienTraLai = new JLabel("");
+		lblTienTraLai.setEnabled(false);
+		lblTienTraLai.setForeground(Color.RED);
+		lblTienTraLai.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 20));
+		lblTienTraLai.setBounds(439, 623, 184, 22);
+		add(lblTienTraLai);
+		
+		JLabel lblUpdateDs = new JLabel("");
+		lblUpdateDs.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				modelDonDatHang.setRowCount(0);
+				updateData();
+			}
+		});
+		lblUpdateDs.setIcon(new ImageIcon(GUI_DatHangTruoc.class.getResource("/Image/refresh.png")));
+		lblUpdateDs.setBounds(10, 39, 45, 24);
+		add(lblUpdateDs);
+		updateData();
+    }
+    
+ public void updateData() {
+		DAO_DonHangDatTruoc dao = new DAO_DonHangDatTruoc();
+		DAO_ChuyenDoi chuyenDoi = new DAO_ChuyenDoi();
+		List<DonDatHang>list =dao.getAllDonDatHang();
+		for(DonDatHang ddh : list) {
+			Object [] data = {ddh.getMaDonHang(),ddh.getNgayMua(),ddh.getNV().getMaNV(),ddh.getNV().getTenNV(),ddh.getKH().getMaKH(),ddh.getKH().getHoTen(),chuyenDoi.DinhDangTien(ddh.getTongTien())};
+			modelDonDatHang.addRow(data);
+	}
+ }
+ public void updateDataChiTiet() {
+		DAO_ChiTietDonDatHang dao = new DAO_ChiTietDonDatHang();
+		DAO_ChuyenDoi chuyenDoi = new DAO_ChuyenDoi();
+		int row = tblDonDatHang.getSelectedRow();
+		List<ChiTietDonDatHang> list = dao.getAllChiTietDonDatHang(tblDonDatHang.getValueAt(row, 0).toString());
+		for(ChiTietDonDatHang ctddh : list) {
+			Object [] data = {ctddh.getQuanAo().getMaQuanAo(),ctddh.getQuanAo().getTenQuanAo(),ctddh.getSoLuong(),chuyenDoi.DinhDangTien(ctddh.getGiaBan()),ctddh.getQuanAo().getKm().layTileKhuyenMai(ctddh.getQuanAo().getMaQuanAo(),ctddh.getQuanAo().getKm().getMaKM())+ "%",chuyenDoi.DinhDangTien(ctddh.getThanhTien())};
+			modelChiTietDonHang.addRow(data);
+	}
+	}
+	public void timTheoMa() {
+		DAO_DonHangDatTruoc dao = new DAO_DonHangDatTruoc();
+		DAO_ChuyenDoi chuyenDoi = new DAO_ChuyenDoi();
+		List<DonDatHang> list = dao.search(txtTimTheoMa.getText());
+		modelDonDatHang.setRowCount(0);
+		for (DonDatHang ddh : list) {
+			Object [] data = {ddh.getMaDonHang(),ddh.getNgayMua(),ddh.getNV().getMaNV(),ddh.getKH().getMaKH(),chuyenDoi.DinhDangTien(ddh.getTongTien())};
+			modelDonDatHang.addRow(data);
+		}
+	}
+	
+	public void themVaoHoaDon() throws Exception {
+		String tenNhanVien;
+		int row = tblDonDatHang.getSelectedRow();
+		DAO_ChuyenDoi ChuyenDoi = new DAO_ChuyenDoi();
+		DAO_HoaDon hoaDon = new DAO_HoaDon();
+		DAO_NhanVien nv_dao = new DAO_NhanVien();
+		
+		String maHD = taoMa();
+		String tenNV = layTenNhanVien();
+		String maNV = GUI_DangNhap.txtTenDangNhap.getText();
+		String MaKH = tblDonDatHang.getValueAt(row,4).toString();
+		DAO_DonHangDatTruoc dh_dao = new DAO_DonHangDatTruoc();
+		String maDonHang= tblDonDatHang.getValueAt(row, 0).toString();		
+		DonDatHang dh= dh_dao.layDonHangTheoMa(maDonHang);
+		String hoTen = dh.getKH().getHoTen();
+		String sdt = dh.getKH().getsDT();
+		String diaChi = dh.getKH().getDiaChi();
+		String namSinh = dh.getKH().getNamSinh();
+		String gioiTinh = dh.getKH().getGioiTinh();
+		Date ngayMua = (Date) dh.getNgayMua();
+		KhachHang kh = new KhachHang(MaKH, hoTen, namSinh, sdt, gioiTinh, diaChi);
+				
+		float TongTien = dh.getTongTien();
+		NhanVien nv = new NhanVien(maNV);
+		HoaDon hd = new HoaDon(maHD,ngayMua,nv,kh,TongTien);
+		hoaDon.create(hd);
+		
+		String maQuanAo,tenQuanAo;
+		DAO_ChiTietHoaDon dao= new DAO_ChiTietHoaDon();
+		for (int i = 0; i < tblChiTietDonHang.getRowCount(); i++) {
+			
+			maQuanAo = tblChiTietDonHang.getValueAt(i, 0).toString();
+			tenQuanAo= tblChiTietDonHang.getValueAt(i, 1).toString();
+			QuanAo quanAo = new QuanAo(maQuanAo,tenQuanAo);
+			float GiaBan = ChuyenDoi.ChuyenTien(tblChiTietDonHang.getValueAt(i,3).toString());
+			
+			int soLuong= Integer.parseInt(tblChiTietDonHang.getValueAt(i,2).toString());
+			float thanhTien= ChuyenDoi.ChuyenTien(tblChiTietDonHang.getValueAt(i,4).toString());
+			ChiTietHoaDon cthd = new ChiTietHoaDon(hd, quanAo, soLuong, GiaBan, thanhTien);
+			dao.create(cthd);
+			XuatHoaDon xuathoaDon = new XuatHoaDon(maHD,txtTienKhachTra.getText().replace(",", "").replace("Đồng",""),lblTienTraLai.getText().replace(",", "").replace("Đồng",""));
+		}
+		JOptionPane.showMessageDialog(null, "Thanh toán thành công !");
+		
+	}
+	//Tạo mã tăng tự động theo thứ tự
+			public String taoMa() {
+
+				DAO_HoaDon dao = new DAO_HoaDon();
+				
+				int n = dao.getAllHoaDon().size();
+				if(n<9) {
+				do {
+					 n=n+1;
+					
+					ma = "HD00" + String.valueOf(n);
+					list = dao.getAllHoaDon();
+				} while (list.contains(ma));
+				
+			}else if(n<99) {
+				do {
+					 n=n+1;
+					
+					ma = "HD0" + String.valueOf(n);
+					list = dao.getAllHoaDon();
+				} while (list.contains(ma));
+			}
+			else if(n<999) {
+				do {
+					 n=n+1;
+					
+					ma = "HD" + String.valueOf(n);
+					list = dao.getAllHoaDon();
+				} while (list.contains(ma));
+			}
+				return ma;
+			}
+			public String layTenNhanVien() {
+				DAO_NhanVien dao = new DAO_NhanVien();
+				List<NhanVien> list = dao.timTheoMa(GUI_DangNhap.txtTenDangNhap.getText());
+				for (NhanVien nhanVien : list) {
+						tenNhanVien= nhanVien.getTenNV();
+					}
+					return tenNhanVien;
+				}
+			public String tinhTongTien() throws Exception {
+			    int row = tblDonDatHang.getSelectedRow();
+
+			    // Kiểm tra xem có hàng nào được chọn không
+			    if (row >= 0) {
+			        DAO_ChuyenDoi chuyenDoi_dao = new DAO_ChuyenDoi();
+			        DAO_DonHangDatTruoc dh_dao = new DAO_DonHangDatTruoc();
+			        String maDonHang = tblDonDatHang.getValueAt(row, 0).toString();
+			        DonDatHang dh = dh_dao.layDonHangTheoMa(maDonHang);
+			        float tongTien = dh.getTongTien();
+			        return chuyenDoi_dao.DinhDangTien(tongTien);
+			    } else {
+			        // Xử lý trường hợp khi không có hàng nào được chọn (tuỳ chọn)
+			        // Đây có thể là nơi bạn muốn hiển thị thông báo hoặc thực hiện hành động nào đó khác.
+			        return "0 Đồng"; // Hoặc bạn có thể trả về một giá trị mặc định khác tùy thuộc vào yêu cầu của bạn.
+			    }
+			}
+
+			public void tinhTienTraLai() {
+				DAO_ChuyenDoi chuyenDoi = new DAO_ChuyenDoi();
+				if (txtTienKhachTra.getText().trim().matches("[0-9]+")) {
+					
+					 float tienKhachTra = Float.parseFloat(txtTienKhachTra.getText().replace(",", ""));
+					 System.out.println(tienKhachTra);
+					float tongTien = Float.parseFloat(lblTien.getText().replace(",", "").replace("Đồng",""));
+					float tientra = tienKhachTra-tongTien;
+					System.out.println(tientra);
+						if (tienKhachTra >= tongTien) {
+							lblTienTraLai.setText(chuyenDoi.DinhDangTien(tienKhachTra - tongTien) + " Đồng");
+						}
+				}else if(txtTienKhachTra.getText().trim().matches("[a-zA-Z]+")) {
+						JOptionPane.showMessageDialog(null, "Tiền khách trả phải là số và lớn hơn Thành Tiền");
+					}
+			}
+
+			public void xoaDonHang() throws SQLException {
+				 modelChiTietDonHang.setRowCount(0);
+				 int row = tblDonDatHang.getSelectedRow();
+		        if (row >= 0) {
+		            String maDonHang = tblDonDatHang.getValueAt(row, 0).toString();
+		            DAO_DonHangDatTruoc dao = new DAO_DonHangDatTruoc();
+		            
+		            if (dao.delete(maDonHang)) {
+					    modelDonDatHang.removeRow(row);
+					    
+					} 
+		        }
+			}
+
+}

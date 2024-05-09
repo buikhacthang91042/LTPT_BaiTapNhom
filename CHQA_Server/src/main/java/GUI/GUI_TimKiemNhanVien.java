@@ -30,12 +30,14 @@ import javax.swing.table.DefaultTableModel;
 
 import DAO.DAO_NhanVien;
 import DAO.DAO_QuanAo;
+import DAO.EntityManagerFactoryUtil;
 import connect.ConnectDB;
 
 import javax.swing.DefaultComboBoxModel;
 
 import entity.NhanVien;
 import entity.QuanAo;
+import jakarta.persistence.EntityManager;
 
 public class GUI_TimKiemNhanVien extends JPanel {
 	private JTextField txtTenNV;
@@ -336,14 +338,18 @@ public class GUI_TimKiemNhanVien extends JPanel {
 	}
 
 	public void updateComboMaNV() {
-		DAO_NhanVien dao = new DAO_NhanVien();
+		EntityManagerFactoryUtil util = new EntityManagerFactoryUtil();
+	    EntityManager entityManager = util.getEnManager();
+		DAO_NhanVien dao = new DAO_NhanVien(entityManager);
 		for (NhanVien nv : dao.getAllNV()) {
 			cboMaNhanVien.addItem(nv.getMaNV());
 		}
 	}
 
 	public void updateData() {
-		DAO_NhanVien da = new DAO_NhanVien();
+		EntityManagerFactoryUtil util = new EntityManagerFactoryUtil();
+	    EntityManager entityManager = util.getEnManager();
+		DAO_NhanVien da = new DAO_NhanVien(entityManager);
 		List<NhanVien> list = da.getAllNV();
 		model.getDataVector().removeAllElements();
 		for (NhanVien nv : list) {
@@ -355,7 +361,9 @@ public class GUI_TimKiemNhanVien extends JPanel {
 	}
 
 	public void timTheoTen() {
-		DAO_NhanVien dao = new DAO_NhanVien();
+		EntityManagerFactoryUtil util = new EntityManagerFactoryUtil();
+	    EntityManager entityManager = util.getEnManager();
+		DAO_NhanVien dao = new DAO_NhanVien(entityManager);
 		List<NhanVien> list = dao.timTheoTen(txtTenNV.getText());
 		model.getDataVector().removeAllElements();
 		for (NhanVien nv : list) {
@@ -366,7 +374,9 @@ public class GUI_TimKiemNhanVien extends JPanel {
 	}
 
 	public void timTheoNamSinh() {
-		DAO_NhanVien dao = new DAO_NhanVien();
+		EntityManagerFactoryUtil util = new EntityManagerFactoryUtil();
+	    EntityManager entityManager = util.getEnManager();
+		DAO_NhanVien dao = new DAO_NhanVien(entityManager);
 		List<NhanVien> list = dao.timTheoNamSinh(txtNamSinh.getText());
 		model.getDataVector().removeAllElements();
 		for (NhanVien nv : list) {
@@ -377,7 +387,9 @@ public class GUI_TimKiemNhanVien extends JPanel {
 	}
 
 	public void timTheoSdt() {
-		DAO_NhanVien dao = new DAO_NhanVien();
+		EntityManagerFactoryUtil util = new EntityManagerFactoryUtil();
+	    EntityManager entityManager = util.getEnManager();
+		DAO_NhanVien dao = new DAO_NhanVien(entityManager);
 		List<NhanVien> list = dao.timTheoSdt(txtSdt.getText());
 		model.getDataVector().removeAllElements();
 		for (NhanVien nv : list) {
@@ -388,7 +400,9 @@ public class GUI_TimKiemNhanVien extends JPanel {
 	}
 
 	public void timTheoMa() {
-		DAO_NhanVien dao = new DAO_NhanVien();
+		EntityManagerFactoryUtil util = new EntityManagerFactoryUtil();
+	    EntityManager entityManager = util.getEnManager();
+		DAO_NhanVien dao = new DAO_NhanVien(entityManager);
 		String ma = cboMaNhanVien.getSelectedItem().toString();
 		List<NhanVien> list = dao.timTheoMa(ma);
 		model.getDataVector().removeAllElements();
@@ -402,7 +416,9 @@ public class GUI_TimKiemNhanVien extends JPanel {
 	}
 
 	public void timTheoGT() {
-		DAO_NhanVien dao = new DAO_NhanVien();
+		EntityManagerFactoryUtil util = new EntityManagerFactoryUtil();
+	    EntityManager entityManager = util.getEnManager();
+		DAO_NhanVien dao = new DAO_NhanVien(entityManager);
 		String gt = cboGioiTinh.getSelectedItem().toString();
 		List<NhanVien> list = dao.timTheoGT(gt);
 		model.getDataVector().removeAllElements();
@@ -416,7 +432,9 @@ public class GUI_TimKiemNhanVien extends JPanel {
 	}
 
 	public void timTheoTenvaGT() {
-		DAO_NhanVien dao = new DAO_NhanVien();
+		EntityManagerFactoryUtil util = new EntityManagerFactoryUtil();
+	    EntityManager entityManager = util.getEnManager();
+		DAO_NhanVien dao = new DAO_NhanVien(entityManager);
 		String ten = txtTenNV.getText();
 		String gt = cboGioiTinh.getSelectedItem().toString();
 		List<NhanVien> list = dao.timTheoTenvaGT(ten, gt);
@@ -430,7 +448,9 @@ public class GUI_TimKiemNhanVien extends JPanel {
 	}
 
 	public void timTheoTenvaNamSinh() {
-		DAO_NhanVien dao = new DAO_NhanVien();
+		EntityManagerFactoryUtil util = new EntityManagerFactoryUtil();
+	    EntityManager entityManager = util.getEnManager();
+		DAO_NhanVien dao = new DAO_NhanVien(entityManager);
 		String ten = txtTenNV.getText();
 		String ns = txtNamSinh.getText();
 		List<NhanVien> list = dao.timTheoTenvaNamSinh(ten, ns);
@@ -444,7 +464,9 @@ public class GUI_TimKiemNhanVien extends JPanel {
 	}
 
 	public void timTheoTenvaSdt() {
-		DAO_NhanVien dao = new DAO_NhanVien();
+		EntityManagerFactoryUtil util = new EntityManagerFactoryUtil();
+	    EntityManager entityManager = util.getEnManager();
+		DAO_NhanVien dao = new DAO_NhanVien(entityManager);
 		String ten = txtTenNV.getText();
 		String sdt = txtSdt.getText();
 		List<NhanVien> list = dao.timTheoTenvaSdt(ten, sdt);
@@ -458,7 +480,9 @@ public class GUI_TimKiemNhanVien extends JPanel {
 	}
 
 	public void timTheoNamSinhvaGioiTinh() {
-		DAO_NhanVien dao = new DAO_NhanVien();
+		EntityManagerFactoryUtil util = new EntityManagerFactoryUtil();
+	    EntityManager entityManager = util.getEnManager();
+		DAO_NhanVien dao = new DAO_NhanVien(entityManager);
 		String ns = txtNamSinh.getText();
 		String gt = cboGioiTinh.getSelectedItem().toString();
 		List<NhanVien> list = dao.timTheoNamSinhvaGT(ns, gt);
@@ -472,7 +496,9 @@ public class GUI_TimKiemNhanVien extends JPanel {
 	}
 
 	public void timTheoNamSinhvaSdt() {
-		DAO_NhanVien dao = new DAO_NhanVien();
+		EntityManagerFactoryUtil util = new EntityManagerFactoryUtil();
+	    EntityManager entityManager = util.getEnManager();
+		DAO_NhanVien dao = new DAO_NhanVien(entityManager);
 		String ns = txtNamSinh.getText();
 		String sdt = txtSdt.getText();
 		List<NhanVien> list = dao.timTheoNamSinhvaSdt(ns, sdt);
@@ -486,7 +512,9 @@ public class GUI_TimKiemNhanVien extends JPanel {
 	}
 
 	public void timTheoTenvaNamSinhvaGioiTinh() {
-		DAO_NhanVien dao = new DAO_NhanVien();
+		EntityManagerFactoryUtil util = new EntityManagerFactoryUtil();
+	    EntityManager entityManager = util.getEnManager();
+		DAO_NhanVien dao = new DAO_NhanVien(entityManager);
 		String ten = txtTenNV.getText();
 		String ns = txtNamSinh.getText();
 		String gt = cboGioiTinh.getSelectedItem().toString();
@@ -501,7 +529,9 @@ public class GUI_TimKiemNhanVien extends JPanel {
 	}
 
 	public void timTheoTenvaGioiTinhvaSdt() {
-		DAO_NhanVien dao = new DAO_NhanVien();
+		EntityManagerFactoryUtil util = new EntityManagerFactoryUtil();
+	    EntityManager entityManager = util.getEnManager();
+		DAO_NhanVien dao = new DAO_NhanVien(entityManager);
 		String ten = txtTenNV.getText();
 		String gt = cboGioiTinh.getSelectedItem().toString();
 		String sdt = txtSdt.getText();
@@ -516,7 +546,9 @@ public class GUI_TimKiemNhanVien extends JPanel {
 	}
 
 	public void timTheoTenvaNamSinhvaSdt() {
-		DAO_NhanVien dao = new DAO_NhanVien();
+		EntityManagerFactoryUtil util = new EntityManagerFactoryUtil();
+	    EntityManager entityManager = util.getEnManager();
+		DAO_NhanVien dao = new DAO_NhanVien(entityManager);
 		String ten = txtTenNV.getText();
 		String ns = txtNamSinh.getText();
 		String sdt = txtSdt.getText();
@@ -531,7 +563,9 @@ public class GUI_TimKiemNhanVien extends JPanel {
 	}
 
 	public void timTheoNamSinhvaGioiTinhvaSdt() {
-		DAO_NhanVien dao = new DAO_NhanVien();
+		EntityManagerFactoryUtil util = new EntityManagerFactoryUtil();
+	    EntityManager entityManager = util.getEnManager();
+		DAO_NhanVien dao = new DAO_NhanVien(entityManager);
 		String ns = txtNamSinh.getText();
 		String gt = cboGioiTinh.getSelectedItem().toString();
 		String sdt = txtSdt.getText();
@@ -546,7 +580,9 @@ public class GUI_TimKiemNhanVien extends JPanel {
 	}
 
 	public void timTheoTenvaNamSinhvaGioiTinhvaSdt() {
-		DAO_NhanVien dao = new DAO_NhanVien();
+		EntityManagerFactoryUtil util = new EntityManagerFactoryUtil();
+	    EntityManager entityManager = util.getEnManager();
+		DAO_NhanVien dao = new DAO_NhanVien(entityManager);
 		String ten = txtTenNV.getText();
 		String ns = txtNamSinh.getText();
 		String gt = cboGioiTinh.getSelectedItem().toString();
@@ -563,7 +599,9 @@ public class GUI_TimKiemNhanVien extends JPanel {
 	}
 
 	public void timTheoAll() {
-		DAO_NhanVien dao = new DAO_NhanVien();
+		EntityManagerFactoryUtil util = new EntityManagerFactoryUtil();
+	    EntityManager entityManager = util.getEnManager();
+		DAO_NhanVien dao = new DAO_NhanVien(entityManager);
 		String ma = cboMaNhanVien.getSelectedItem().toString();
 		String ten = txtTenNV.getText();
 		String ns = txtNamSinh.getText();

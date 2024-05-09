@@ -74,12 +74,11 @@ public class XuatHoaDon {
 		}
 		List<ChiTietHoaDon> dscthd = new ArrayList<ChiTietHoaDon>();
 		
-
-		chuyenDoi_dao = new DAO_ChuyenDoi();
-		hoaDon_dao = new DAO_HoaDon();
-		nhanVien_dao = new DAO_NhanVien();
 		EntityManagerFactoryUtil util = new EntityManagerFactoryUtil();
 	    EntityManager entityManager = util.getEnManager();
+		chuyenDoi_dao = new DAO_ChuyenDoi();
+		hoaDon_dao = new DAO_HoaDon();
+		nhanVien_dao = new DAO_NhanVien(entityManager);
 		khachHang_dao = new DAO_KhachHang(entityManager);
 		CTHD_dao = new DAO_ChiTietHoaDon();
 	

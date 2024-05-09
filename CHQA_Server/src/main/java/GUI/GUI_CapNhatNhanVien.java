@@ -229,7 +229,9 @@ public class GUI_CapNhatNhanVien extends JPanel {
 	}
 
 	public void them() {
-		DAO_NhanVien dao_nv = new DAO_NhanVien();
+		EntityManagerFactoryUtil util = new EntityManagerFactoryUtil();
+	    EntityManager entityManager = util.getEnManager();
+		DAO_NhanVien dao_nv = new DAO_NhanVien(entityManager);
 		String ma = txtMaNhanVien.getText().trim();
 		String hoTen = txtHoTen.getText().trim();
 		String sdt = txtSoDienThoai.getText().trim();
@@ -254,7 +256,9 @@ public class GUI_CapNhatNhanVien extends JPanel {
 	}
 
 	public void sua() {
-		DAO_NhanVien dao = new DAO_NhanVien();
+		EntityManagerFactoryUtil util = new EntityManagerFactoryUtil();
+	    EntityManager entityManager = util.getEnManager();
+		DAO_NhanVien dao = new DAO_NhanVien(entityManager);
 		String maNhanVien = txtMaNhanVien.getText().trim();
 		String hoTen = txtHoTen.getText().trim();
 		String sdt = txtSoDienThoai.getText().trim();
@@ -283,7 +287,9 @@ public class GUI_CapNhatNhanVien extends JPanel {
 
 	public void updateData() {
 		model.setRowCount(0);
-		DAO_NhanVien da = new DAO_NhanVien();
+		EntityManagerFactoryUtil util = new EntityManagerFactoryUtil();
+	    EntityManager entityManager = util.getEnManager();
+		DAO_NhanVien da = new DAO_NhanVien(entityManager);
 		List<NhanVien> list = da.getAllNV();
 		for (NhanVien nv : list) {
 			Object[] data = { nv.getMaNV(), nv.getTenNV(), nv.getNamSinh(),
@@ -302,7 +308,9 @@ public class GUI_CapNhatNhanVien extends JPanel {
 	                JOptionPane.YES_NO_OPTION,
 	                JOptionPane.QUESTION_MESSAGE);
 	        if (response == JOptionPane.YES_OPTION) {
-	            DAO_NhanVien dao = new DAO_NhanVien();
+	        	EntityManagerFactoryUtil util = new EntityManagerFactoryUtil();
+	    	    EntityManager entityManager = util.getEnManager();
+	    		DAO_NhanVien dao = new DAO_NhanVien(entityManager);
 	            DAO_DangNhap daoDN = new DAO_DangNhap(entityManager);
 	            String maNV = (String) tblThongTinNhanVien.getValueAt(row, 0);
 	            daoDN.deleteByMaNV(maNV);
@@ -477,7 +485,9 @@ public class GUI_CapNhatNhanVien extends JPanel {
 	}
 
 	public boolean kiemTraTrungSoDienThoai(String sdt) {
-		DAO_NhanVien dao = new DAO_NhanVien();
+		EntityManagerFactoryUtil util = new EntityManagerFactoryUtil();
+	    EntityManager entityManager = util.getEnManager();
+		DAO_NhanVien dao = new DAO_NhanVien(entityManager);
 		List<NhanVien> list = dao.getAllNV();
 
 		for (NhanVien nv : list) {
@@ -491,7 +501,9 @@ public class GUI_CapNhatNhanVien extends JPanel {
 
 	public String taoMa() {
 
-		DAO_NhanVien dao = new DAO_NhanVien();
+		EntityManagerFactoryUtil util = new EntityManagerFactoryUtil();
+	    EntityManager entityManager = util.getEnManager();
+		DAO_NhanVien dao = new DAO_NhanVien(entityManager);
 
 		int n = dao.getAllNV().size();
 		if (n < 9) {

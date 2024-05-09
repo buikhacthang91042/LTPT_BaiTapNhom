@@ -26,6 +26,7 @@ import DAO.DAO_ChuyenDoi;
 import DAO.DAO_DonHangDatTruoc;
 import DAO.DAO_HoaDon;
 import DAO.DAO_NhanVien;
+import DAO.EntityManagerFactoryUtil;
 import connect.ConnectDB;
 import entity.ChiTietDonDatHang;
 import entity.ChiTietHoaDon;
@@ -34,6 +35,8 @@ import entity.HoaDon;
 import entity.KhachHang;
 import entity.NhanVien;
 import entity.QuanAo;
+import jakarta.persistence.EntityManager;
+
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.KeyAdapter;
@@ -267,7 +270,9 @@ public class GUI_DatHangTruoc extends JPanel{
 		int row = tblDonDatHang.getSelectedRow();
 		DAO_ChuyenDoi ChuyenDoi = new DAO_ChuyenDoi();
 		DAO_HoaDon hoaDon = new DAO_HoaDon();
-		DAO_NhanVien nv_dao = new DAO_NhanVien();
+		EntityManagerFactoryUtil util = new EntityManagerFactoryUtil();
+	    EntityManager entityManager = util.getEnManager();
+		DAO_NhanVien nv_dao = new DAO_NhanVien(entityManager);
 		
 		String maHD = taoMa();
 		String tenNV = layTenNhanVien();
@@ -340,7 +345,9 @@ public class GUI_DatHangTruoc extends JPanel{
 				return ma;
 			}
 			public String layTenNhanVien() {
-				DAO_NhanVien dao = new DAO_NhanVien();
+				EntityManagerFactoryUtil util = new EntityManagerFactoryUtil();
+			    EntityManager entityManager = util.getEnManager();
+				DAO_NhanVien dao = new DAO_NhanVien(entityManager);
 				List<NhanVien> list = dao.timTheoMa(GUI_DangNhap.txtTenDangNhap.getText());
 				for (NhanVien nhanVien : list) {
 						tenNhanVien= nhanVien.getTenNV();

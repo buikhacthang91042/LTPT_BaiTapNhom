@@ -1193,7 +1193,9 @@ public class GUI_DatHang extends JPanel {
 		
 		//Hàm lấy tên nhân viên
 		public String layTenNhanVien() {
-			DAO_NhanVien dao = new DAO_NhanVien();
+			EntityManagerFactoryUtil util = new EntityManagerFactoryUtil();
+		    EntityManager entityManager = util.getEnManager();
+			DAO_NhanVien dao = new DAO_NhanVien(entityManager);
 			List<NhanVien> list = dao.timTheoMa(GUI_DangNhap.txtTenDangNhap.getText());
 			for (NhanVien nhanVien : list) {
 					tenNhanVien= nhanVien.getTenNV();
